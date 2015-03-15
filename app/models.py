@@ -148,7 +148,7 @@ profile_words = db.Table('profile_words',
     db.Column('using_count', db.Integer),
     db.Column('get_like', db.Integer),
     db.Column('get_comment', db.Integer),
-    db.Column('is_tag', db.Integer, nullable=False))
+    db.Column('is_tag', db.Boolean, nullable=False, default=False))
 
 
 class Meaning(db.Model):
@@ -198,13 +198,11 @@ class Post(db.Model):
     last_check = db.Column(db.DateTime, nullable=False,
                               default=datetime.datetime.now())
 
-    marks = db.relationship('profile_usermarks', backref='inst_profile', lazy='dynamic')
-
     def __init__(self, id_post, id_profile, img_url, filter):
         self.id_post = id_post
         self.id_profile = id_profile
-        self.id_profile = img_url
-        self.id_profile = filter
+        self.img_url = img_url
+        self.filter = filter
 
 
     def __repr__(self):
@@ -249,8 +247,6 @@ usermarks = db.Table('profile_usermarks',
               nullable=False),
     UniqueConstraint('id_profile', 'id_mark'),
 
-    db.Column('id_post', db.Integer, db.ForeignKey('post.id_post'),
-              nullable=False),
     db.Column('using_count', db.Integer),
     db.Column('get_like', db.Integer),
     db.Column('get_comment', db.Integer))
