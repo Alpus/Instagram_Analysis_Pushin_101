@@ -1,13 +1,6 @@
-#!flask/bin/python
-import datetime
-from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from app import db
 from sqlalchemy import UniqueConstraint
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://alpus:Qwe61283888@localhost/db'
-db = SQLAlchemy(app)
-
+import datetime
 
 class User(db.Model):
     __table_args__ = {
