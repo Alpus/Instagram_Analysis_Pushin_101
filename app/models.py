@@ -1,3 +1,4 @@
+#!flask/bin/python
 import datetime
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
