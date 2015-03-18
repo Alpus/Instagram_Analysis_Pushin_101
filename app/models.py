@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -- coding: utf-8 --
 from app import db
 from sqlalchemy import UniqueConstraint
 import datetime
@@ -13,9 +13,9 @@ class User(db.Model):
     first_name = db.Column(db.String(100))
     second_name = db.Column(db.String(100))
     registration_date = db.Column(db.DateTime, nullable=False,
-                                  default=datetime.datetime.now())
+                                  default=datetime.date(1000, 1, 1))
     last_visit = db.Column(db.DateTime, nullable=False,
-                                  default=datetime.datetime.now())
+                                  default=datetime.date(1000, 1, 1))
     rating = db.Column(db.Integer, nullable=False, default=0)
 
     def __init__(self, id_user):
@@ -41,10 +41,12 @@ class InstProfile(db.Model):
     #get_comment = db.Column(db.Integer, unsigned=True)
     #marked_count = db.Column(db.Integer, unsigned=True)
     last_check = db.Column(db.DateTime, nullable=False,
-                              default=datetime.datetime.now())
+                              default=datetime.date(1000, 1, 1))
 
     user = db.relationship('User', backref='inst_profile', lazy='dynamic')
     followers = db.relationship('InstProfile', secondary='follows',
+        primaryjoin='InstProfile.id_profile==follows.c.id_follower',
+        secondaryjoin='InstProfile.id_profile==follows.c.id_following',
         backref='following', lazy='dynamic')
     words = db.relationship('Word', secondary='profile_words',
         backref='inst_profiles', lazy='dynamic')
@@ -54,6 +56,8 @@ class InstProfile(db.Model):
     filters = db.relationship('Filter', secondary='profile_filters',
         backref='inst_profiles', lazy='dynamic')
     usermarks = db.relationship('InstProfile', secondary='usermarks',
+        primaryjoin='InstProfile.id_profile==usermarks.c.id_profile',
+        secondaryjoin='InstProfile.id_profile==usermarks.c.id_mark',
         backref='usermark_makers', lazy='dynamic')
 
     def __init__(self, id_profile, post_count, followers_count, following_count):
@@ -76,7 +80,7 @@ follows = db.Table('follows',
     db.Column('given_like', db.Integer),
     db.Column('given_comment', db.Integer),
     db.Column('last_check', db.DateTime, nullable=False,
-                              default=datetime.datetime.now()))
+                              default=datetime.date(1000, 1, 1)))
 
 
 class Geo(db.Model):
@@ -191,7 +195,7 @@ class Post(db.Model):
     img_url = db.Column(db.String(100), nullable=False, unique=True)
     filter = db.Column(db.String(100), nullable=False)
     last_check = db.Column(db.DateTime, nullable=False,
-                              default=datetime.datetime.now())
+                              default=datetime.date(1000, 1, 1))
 
     def __init__(self, id_post, id_profile, img_url, filter):
         self.id_post = id_post
