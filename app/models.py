@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app import db
 from sqlalchemy import UniqueConstraint
 import datetime
