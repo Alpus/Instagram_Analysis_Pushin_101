@@ -1,18 +1,9 @@
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Account information</title>
-
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-  </head>
-
-  <body>
+{% extends "bootstrap/base.html" %}
+{% block title %}Account information{% endblock %}
+{% block body %}
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-left">Account information</h1>
+            <h1 class="text-center">Account information</h1>
         </div>
     </div>
 
@@ -29,5 +20,4 @@
                 <p>Your website is "{{website}}",</p>
         </div>
     </div>
-  </body>
-</html>
+{% endblock %}

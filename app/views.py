@@ -8,13 +8,17 @@ CLIENT_SECRET = logic.CLIENT_SECRET
 LOGGED_URL = logic.LOGGED_URL
 HOME_URL = logic.HOME_URL
 REDIRECT_URL = logic.REDIRECT_URL
+'''INSTAGRAM_LOGIN_URL = ('https://api.instagram.com/oauth/authorize/?client_id=' + CLIENT_ID +
+                    '&redirect_uri=' + REDIRECT_URL +
+                    '&response_type=code&scope=basic')'''
 
 
 @app.route('/')
 def index():
-    return redirect('https://api.instagram.com/oauth/authorize/?client_id=' + CLIENT_ID +
+    login_url = ('https://api.instagram.com/oauth/authorize/?client_id=' + CLIENT_ID +
                     '&redirect_uri=' + REDIRECT_URL +
-                    '&response_type=code&scope=basic', code=302)
+                    '&response_type=code&scope=basic')
+    return render_template('login.html', login_url=login_url)
 
     
 @app.route(LOGGED_URL)
