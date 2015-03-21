@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 from app import app
-from flask import render_template, redirect
+from app import db
+from flask import render_template, redirect, request
 import logic
 
 CLIENT_ID = logic.CLIENT_ID
@@ -24,6 +25,9 @@ def index():
 @app.route(LOGGED_URL)
 def user_logged():
     code = request.values.get('code')
+    error = request.values.get('error')
+    if (error == 'access_denied'):
+        redirect('/')
     user_id = logic.process_login(code)
     redirect('/analysis/' + user_id)
 
