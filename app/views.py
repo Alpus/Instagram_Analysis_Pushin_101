@@ -1,12 +1,35 @@
 # -- coding: utf-8 --
 from app import app
-from flask import render_template
+from flask import render_template, redirect
+import logic
+
+CLIENT_ID = logic.CLIENT_ID
+CLIENT_SECRET = logic.CLIENT_SECRET
+LOGGED_URL = logic.LOGGED_URL
+HOME_URL = logic.HOME_URL
+REDIRECT_URL = logic.REDIRECT_URL
+
 
 @app.route('/')
 def index():
-    return render_template('base.html')
+    return redirect('https://api.instagram.com/oauth/authorize/?client_id=' + CLIENT_ID +
+                    '&redirect_uri=' + REDIRECT_URL +
+                    '&response_type=code&scope=basic', code=302)
 
     
-@app.route('/<username>')
-def show_user_profile(username):
-    return render_template('base.html', username=username)
+@app.route(LOGGED_URL)
+def user_logged():
+    code = request.values.get('code')
+    user_id = logic.process_login(code)
+    redirect('/analysis/' + user_id)
+
+
+@app.route('/analysis/<user_id>')
+def analysis(user_id):
+    logic.get_inst_profile(user_id)
+    inst_profile = db.session.query(InstProfile).filter_by(id_profile=user_id).first()
+    return render_template('analysis.html', id_profile = user_id,
+                           login = inst_profile.login,
+                           full_name = inst_profile.full_name,
+                           bio = inst_profile.bio,
+                           website = inst_profile.website)

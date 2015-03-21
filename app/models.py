@@ -10,16 +10,16 @@ class User(db.Model):
     }
     id_user = db.Column(db.Integer(), db.ForeignKey('inst_profile.id_profile'),
                         nullable=False, primary_key=True)
-    first_name = db.Column(db.String(100))
-    second_name = db.Column(db.String(100))
-    registration_date = db.Column(db.DateTime, nullable=False,
-                                  default=datetime.date(1000, 1, 1))
-    last_visit = db.Column(db.DateTime, nullable=False,
-                                  default=datetime.date(1000, 1, 1))
+    access_token = db.Column(db.String(100))
+    registration_date = db.Column(db.DateTime, nullable=False)
+    last_visit = db.Column(db.DateTime, nullable=False)
     rating = db.Column(db.Integer, nullable=False, default=0)
 
-    def __init__(self, id_user):
+    def __init__(self, id_user, access_token, registration_date):
         self.id_user = id_user
+        self.access_token = access_token
+        self.registration_date = registration_date
+        self.last_visit = registration_date
 
     def __repr__(self):
         return '<User %r>' % self.id_user
@@ -32,6 +32,10 @@ class InstProfile(db.Model):
     }
     id_profile = db.Column(db.Integer, nullable=False, primary_key=True)
     login = db.Column(db.String(100), nullable=False, unique=True)
+    full_name = db.Column(db.String(100), nullable=False)
+    profile_picture = db.Column(db.String(100))
+    bio = db.Column(db.String(100))
+    website = db.Column(db.String(100))
     #post_count = db.Column(db.Integer, unsigned=True, nullable=False)
     #followers_count = db.Column(db.Integer, unsigned=True, nullable=False)
     #following_count = db.Column(db.Integer, unsigned=True, nullable=False)
@@ -43,7 +47,7 @@ class InstProfile(db.Model):
     last_check = db.Column(db.DateTime, nullable=False,
                               default=datetime.date(1000, 1, 1))
 
-    user = db.relationship('User', backref='inst_profile', lazy='dynamic')
+    user = db.relationship('User', uselist=False, backref='inst_profile', lazy='dynamic')
     followers = db.relationship('InstProfile', secondary='follows',
         primaryjoin='InstProfile.id_profile==follows.c.id_follower',
         secondaryjoin='InstProfile.id_profile==follows.c.id_following',
@@ -60,11 +64,10 @@ class InstProfile(db.Model):
         secondaryjoin='InstProfile.id_profile==usermarks.c.id_mark',
         backref='usermark_makers', lazy='dynamic')
 
-    def __init__(self, id_profile, post_count, followers_count, following_count):
+    def __init__(self, id_profile, login, full_name):
         self.id_profile = id_profile
-        self.post_count = post_count
-        self.followers_count = followers_count
-        self.following_count = following_count
+        self.login = login
+        self.full_name = full_name
 
     def __repr__(self):
         return '<InstProfile %r>' % self.login
@@ -129,8 +132,7 @@ class Word(db.Model):
     meanings = db.relationship('Meaning', secondary='word_meanings',
         backref='words', lazy='dynamic')
 
-    def __init__(self, id_word, word_name):
-        self.id_word = id_word
+    def __init__(self, word_name):
         self.word_name = word_name
 
     def __repr__(self):
@@ -142,12 +144,12 @@ profile_words = db.Table('profile_words',
               nullable=False),
     db.Column('id_word', db.Integer, db.ForeignKey('word.id_word'),
               nullable=False),
-    UniqueConstraint('id_profile', 'id_word'),
 
     db.Column('using_count', db.Integer),
     db.Column('get_like', db.Integer),
     db.Column('get_comment', db.Integer),
-    db.Column('is_tag', db.Boolean, nullable=False, default=False))
+    db.Column('is_tag', db.Boolean, nullable=False, default=False),
+    UniqueConstraint('id_profile', 'id_word', 'is_tag'))
 
 
 class Meaning(db.Model):

@@ -39,7 +39,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/alpus/work/instagram/flask"
+VIRTUAL_ENV="/root/alexander_work/flask"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

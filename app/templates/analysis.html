@@ -1,0 +1,33 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Account information</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-left">Account information</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+            <p class="lead">Hi, {{login}}!</p>
+            <p>Your Id is {{user_id}},</p>
+            {% if full_name %}
+                <p>Your full name is {{full_name}},</p>
+            {% if bio %}
+                <p>Your bio is "{{bio}}",</p>
+            {% if website %}
+                <p>Your website is "{{website}}",</p>
+        </div>
+    </div>
+  </body>
+</html>
