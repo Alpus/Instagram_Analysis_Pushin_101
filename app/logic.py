@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from instagram import client
 from app import db, models
 from sqlalchemy import update

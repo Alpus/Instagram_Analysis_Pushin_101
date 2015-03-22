@@ -1,3 +1,4 @@
 help/
+flask/
 *.pyc
 HSE.pem

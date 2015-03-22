@@ -1,4 +1,4 @@
-# -- coding: utf-8 --
+# -*- coding: utf-8 -*-
 from app import app
 from app import db
 from flask import render_template, redirect, request

@@ -1,5 +1,5 @@
 #!flask/bin/python
-# -- coding: utf-8 --
+# -*- coding: utf-8 -*-
 
 # Server
 CSRF_ENABLED = True
