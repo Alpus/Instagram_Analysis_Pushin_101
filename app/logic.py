@@ -24,7 +24,7 @@ REDIRECT_URL = HOME_URL + LOGGED_URL
 def process_login(code):
     instagram_client = client.InstagramAPI(client_id=CLIENT_ID,
                         client_secret=CLIENT_SECRET,
-                        redirect_url=REDIRECT_URL)
+                        redirect_uri=REDIRECT_URL)
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
