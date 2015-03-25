@@ -41,4 +41,5 @@ def analysis(profile_id):
                            login = inst_profile.login,
                            full_name = inst_profile.full_name,
                            bio = inst_profile.bio,
-                           website = inst_profile.website)
+                           website = inst_profile.website
+                           home_url = HOME_URL)
