@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from app import app
-from app import db
+from app import db, models
 from flask import render_template, redirect, request
 import logic
 
@@ -35,7 +35,7 @@ def user_logged():
 @app.route('/analysis/<user_id>')
 def analysis(user_id):
     logic.get_inst_profile(user_id)
-    inst_profile = db.InstProfile.session.query.filter_by(id_profile=user_id).first()
+    inst_profile = InstProfile.session.query.filter_by(id_profile=user_id).first()
     return render_template('analysis.html', id_profile = user_id,
                            login = inst_profile.login,
                            full_name = inst_profile.full_name,
