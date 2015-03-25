@@ -36,6 +36,7 @@ def process_login(code):
                                full_name=instagram_user['full_name'])
         db.session.add(inst_profile)
         db.session.commit()
+        that_inst_profile = inst_profile
 
 
     that_user = that_inst_profile.user[0]
