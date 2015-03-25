@@ -58,7 +58,7 @@ def get_inst_profile(profile_id):
       profile_id).first()
     user = inst_profile.user
     api = client.InstagramAPI(access_token=user.access_token)
-    user_data = api.user(user_id)
+    user_data = api.user(profile_id)
     inst_profile.bio = user_data['bio']
     inst_profile.website = user_data['website']
 
