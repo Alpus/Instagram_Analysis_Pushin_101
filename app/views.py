@@ -35,7 +35,7 @@ def user_logged():
 @app.route('/analysis/<profile_id>')
 def analysis(profile_id):
     logic.get_inst_profile(profile_id)
-    inst_profile = models.InstProfile.query.filter(id_profile=profile_id).first()
+    inst_profile = models.InstProfile.query.filter(InstProfile.id_profile=profile_id).first()
     return render_template('analysis.html', id_profile = profile_id,
                            login = inst_profile.login,
                            full_name = inst_profile.full_name,

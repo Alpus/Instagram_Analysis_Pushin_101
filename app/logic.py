@@ -28,7 +28,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_inst_profile = models.InstProfile.query.filter(id_profile=instagram_user['id']).first()
+    that_inst_profile = models.InstProfile.query.filter(InstProfile.id_profile=instagram_user['id']).first()
     if (that_inst_profile == None):
         inst_profile = InstProfile(id_profile=instagram_user['id'],
                                login=instagram_user['username'],
@@ -53,7 +53,7 @@ def process_login(code):
 
 
 def get_inst_profile(profile_id):
-    inst_profile = models.InstProfile.query.filter(id_profile=profile_id).first()
+    inst_profile = models.InstProfile.query.filter(InstProfile.id_profile=profile_id).first()
     user = inst_profile.user.first();
     api = InstagramAPI(access_token=user.access_token)
     user_data = api.user(user_id)
@@ -62,7 +62,7 @@ def get_inst_profile(profile_id):
 
 
 def get_profiles_posts(user_id):
-    inst_profile = models.InstProfile.query.filter(id_profile=user_id).first()
+    inst_profile = models.InstProfile.query.filter(InstProfile.id_profile=user_id).first()
     user = inst_profile.user.first();
     api = InstagramAPI(access_token=user.access_token)
     posts_data = api.user(user_id)
