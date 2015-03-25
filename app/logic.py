@@ -29,7 +29,7 @@ def process_login(code):
         instagram_client.exchange_code_for_access_token(code)
 
     that_inst_profile = db.session.query(models.InstProfile).filter(models.InstProfile.id_profile==
-      profile_id).first()
+      instagram_user['id']).first()
     if (that_inst_profile == None):
         inst_profile = models.InstProfile(id_profile=instagram_user['id'],
                                login=instagram_user['username'],
