@@ -47,7 +47,7 @@ class InstProfile(db.Model):
     last_check = db.Column(db.DateTime, nullable=False,
                               default=datetime.date(1000, 1, 1))
 
-    user = db.relationship('User', uselist=False, backref='inst_profile', lazy='dynamic')
+    user = db.relationship('User', uselist=False, backref='inst_profile')
     followers = db.relationship('InstProfile', secondary='follows',
         primaryjoin='InstProfile.id_profile==follows.c.id_follower',
         secondaryjoin='InstProfile.id_profile==follows.c.id_following',

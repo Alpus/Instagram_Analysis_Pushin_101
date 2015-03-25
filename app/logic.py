@@ -28,7 +28,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_inst_profile = models.InstProfile.query.filter(id_profile=instagram_user['id'])
+    that_inst_profile = models.InstProfile.query.filter(id_profile=instagram_user['id']).first()
     if (that_inst_profile == None):
         inst_profile = InstProfile(id_profile=instagram_user['id'],
                                login=instagram_user['username'],
