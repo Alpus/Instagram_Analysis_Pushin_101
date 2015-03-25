@@ -8,18 +8,23 @@
     </div>
 
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-11">
+        <div class="col-md-12">
             <p class="lead">Hi, {{login}}!</p>
-            <p>Your Id is {{user_id}},</p>
+            <p>Your Id is {{profile_id}},</p>
             {% if full_name %}
                 <p>Your full name is {{full_name}},</p>
+            {% elif %}
+                <p>You didn't write your fullname,</p>
             {% endif %}
             {% if bio %}
                 <p>Your bio is "{{bio}}",</p>
+            {% elif %}
+                <p>You didn't write your bio,</p>
             {% endif %}
             {% if website %}
-                <p>Your website is "{{website}}",</p>
+                <p>Your website is "{{website}}"</p>
+            {% elif %}
+                <p>You didn't write your website</p>
             {% endif %}
         </div>
     </div>
