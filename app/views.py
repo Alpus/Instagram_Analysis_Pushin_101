@@ -32,11 +32,11 @@ def user_logged():
     redirect('/analysis/' + user_id)
 
 
-@app.route('/analysis/<user_id>')
-def analysis(user_id):
-    logic.get_inst_profile(user_id)
-    inst_profile = models.InstProfile.filter(id_profile=user_id).first()
-    return render_template('analysis.html', id_profile = user_id,
+@app.route('/analysis/<profile_id>')
+def analysis(profile_id):
+    logic.get_inst_profile(profile_id)
+    inst_profile = models.InstProfile.query.filter(InstProfile.id_profile=profile_id).first()
+    return render_template('analysis.html', id_profile = profile_id,
                            login = inst_profile.login,
                            full_name = inst_profile.full_name,
                            bio = inst_profile.bio,
