@@ -28,7 +28,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_inst_profile = session.query(InstProfile).filter(InstProfile.id_profile==
+    that_inst_profile = db.session.query(InstProfile).filter(InstProfile.id_profile==
       profile_id).first()
     if (that_inst_profile == None):
         inst_profile = InstProfile(id_profile=instagram_user['id'],
@@ -54,7 +54,7 @@ def process_login(code):
 
 
 def get_inst_profile(profile_id):
-    inst_profile = session.query(InstProfile).filter(InstProfile.id_profile==
+    inst_profile = db.session.query(InstProfile).filter(InstProfile.id_profile==
       profile_id).first()
     user = inst_profile.user.first();
     api = InstagramAPI(access_token=user.access_token)
@@ -64,7 +64,7 @@ def get_inst_profile(profile_id):
 
 
 def get_profiles_posts(profile_id):
-    inst_profile = session.query(InstProfile).filter(InstProfile.id_profile==
+    inst_profile = db.session.query(InstProfile).filter(InstProfile.id_profile==
       profile_id).first()
     user = inst_profile.user.first();
     api = InstagramAPI(access_token=user.access_token)
