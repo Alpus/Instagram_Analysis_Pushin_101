@@ -28,7 +28,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_inst_profile = models.InstProfile.query.filter(InstProfile.id_profile==
+    that_inst_profile = models.InstProfile.query.filter(id_profile==
         stagram_user['id']).first()
     if (that_inst_profile == None):
         inst_profile = InstProfile(id_profile=instagram_user['id'],
@@ -54,7 +54,7 @@ def process_login(code):
 
 
 def get_inst_profile(profile_id):
-    inst_profile = models.InstProfile.query.filter(InstProfile.id_profile==
+    inst_profile = models.InstProfile.query.filter(id_profile==
         profile_id).first()
     user = inst_profile.user.first();
     api = InstagramAPI(access_token=user.access_token)
@@ -63,12 +63,12 @@ def get_inst_profile(profile_id):
     inst_profile.website = user_data['website']
 
 
-def get_profiles_posts(user_id):
-    inst_profile = models.InstProfile.query.filter(InstProfile.id_profile==
-        user_id).first()
+def get_profiles_posts(profile_id):
+    inst_profile = models.InstProfile.query.filter(id_profile==
+        profile_id).first()
     user = inst_profile.user.first();
     api = InstagramAPI(access_token=user.access_token)
-    posts_data = api.user(user_id)
+    posts_data = api.user(profile_id)
 '''    for post in posts_data:
         for tag in post['tags']:
             add_profile_word(user_id, word_name, true)'''
