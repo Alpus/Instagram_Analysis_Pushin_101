@@ -57,7 +57,7 @@ def get_inst_profile(profile_id):
     inst_profile = db.session.query(models.InstProfile).filter(models.InstProfile.id_profile==
       profile_id).first()
     user = inst_profile.user
-    api = InstagramAPI(access_token=user.access_token)
+    api = client.InstagramAPI(access_token=user.access_token)
     user_data = api.user(user_id)
     inst_profile.bio = user_data['bio']
     inst_profile.website = user_data['website']
@@ -67,7 +67,7 @@ def get_profiles_posts(profile_id):
     inst_profile = db.session.query(models.InstProfile).filter(models.InstProfile.id_profile==
       profile_id).first()
     user = inst_profile.user
-    api = InstagramAPI(access_token=user.access_token)
+    api = client.InstagramAPI(access_token=user.access_token)
     posts_data = api.user(profile_id)
 '''    for post in posts_data:
         for tag in post['tags']:
