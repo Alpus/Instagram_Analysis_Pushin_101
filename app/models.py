@@ -59,9 +59,9 @@ class InstProfile(db.Model):
     posts = db.relationship('Post', backref='ints_profile', lazy='dynamic')
     filters = db.relationship('Filter', secondary='profile_filters',
         backref='inst_profiles', lazy='dynamic')
-    usermarks = db.relationship('InstProfile', secondary='usermarks',
-        primaryjoin='InstProfile.id_profile==usermarks.c.id_profile',
-        secondaryjoin='InstProfile.id_profile==usermarks.c.id_mark',
+    usermarks = db.relationship('InstProfile', secondary='profile_usermarks',
+        primaryjoin='InstProfile.id_profile==profile_usermarks.c.id_profile',
+        secondaryjoin='InstProfile.id_profile==profile_usermarks.c.id_mark',
         backref='usermark_makers', lazy='dynamic')
 
     def __init__(self, id_profile, login, full_name):
@@ -241,7 +241,7 @@ profile_filters = db.Table('profile_filters',
     db.Column('get_comment', db.Integer))
 
 
-usermarks = db.Table('profile_usermarks',
+profile_usermarks = db.Table('profile_usermarks',
     db.Column('id_profile', db.Integer, db.ForeignKey('inst_profile.id_profile'),
               nullable=False),
     db.Column('id_mark', db.Integer, db.ForeignKey('inst_profile.id_profile'),
