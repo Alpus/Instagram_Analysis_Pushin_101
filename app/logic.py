@@ -43,8 +43,7 @@ def process_login(code):
     if (that_user == None):
         user = models.User(id_user=instagram_user['id'],
                                access_token=access_token,
-                               registration_date=datetime.datetime.now(),
-                               last_visit=datetime.datetime.now())
+                               registration_date=datetime.datetime.now())
         db.session.add(user)
         db.session.commit()
     else:
