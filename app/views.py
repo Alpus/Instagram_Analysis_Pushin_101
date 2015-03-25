@@ -37,7 +37,10 @@ def analysis(profile_id):
     logic.get_inst_profile(profile_id)
     inst_profile = db.session.query(models.InstProfile).filter(models.InstProfile.id_profile==
       profile_id).first()
-    return render_template('analysis.html', profile_id = profile_id,
+    if inst_profile == None:
+      return redirect('/')
+    else:
+      return render_template('analysis.html', profile_id = profile_id,
                            login = inst_profile.login,
                            full_name = inst_profile.full_name,
                            bio = inst_profile.bio,
