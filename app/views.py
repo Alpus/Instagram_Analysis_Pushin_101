@@ -26,7 +26,7 @@ def index():
 def user_logged():
     code = request.values.get('code')
     error = request.values.get('error')
-    if (error == 'access_denied'):
+    if (error != None):
         redirect('/')
     user_id = logic.process_login(code)
     return redirect('/analysis/' + user_id)
