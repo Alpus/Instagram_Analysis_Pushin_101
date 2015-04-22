@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h2 class="lead">Hi, {{login}}!</h2>
+            <h3 class="lead">Hi, {{login}}!</h3>
 
             <p>Your Id is {{profile_id}},</p>
 
@@ -31,13 +31,15 @@
                 <p>You didn't write your website</p>
             {% endif %}
 
-            <h3>You have:</h3>
-            <p>{{count_media}} постов</p>    
-            <p>{{count_follows}} подписосов</p>
-            <p>{{count_followed_by}} подписок</p>
+            <h2>You have:</h2>
+            <p>{{count_media}} posts</p>    
+            <p>{{count_follows}} follows</p>
+            <p>{{count_followed_by}} followers</p>
         </div>
        <div class="col-md-6">
-            <img src="profile_picture" alt="Фото профиля" align="centre" class="img-thumbnail">
+            <div class="center-block">
+                <img src=profile_picture alt="Profile photo" align="middle" class="img-thumbnail">
+            </div>
         </div>
     </div>
 
