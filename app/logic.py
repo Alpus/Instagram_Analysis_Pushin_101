@@ -43,15 +43,16 @@ def process_login(code):
         api = client.InstagramAPI(access_token=access_token)
         user_data = api.user(instagram_user['id'])
 
-        that_user.login=instagram_user['username']
-        that_user.full_name=instagram_user['full_name']
-        that_user.profile_picture=user_data.profile_picture
-        that_user.bio=user_data.bio
-        that_user.website=user_data.website
-        that_user.count_media=user_data.counts['media']
-        that_user.count_follows=user_data.counts['follows']
-        that_user.count_followed_by=user_data.counts['followed_by']
-        that_user.last_visit = datetime.datetime.now()
-        that_user.access_token = access_token
+        that_user.update({'login': instagram_user['username']}
+        that_user.update({'full_name': instagram_user['full_name']})
+        that_user.update({'profile_picture': user_data.profile_picture})
+        that_user.update({'bio': user_data.bio})
+        that_user.update({'website': user_data.website})
+        that_user.update({'count_media': user_data.counts['media']})
+        that_user.update({'count_follows': user_data.counts['follows']})
+        that_user.update({'count_followed_by': user_data.counts['followed_by']})
+        that_user.update({'last_visit': datetime.datetime.now()})
+        that_user.update({'access_token': access_token})
+        db.session.commit()
 
     return instagram_user['id']
