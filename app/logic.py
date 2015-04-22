@@ -36,10 +36,9 @@ def process_login(code):
 
         db.session.add(user)
         db.session.commit()
-        that_inst_profile = inst_profile
+        that_user = user
     else:
         that_user.last_visit = datetime.datetime.now()
         that_user.access_token = access_token
 
     return instagram_user['id']
-
