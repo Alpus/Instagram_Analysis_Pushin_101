@@ -40,18 +40,24 @@ def process_login(code):
         db.session.commit()
         that_user = user
     else:
-        api = client.InstagramAPI(access_token=access_token)
-        user_data = api.user(instagram_user['id'])
-
-        that_user.login=instagram_user['username']
-        that_user.full_name=instagram_user['full_name']
-        that_user.profile_picture=user_data.profile_picture
-        that_user.bio=user_data.bio
-        that_user.website=user_data.website
-        that_user.count_media=user_data.counts['media']
-        that_user.count_follows=user_data.counts['follows']
-        that_user.count_followed_by=user_data.counts['followed_by']
         that_user.last_visit = datetime.datetime.now()
         that_user.access_token = access_token
 
     return instagram_user['id']
+
+
+def get_user_information(user_id):
+    that_user = db.session.query(models.User).filter(models.User.id_user==
+      user_id).first()
+    api = client.InstagramAPI(access_token=that_user.access_token)
+        user_data = api.user(user_id)
+
+        that_user.login = user_data.login
+        that_user.full_name = user_data.full_name
+        that_user.profile_picture = user_data.profile_picture
+        that_user.bio = user_data.bio
+        that_user.website = user_data.website
+        that_user.count_media = user_data.count_media
+        that_user.count_follows = user_data.count_follows
+        that_user.count_followed_by = user_data.count_followed_by
+        that_user.last_visit = datetime.datetime.now()

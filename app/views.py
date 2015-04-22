@@ -39,8 +39,9 @@ def analysis(user_id):
     if user == None:
       return redirect('/')
     else:
+      logic.get_user_information(user_id)
       return render_template('analysis.html', profile_picture = user.profile_picture,
-                           user_id = user.id_user,
+                           user_id = user_id,
                            login = user.login,
                            full_name = user.full_name,
                            bio = user.bio,
