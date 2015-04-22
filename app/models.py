@@ -33,9 +33,9 @@ class User(db.Model):
         self.profile_picture = profile_picture
         self.bio = bio
         self.website = website
-        self.count_media=user_data.counts['media']
-        self.count_follows=user_data.counts['follows']
-        self.count_followed_by=user_data.counts['followed_by']
+        self.count_media= count_media
+        self.count_follows= count_follows
+        self.count_followed_by= count_followed_by
         self.registration_date = registration_date
         self.last_visit = registration_date
 
