@@ -45,5 +45,7 @@ def analysis(user_id):
                            full_name = user.full_name,
                            bio = user.bio,
                            website = user.website,
-                           counts = user.counts,
+                           count_media = user.count_media,
+                           count_follows = user.count_follows,
+                           count_followed_by = user.count_followed_by,
                            home_url = HOME_URL)
