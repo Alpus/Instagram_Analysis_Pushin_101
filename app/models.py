@@ -4,7 +4,7 @@ from sqlalchemy import UniqueConstraint
 import datetime
 
 class User(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'Users'
     __table_args__ = {
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8',
