@@ -46,5 +46,4 @@ def process_login(code):
     return instagram_user['id']
 
 
-def process_login(code):
-    
+#def process_login(code):
