@@ -40,7 +40,7 @@ def analysis(user_id):
       return redirect('/')
     else:
       return render_template('analysis.html', profile_picture = user.profile_picture,
-                           user_id = user_id,
+                           user_id = user.id_user,
                            login = user.login,
                            full_name = user.full_name,
                            bio = user.bio,
