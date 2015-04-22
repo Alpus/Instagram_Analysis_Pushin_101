@@ -31,7 +31,9 @@ def process_login(code):
             profile_picture=user_data.profile_picture,
             bio=user_data.bio,
             website=user_data.website,
-            counts=user_data.counts,
+            count_media=user_data.counts['media'],
+            count_follows=user_data.counts['follows']
+            count_followed_by=user_data.counts['followed_by']
             registration_date=datetime.datetime.now())
 
         db.session.add(user)
