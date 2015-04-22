@@ -33,7 +33,7 @@ class User(db.Model):
         self.profile_picture = profile_picture
         self.bio = bio
         self.website = website
-        self.count_media=user_data.counts['media'],
+        self.count_media=user_data.counts['media']
         self.count_follows=user_data.counts['follows']
         self.count_followed_by=user_data.counts['followed_by']
         self.registration_date = registration_date
