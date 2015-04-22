@@ -9,23 +9,36 @@
 
     <div class="row">
         <div class="col-md-6">
-            <p class="lead">Hi, {{login}}!</p>
+            <h2 class="lead">Hi, {{login}}!</h2>
+
             <p>Your Id is {{profile_id}},</p>
+
             {% if full_name %}
                 <p>Your full name is {{full_name}},</p>
             {% else %}
                 <p>You didn't write your fullname,</p>
             {% endif %}
+
             {% if bio %}
                 <p>Your bio is "{{bio}}",</p>
             {% else %}
                 <p>You didn't write your bio,</p>
             {% endif %}
+
             {% if website %}
                 <p>Your website is "{{website}}"</p>
             {% else %}
                 <p>You didn't write your website</p>
             {% endif %}
+
+            <h3>You have:</h3>
+            <p>{{counts['media']} posts}</p>    
+            <p>{{counts['follows']} posts}</p>
+            <p>{{counts['followed_by']} posts}</p>    
+        </div>
+
+        <div class="col-md-6">
+            <img src="profile_picture" alt="Фото профиля" align="middle" class="img-thumbnail">
         </div>
     </div>
 

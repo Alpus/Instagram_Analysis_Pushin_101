@@ -8,4 +8,5 @@ sudo flask/bin/pip install mysql-python
 sudo flask/bin/pip install flask
 sudo flask/bin/pip install flask-sqlalchemy
 sudo flask/bin/pip install flask-bootstrap
+sudo flask/bin/pip install sqlalchemy-migrate
 sudo flask/bin/pip install python-instagram

@@ -32,17 +32,18 @@ def user_logged():
     return redirect('/analysis/' + user_id)
 
 
-@app.route('/analysis/<profile_id>')
-def analysis(profile_id):
-    logic.get_inst_profile(profile_id)
-    inst_profile = db.session.query(models.InstProfile).filter(models.InstProfile.id_profile==
-      profile_id).first()
-    if inst_profile == None:
+@app.route('/analysis/<user_id>')
+def analysis(user_id):
+    user = db.session.query(models.User).filter(models.User.id_user==
+      user_id).first()
+    if user == None:
       return redirect('/')
     else:
-      return render_template('analysis.html', profile_id = profile_id,
-                           login = inst_profile.login,
-                           full_name = inst_profile.full_name,
-                           bio = inst_profile.bio,
-                           website = inst_profile.website,
+      return render_template('analysis.html', profile_picture = user.profile_picture,
+                           user_id = user_id,
+                           login = user.login,
+                           full_name = user.full_name,
+                           bio = user.bio,
+                           website = user.website,
+                           counts = user.counts,
                            home_url = HOME_URL)
