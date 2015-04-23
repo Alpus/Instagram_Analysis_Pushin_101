@@ -29,7 +29,7 @@ def user_logged():
     if (error == 'access_denied'):
         return redirect('/')
     user_id = logic.process_login(code)
-    return redirect('/analysis/' + user_id)
+    return redirect('/analysis/' + str(user_id))
 
 
 @app.route('/analysis/<user_id>')

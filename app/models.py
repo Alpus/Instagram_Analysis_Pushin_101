@@ -9,7 +9,7 @@ class User(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8',
     }
-    id_user = db.Column(db.Integer(), nullable=False, primary_key=True)
+    id_user = db.Column(db.String(100), nullable=False, primary_key=True)
     access_token = db.Column(db.String(100))
     login = db.Column(db.String(100), nullable=False, unique=True)
     full_name = db.Column(db.String(100), nullable=False)
