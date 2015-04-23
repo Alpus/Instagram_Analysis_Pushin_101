@@ -31,7 +31,7 @@ def process_login(code):
 
 
 def update_user_information(user_id):
-    api = client.InstagramAPI()
+    api = client.InstagramAPI(client_id=CLIENT_ID)
     user_data = api.user(user_id)
 
     that_user.login = user_data.username
@@ -46,7 +46,7 @@ def update_user_information(user_id):
 
 
 def init_user(user_id):
-    api = client.InstagramAPI()
+    api = client.InstagramAPI(client_id=CLIENT_ID)
     user_data = api.user(user_id)
 
     user = models.User(id_user=user_data.id,
