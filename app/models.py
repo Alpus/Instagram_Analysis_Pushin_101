@@ -23,11 +23,10 @@ class User(db.Model):
     count_follows = db.Column(db.Integer, nullable=False, default=0)
     count_followed_by = db.Column(db.Integer, nullable=False, default=0)
 
-    def __init__(self, id_user, access_token, login, full_name,
+    def __init__(self, id_user, login, full_name,
         profile_picture, bio, website, count_media, count_follows,
         count_followed_by, registration_date):
         self.id_user = id_user
-        self.access_token = access_token
         self.login = login
         self.full_name = full_name
         self.profile_picture = profile_picture
