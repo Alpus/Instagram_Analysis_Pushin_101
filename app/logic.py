@@ -33,6 +33,8 @@ def process_login(code):
 def update_user_information(user_id):
     api = client.InstagramAPI(client_id=CLIENT_ID)
     user_data = api.user(user_id)
+    that_user = db.session.query(models.User).filter(models.User.id_user==
+      user_id).first()
 
     that_user.login = user_data.username
     that_user.full_name = user_data.full_name
