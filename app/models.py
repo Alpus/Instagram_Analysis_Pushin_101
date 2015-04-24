@@ -26,7 +26,7 @@ class User(db.Model):
 
     def __init__(self, id_user, login, full_name,
         profile_picture, bio, website, count_media, count_follows,
-        last_check):
+        count_followed_by, last_check):
         self.id_user = id_user
         self.login = login
         self.full_name = full_name
