@@ -46,6 +46,8 @@ def update_user_information(user_id):
     that_user.count_followed_by = user_data.counts['followed_by']
     that_user.last_visit = datetime.datetime.now()
 
+    db.session.commit()
+
 
 def init_user(user_id):
     api = client.InstagramAPI(client_id=CLIENT_ID)
