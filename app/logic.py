@@ -18,42 +18,54 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_user = get_user(instagram_user['id'])
-    that_user.access_token = access_token
+    that_user = db.session.query(models.User).filter(models.User.id_user==
+      instagram_user['id']).first()
+    if (that_user == None):
+        that_user = init_user(instagram_user['id']);
+        that_user.registration_date = datetime.datetime.now()
 
+    that_user.last_visit = datetime.datetime.now()
+    that_user.access_token = access_token
     db.session.commit()
+
     return that_user.id_user
 
 
-def get_user(user_id):
+def update_user_information(user_id):
+    api = client.InstagramAPI(client_id=CLIENT_ID)
+    user_data = api.user(user_id)
     that_user = db.session.query(models.User).filter(models.User.id_user==
       user_id).first()
+
+    that_user.login = user_data.username
+    that_user.full_name = user_data.full_name
+    that_user.profile_picture = user_data.profile_picture
+    that_user.bio = user_data.bio
+    that_user.website = user_data.website
+    that_user.count_media = user_data.counts['media']
+    that_user.count_follows = user_data.counts['follows']
+    that_user.count_followed_by = user_data.counts['followed_by']
+    that_user.last_check = datetime.datetime.now()
+
+    db.session.commit()
+
+
+def init_user(user_id):
     api = client.InstagramAPI(client_id=CLIENT_ID)
     user_data = api.user(user_id)
 
-    if (that_user == None):
-        user = models.User(id_user=user_data.id,
-            login=user_data.username,
-            full_name=user_data.full_name,
-            profile_picture=user_data.profile_picture,
-            bio=user_data.bio,
-            website=user_data.website,
-            count_media=user_data.counts['media'],
-            count_follows=user_data.counts['follows'],
-            count_followed_by=user_data.counts['followed_by'],
-            registration_date=datetime.datetime.now())
-        that_user = user
-        db.session.add(user)
-    else:
-        that_user.login = user_data.username
-        that_user.full_name = user_data.full_name
-        that_user.profile_picture = user_data.profile_picture
-        that_user.bio = user_data.bio
-        that_user.website = user_data.website
-        that_user.count_media = user_data.counts['media']
-        that_user.count_follows = user_data.counts['follows']
-        that_user.count_followed_by = user_data.counts['followed_by']
-        that_user.last_visit = datetime.datetime.now()
+    user = models.User(id_user=user_data.id,
+        login=user_data.username,
+        full_name=user_data.full_name,
+        profile_picture=user_data.profile_picture,
+        bio=user_data.bio,
+        website=user_data.website,
+        count_media=user_data.counts['media'],
+        count_follows=user_data.counts['follows'],
+        count_followed_by=user_data.counts['followed_by'],
+        last_check=datetime.datetime.now())
 
+    db.session.add(user)
     db.session.commit()
-    return that_user
+
+    return user
