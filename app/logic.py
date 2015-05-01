@@ -37,7 +37,7 @@ def init_user(user_id):
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         user_data = api.user(user_id)
-        user = models.User(user_data=user_data, id_user=user_id)
+        user = models.User(user_data=user_data)
         db.session.add(user)
         db.session.commit()
 

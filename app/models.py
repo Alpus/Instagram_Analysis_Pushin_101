@@ -31,16 +31,16 @@ class User(db.Model):
     comments = db.relationship(
         'Comment', backref='user', lazy='dynamic')
 
-    def __init__(self, user_data, id_user):
-        id_user = int(id_user)
-        login = int(id_user)
-        full_name = user_data.full_name
-        profile_picture = user_data.profile_picture
-        bio = user_data.bio
-        website = user_data.website
-        count_media = user_data.counts['media']
-        count_follows = user_data.counts['follows']
-        count_followed_by = user_data.counts['followed_by']
+    def __init__(self, user_data):
+        self.id_user = int(user_data.id)
+        self.login = user_data.username
+        self.full_name = user_data.full_name
+        self.profile_picture = user_data.profile_picture
+        self.bio = user_data.bio
+        self.website = user_data.website
+        self.count_media = user_data.counts['media']
+        self.count_follows = user_data.counts['follows']
+        self.count_followed_by = user_data.counts['followed_by']
 
     def __repr__(self):
         return '<User %r>' % self.login
@@ -79,20 +79,20 @@ class Media(db.Model):
         backref=db.backref('medias_with_tag', lazy='dynamic'))
 
     def __init__(self, media_data):
-        id_media = int(media_data.id)
-        type_media = media_data.type
-        caption = media_data.caption['text']
-        filter_media = media_data.filter
-        link = media_data.link
-        created_time = media_data.created_time
-        image_low = media_data.images['low_resolution']
-        image_thumbnail = media_data.images['thumbnail']
-        image_standart = media_data.images['standart_resolution']
+        self.id_media = int(media_data.id)
+        self.type_media = media_data.type
+        self.caption = media_data.caption['text']
+        self.filter_media = media_data.filter
+        self.link = media_data.link
+        self.created_time = media_data.created_time
+        self.image_low = media_data.images['low_resolution']
+        self.image_thumbnail = media_data.images['thumbnail']
+        self.image_standart = media_data.images['standart_resolution']
 
         new_user = logic.init_user(int(media_data.user['id']))
-        user = new_user
+        self.user = new_user
         new_location = logic.init_location(int(media_data.location['id']))
-        location = new_location
+        self.location = new_location
 
         for like in media_data.likes['data']:
             user = int(logic.init_user(like['id']))
@@ -139,10 +139,10 @@ class Comment(db.Model):
                         db.ForeignKey('Users.id_user'))
 
     def __init__(self, comment_data):
-        id_comment = int(comment_data.id)
-        created_time = comment_data.created_time
-        text = comment_data.text
-        id_user = int(comment_data['from']['id'])
+        self.id_comment = int(comment_data.id)
+        self.created_time = comment_data.created_time
+        self.text = comment_data.text
+        self.id_user = int(comment_data['from']['id'])
 
     def __repr__(self):
         return '<Comment %r>' % self.id_post
@@ -160,8 +160,8 @@ class Tag(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
     def __init__(self, tag_data):
-        count = tag_data.media_count
-        name = tag_data.name
+        self.count = tag_data.media_count
+        self.name = tag_data.name
 
     def __repr__(self):
         return '<Tag %r>' % self.id_post
@@ -188,10 +188,10 @@ class Location(db.Model):
         'Media', backref='location', lazy='dynamic')
 
     def __init__(self, location_data):
-        id_location = int(location_data.id)
-        name = location_data.name
-        latitude = location_data.latitude
-        longitude = location_data.longitude
+        self.id_location = int(location_data.id)
+        self.name = location_data.name
+        self.latitude = location_data.latitude
+        self.longitude = location_data.longitude
 
     def __repr__(self):
         return '<Location %r>' % self.id_post
