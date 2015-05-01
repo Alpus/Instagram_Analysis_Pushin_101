@@ -3,4 +3,3 @@ flask/
 *.pyc
 HSE.pem
 .idea
-db_repository/
