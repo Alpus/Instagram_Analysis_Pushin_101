@@ -128,10 +128,9 @@ def init_user_media(user_id):
         next_ = 'start'
         while next_ is not None:
             if next_ is 'start':
-                medias, next_ = api.user_recent_media(user_id=user_id)
+                medias, next_ = api.user_recent_media()
             else:
-                medias, next_ = api.user_recent_media(user_id=user_id,
-                                                      max_id=next_)
+                medias, next_ = api.user_recent_media(max_id=next_)
             for media_data in medias:
                 media =\
                     db.session.query(models.Media).filter(models.Media.id_media ==
