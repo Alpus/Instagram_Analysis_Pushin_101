@@ -31,7 +31,7 @@ class User(db.Model):
     comments = db.relationship(
         'Comment', backref='user', lazy='dynamic')
 
-    def __init__(self, user_data):
+    def __init__(self, user_data, id_user):
         id_user = int(user_data.id)
         login = user_data.username
         full_name = user_data.full_name
