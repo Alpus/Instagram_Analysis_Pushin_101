@@ -127,13 +127,14 @@ def init_user_media(user_id):
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
-        for media_data in medias:
-            media =\
-                db.session.query(models.Media).filter(models.Media.id_media ==
-                                                  media_data.id).first()
-            if media is None:
-                media = models.Media(media_data)
-                db.session.add(media)
+        for case in medias:
+            for media_data in case:
+                media =\
+                    db.session.query(models.Media).filter(models.Media.id_media ==
+                                                      media_data['id']).first()
+                if media is None:
+                    media = models.Media(media_data)
+                    db.session.add(media)
 
         # next_ = 'start'
         # while next_ is not None:
