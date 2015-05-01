@@ -58,20 +58,20 @@ class Media(db.Model):
                         autoincrement=True)
     inst_id_media = db.Column(db.String(50), nullable=False)
     type_media = db.Column(db.String(50), nullable=False)
-    caption = db.Column(db.String(100), nullable=False)
     filter_media = db.Column(db.String(50), nullable=False)
     link = db.Column(db.String(255), nullable=False)
-    created_time = db.Column(db.String(50), nullable=False)
+    created_time = db.Column(db.DateTime, nullable=False)
     image_low = db.Column(db.String(255), nullable=False)
     image_thumbnail = db.Column(db.String(255), nullable=False)
     image_standart = db.Column(db.String(255), nullable=False)
 
+    id_caption = db.Column(db.String(100), nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('Users.id_user'))
     id_location = db.Column(db.Integer,
                             db.ForeignKey('Locations.id_location'))
 
     comments = db.relationship(
-        'Comment', backref='medias', lazy='dynamic')
+        'Comment', backref='media', lazy='dynamic')
 
     liked_by = db.relationship(
         'User', secondary='likes',
@@ -86,7 +86,7 @@ class Media(db.Model):
     def __init__(self, media_data):
         self.inst_id_media = media_data.id
         self.type_media = media_data.type
-        self.caption = media_data.caption['text']
+        self.caption = media_data.caption.id
         self.filter_media = media_data.filter
         self.link = media_data.link
         self.created_time = media_data.created_time
@@ -137,13 +137,15 @@ class Comment(db.Model):
     id_comment = db.Column(db.Integer, nullable=False, primary_key=True,
                         autoincrement=True)
     inst_id_comment = db.Column(db.String(50), nullable=False)
-    created_time = db.Column(db.String(50), nullable=False)
+    created_time = db.Column(db.DateTime, nullable=False)
     text = db.Column(db.String(255), nullable=False)
 
     id_media = db.Column(db.Integer,
                          db.ForeignKey('Medias.id_media'))
     id_user = db.Column(db.Integer,
                         db.ForeignKey('Users.id_user'))
+
+
 
     def __init__(self, comment_data):
         self.inst_id_comment = comment_data.id
