@@ -124,7 +124,8 @@ def init_user_media(user_id):
                                              user_id).first()
 
     if user is not None:
-        api = client.InstagramAPI(access_token=user.access_token)
+        api = client.InstagramAPI(access_token=user.access_token,
+                                  client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
         for media_data in medias:
             media =\
