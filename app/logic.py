@@ -32,7 +32,7 @@ def process_login(code):
 
 def init_user(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.id_user ==
+        db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
@@ -47,7 +47,7 @@ def init_user(user_id):
 
 def update_user(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.id_user ==
+        db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
@@ -92,7 +92,7 @@ def init_tag(tag_name):
 
 def init_comment(comment_data):
     comment =\
-        db.session.query(models.Comment).filter(models.Comment.id_comment ==
+        db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data['id']).first()
     if comment is None:
         comment = models.Comment(comment_data)
@@ -120,7 +120,7 @@ def init_location(location_id):
 
 def init_user_media(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.id_user ==
+        db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
 
     if user is not None:
@@ -130,8 +130,8 @@ def init_user_media(user_id):
         for case in medias:
             for media_data in case[0]:
                 media =\
-                    db.session.query(models.Media).filter(models.Media.id_media ==
-                                                          int(media_data['id'])).first()
+                    db.session.query(models.Media).filter(models.Media.inst_id_media ==
+                                                          media_data['id']).first()
                 if media is None:
                     media = models.Media(media_data)
                     db.session.add(media)
@@ -155,7 +155,7 @@ def init_user_media(user_id):
 
 def update_user_media(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.id_user ==
+        db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token)
@@ -168,14 +168,14 @@ def update_user_media(user_id):
                                                       max_id=next_)
             for media_data in medias:
                 media =\
-                    db.session.query(models.Media).filter(models.Media.id_media ==
+                    db.session.query(models.Media).filter(models.Media.inst_id_media ==
                                                           media_data.id).first()
                 if media is None:
                     media = models.Media(media_data)
                     db.session.add(media)
                 else:
                     media.caption = media_data.caption['text']
-                    media.id_location = media_data.location['id']
+                    media.inst_id_location = media_data.location['id']
                     for like in media_data.likes['data']:
                         user_data = init_user(like['id'])
                         media.liked_by.append(user_data)
@@ -197,7 +197,7 @@ def get_users_who_liked(user_id):
     #    db.session.query(models.User).filter(models.User.id_user ==
     #                                         user_id).first()
     medias =\
-        db.session.query(models.Media).filter(models.Media.id_user ==
+        db.session.query(models.Media).filter(models.Media.inst_id_user ==
                                               user_id).first()
     users_who_liked = {}
     for media in medias:
