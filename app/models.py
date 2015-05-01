@@ -64,7 +64,7 @@ class Media(db.Model):
     created_time = db.Column(db.DateTime, nullable=False)
     image_low = db.Column(db.String(255), nullable=False)
     image_thumbnail = db.Column(db.String(255), nullable=False)
-    image_standart = db.Column(db.String(255), nullable=False)
+    image_standard = db.Column(db.String(255), nullable=False)
 
     id_user = db.Column(db.Integer, db.ForeignKey('Users.id_user'))
     id_location = db.Column(db.Integer,
@@ -92,7 +92,7 @@ class Media(db.Model):
         self.created_time = media_data.created_time
         self.image_low = media_data.images['low_resolution']
         self.image_thumbnail = media_data.images['thumbnail']
-        self.image_standart = media_data.images['standart_resolution']
+        self.image_standard = media_data.images['standard_resolution']
 
         new_user = logic.init_user(media_data.user['id'])
         self.user = new_user
