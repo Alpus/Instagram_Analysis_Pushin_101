@@ -32,8 +32,8 @@ class User(db.Model):
         'Comment', backref='user', lazy='dynamic')
 
     def __init__(self, user_data, id_user):
-        id_user = int(user_data.id)
-        login = user_data.username
+        id_user = int(id_user)
+        login = int(id_user)
         full_name = user_data.full_name
         profile_picture = user_data.profile_picture
         bio = user_data.bio
