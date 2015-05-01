@@ -27,9 +27,9 @@ class User(db.Model):
     count_followed_by = db.Column(db.Integer, nullable=False, default=0)
 
     medias = db.relationship(
-        'Media', backref=db.backref('user', lazy='dynamic'))
+        'Media', backref='user', lazy='dynamic')
     comments = db.relationship(
-        'Comment', backref=db.backref('user', lazy='dynamic'))
+        'Comment', backref='user', lazy='dynamic')
 
     def __init__(self, user_data):
         id_user = int(user_data.id)
@@ -67,18 +67,18 @@ class Media(db.Model):
                             db.ForeignKey('Locations.id_location'))
 
     location = db.relationship(
-        'Location', backref=db.backref('medias', lazy='dynamic'))
+        'Location', backref='medias', lazy='dynamic')
     liked_by = db.relationship(
         'User', secondary='likes',
-        backref='liked_media', lazy='dynamic')
+        backref=db.backref('liked_media', lazy='dynamic'))
     users_in_media = db.relationship(
         'User', secondary='marks',
-        backref='media_with_user', lazy='dynamic')
+        backref=db.backref('media_with_user', lazy='dynamic'))
     comments = db.relationship(
         'Comment', backref='medias', lazy='dynamic')
     tags = db.relationship(
         'Tag', secondary='media_tags',
-        backref='medias_with_tag', lazy='dynamic')
+        backref=db.backref('medias_with_tag', lazy='dynamic'))
 
     def __init__(self, media_data):
         id_media = int(media_data.id)
