@@ -11,11 +11,11 @@ class User(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8',
     }
-    id_user = db.Column(db.String(100), nullable=False, primary_key=True)
+    id_user = db.Column(db.Integer, nullable=False, primary_key=True)
     access_token = db.Column(db.String(100))
-    login = db.Column(db.String(100), nullable=False)
+    login = db.Column(db.String(50), nullable=False)
     full_name = db.Column(db.String(100))
-    profile_picture = db.Column(db.String(500))
+    profile_picture = db.Column(db.String(255))
     bio = db.Column(db.String(100))
     website = db.Column(db.String(100))
     registration_date = db.Column(db.DateTime)
@@ -32,7 +32,7 @@ class User(db.Model):
         'Comment', backref=db.backref('user', lazy='dynamic'))
 
     def __init__(self, user_data):
-        id_user = user_data.id
+        id_user = int(user_data.id)
         login = user_data.username
         full_name = user_data.full_name
         profile_picture = user_data.profile_picture
@@ -52,35 +52,36 @@ class Media(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_media = db.Column(db.String(100), nullable=False, primary_key=True)
-    type_media = db.Column(db.String(100), nullable=False)
+    id_media = db.Column(db.Integer, nullable=False, primary_key=True)
+    type_media = db.Column(db.String(50), nullable=False)
     caption = db.Column(db.String(100), nullable=False)
-    filter_media = db.Column(db.String(100), nullable=False)
-    link = db.Column(db.String(100), nullable=False)
-    created_time = db.Column(db.String(100), nullable=False)
-    image_low = db.Column(db.String(100), nullable=False)
-    image_thumbnail = db.Column(db.String(100), nullable=False)
-    image_standart = db.Column(db.String(100), nullable=False)
+    filter_media = db.Column(db.String(50), nullable=False)
+    link = db.Column(db.String(255), nullable=False)
+    created_time = db.Column(db.String(50), nullable=False)
+    image_low = db.Column(db.String(255), nullable=False)
+    image_thumbnail = db.Column(db.String(255), nullable=False)
+    image_standart = db.Column(db.String(255), nullable=False)
 
-    id_user = db.Column(db.String(100), db.ForeignKey('User.id_user'))
-    id_location = db.Column(db.String(100),
-                            db.ForeignKey('Location.id_location'))
+    id_user = db.Column(db.Integer, db.ForeignKey('Users.id_user'))
+    id_location = db.Column(db.Integer,
+                            db.ForeignKey('Locations.id_location'))
 
     location = db.relationship(
         'Location', backref=db.backref('medias', lazy='dynamic'))
     liked_by = db.relationship(
         'User', secondary='likes',
-        backref=db.backref('liked_media', lazy='dynamic'))
+        backref=db.backref('liked_media', lazy='dynamic'), lazy='dynamic')
     users_in_media = db.relationship(
         'User', secondary='marks',
-        backref=db.backref('media_with_user', lazy='dynamic'))
+        backref=db.backref('media_with_user', lazy='dynamic'), lazy='dynamic')
     comments = db.relationship(
         'Comment', backref=db.backref('medias', lazy='dynamic'))
-    tags = db.relationship('Tag', secondary='media_tags', backref=db.backref(
-        'medias_with_tag', lazy='dynamic'))
+    tags = db.relationship(
+        'Tag', secondary='media_tags', backref=db.backref(
+        'medias_with_tag', lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, media_data):
-        id_media = media_data.id
+        id_media = int(media_data.id)
         type_media = media_data.type
         caption = media_data.caption['text']
         filter_media = media_data.filter
@@ -90,16 +91,16 @@ class Media(db.Model):
         image_thumbnail = media_data.images['thumbnail']
         image_standart = media_data.images['standart_resolution']
 
-        new_user = logic.init_user(media_data.user['id'])
+        new_user = logic.init_user(int(media_data.user['id']))
         user = new_user
-        new_location = logic.init_location(media_data.location['id'])
+        new_location = logic.init_location(int(media_data.location['id']))
         location = new_location
 
         for like in media_data.likes['data']:
-            user = logic.init_user(like['id'])
+            user = int(logic.init_user(like['id']))
             self.liked_by.append(user)
         for mark in media_data.users_in_photo:
-            user = logic.init_user(mark['user']['id'])
+            user = int(logic.init_user(mark['user']['id']))
             self.users_in_media.append(user)
         for comment in media_data.comments['data']:
             comment_data = logic.init_comment(comment)
@@ -113,23 +114,15 @@ class Media(db.Model):
 
 
 likes = db.Table('likes',
-                 db.Column(
-                     'id_media', db.String(100),
-                     db.ForeignKey('Media.id_media')),
-                 db.Column(
-                     'id_user', db.String(100),
-                     db.ForeignKey('User.id_user'))
-                 )
+    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+    db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
+)
 
 
 marks = db.Table('marks',
-                 db.Column(
-                     'id_media', db.String(100),
-                     db.ForeignKey('Media.id_media')),
-                 db.Column(
-                     'id_user', db.String(100),
-                     db.ForeignKey('User.id_user'))
-                 )
+    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+    db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
+)
 
 
 class Comment(db.Model):
@@ -138,20 +131,20 @@ class Comment(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_comment = db.Column(db.String(100), nullable=False, primary_key=True)
-    created_time = db.Column(db.String(100), nullable=False)
-    text = db.Column(db.String(100), nullable=False)
+    id_comment = db.Column(db.Integer, nullable=False, primary_key=True)
+    created_time = db.Column(db.String(50), nullable=False)
+    text = db.Column(db.String(255), nullable=False)
 
-    id_media = db.Column(db.String(100),
-                         db.ForeignKey('Media.id_media'))
-    id_user = db.Column(db.String(100),
-                        db.ForeignKey('User.id_user'))
+    id_media = db.Column(db.Integer,
+                         db.ForeignKey('Medias.id_media'))
+    id_user = db.Column(db.Integer,
+                        db.ForeignKey('Users.id_user'))
 
     def __init__(self, comment_data):
-        id_comment = comment_data.id
+        id_comment = int(comment_data.id)
         created_time = comment_data.created_time
         text = comment_data.text
-        id_user = comment_data['from']['id']
+        id_user = int(comment_data['from']['id'])
 
     def __repr__(self):
         return '<Comment %r>' % self.id_post
@@ -166,7 +159,7 @@ class Tag(db.Model):
     id_tag = db.Column(db.Integer, nullable=False, primary_key=True,
                        autoincrement=True)
     count = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(100), nullable=False, unique=True)
+    name = db.Column(db.String(255), nullable=False)
 
     def __init__(self, tag_data):
         count = tag_data.media_count
@@ -177,23 +170,24 @@ class Tag(db.Model):
 
 
 media_tags = db.Table('media_tags',
-                      db.Column(
-                          'id_media', db.String(100),
-                          db.ForeignKey('Media.id_media')),
-                      db.Column(
-                          'id_tag', db.Integer,
-                          db.ForeignKey('Tag.id_tag'))
-                      )
+    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+    db.Column('id_tag', db.Integer, db.ForeignKey('Tags.id_tag'))
+)
 
 
 class Location(db.Model):
-    id_location = db.Column(db.String(100), nullable=False, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    __tablename__ = 'Locations'
+    __table_args__ = {
+        'mysql_engine': 'InnoDB',
+        'mysql_charset': 'utf8'
+    }
+    id_location = db.Column(db.Integer, nullable=False, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
     longitude = db.Column(db.Float(), nullable=False)
 
     def __init__(self, location_data):
-        id_location = location_data.id
+        id_location = int(location_data.id)
         name = location_data.name
         latitude = location_data.latitude
         longitude = location_data.longitude
