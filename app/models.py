@@ -67,7 +67,7 @@ class Media(db.Model):
                             db.ForeignKey('Locations.id_location'))
 
     location = db.relationship(
-        'Location', backref='medias', lazy='dynamic')
+        'Location', backref=db.backref('medias', lazy='dynamic'))
     liked_by = db.relationship(
         'User', secondary='likes',
         backref='liked_media', lazy='dynamic')
