@@ -27,9 +27,9 @@ class User(db.Model):
     count_followed_by = db.Column(db.Integer, nullable=False, default=0)
 
     medias = db.relationship(
-        'Media', backref='user', lazy='dynamic')
+        'Media', backref=db.backref('user', lazy='dynamic'))
     comments = db.relationship(
-        'Comment', backref='user', lazy='dynamic')
+        'Comment', backref=db.backref('user', lazy='dynamic'))
 
     def __init__(self, user_data):
         id_user = int(user_data.id)
