@@ -128,7 +128,7 @@ def init_user_media(user_id):
                                   client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
         for case in medias:
-            for media_data in case:
+            for media_data in case[0]:
                 media =\
                     db.session.query(models.Media).filter(models.Media.id_media ==
                                                           int(media_data['id'])).first()
