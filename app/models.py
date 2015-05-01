@@ -66,8 +66,6 @@ class Media(db.Model):
     id_location = db.Column(db.Integer,
                             db.ForeignKey('Locations.id_location'))
 
-    location = db.relationship(
-        'Location', backref='medias', lazy='dynamic')
     liked_by = db.relationship(
         'User', secondary='likes',
         backref=db.backref('liked_media', lazy='dynamic'))
@@ -185,6 +183,9 @@ class Location(db.Model):
     name = db.Column(db.String(255), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
     longitude = db.Column(db.Float(), nullable=False)
+
+    medias = db.relationship(
+        'Location', backref='location', lazy='dynamic')
 
     def __init__(self, location_data):
         id_location = int(location_data.id)
