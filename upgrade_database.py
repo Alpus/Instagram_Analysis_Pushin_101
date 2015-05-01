@@ -1,16 +1,12 @@
-#!flask/bin/python
-# -*- coding: utf-8 -*-
-import imp
-from migrate.versioning import api
-from app import db
-from config import SQLALCHEMY_DATABASE_URI
-from config import SQLALCHEMY_MIGRATE_REPO
-migration = SQLALCHEMY_MIGRATE_REPO + '/versions/%03d_migration.py' % (api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO) + 1)
-tmp_module = imp.new_module('old_model')
-old_model = api.create_model(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
-exec old_model in tmp_module.__dict__
-script = api.make_update_script_for_model(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, tmp_module.meta, db.metadata)
-open(migration, "wt").write(script)
-api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
-print 'New migration saved as ' + migration
-print 'Current database version: ' + str(api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO))
+#!/bin/bash
+sudo pip install virtualenv
+sudo virtualenv flask
+sudo apt-get install mysql
+sudo apt-get install python-dev
+sudo apt-get install libmysqlclient-dev 
+sudo flask/bin/pip install mysql-python
+sudo flask/bin/pip install flask
+sudo flask/bin/pip install flask-sqlalchemy
+sudo flask/bin/pip install flask-bootstrap
+sudo flask/bin/pip install sqlalchemy-migrate
+sudo flask/bin/pip install python-instagram

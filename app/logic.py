@@ -18,8 +18,8 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_user = init_user(instagram_user.id)
-    init_user_media(instagram_user.id)
+    that_user = init_user(instagram_user['id'])
+    init_user_media(instagram_user['id'])
 
     that_user.registration_date = datetime.datetime.now()
     that_user.last_visit = datetime.datetime.now()
