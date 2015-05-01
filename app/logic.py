@@ -23,10 +23,9 @@ def process_login(code):
     that_user.registration_date = datetime.datetime.now()
     that_user.last_visit = datetime.datetime.now()
     that_user.access_token = access_token
+    db.session.commit()
 
     init_user_media(instagram_user['id'])
-    
-    db.session.commit()
 
     return that_user.id_user
 
