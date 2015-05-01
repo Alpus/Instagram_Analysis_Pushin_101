@@ -177,12 +177,12 @@ def update_user_media(user_id):
 
 
 def get_users_who_liked(user_id):
-    user_temp =\
-        db.session.query(models.User).filter(models.User.user_id ==
-                                             user_id).first()
+    #user_temp =\
+    #    db.session.query(models.User).filter(models.User.id_user ==
+    #                                         user_id).first()
     medias =\
         db.session.query(models.Media).filter(models.Media.id_user ==
-                                              user_temp).first()
+                                              user_id).first()
     users_who_liked = {}
     for media in medias:
         for user in media.liked_by:
