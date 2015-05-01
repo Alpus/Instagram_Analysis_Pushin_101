@@ -131,7 +131,7 @@ def init_user_media(user_id):
             for media_data in case[0]:
                 media =\
                     db.session.query(models.Media).filter(models.Media.inst_id_media ==
-                                                          media_data['id']).first()
+                                                          media_data.id).first()
                 if media is None:
                     media = models.Media(media_data)
                     db.session.add(media)
