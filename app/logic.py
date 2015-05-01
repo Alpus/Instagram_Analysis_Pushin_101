@@ -30,8 +30,9 @@ def process_login(code):
 
 
 def init_user(user_id):
-    user = models.User.query.filter_by(id_user =
-                                       user_id).first()
+    user =\
+        db.session.query(models.User).filter(models.User.id_user ==
+                                             user_id).first()
     if user is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
@@ -43,8 +44,10 @@ def init_user(user_id):
 
 
 def update_user(user_id):
-    user = models.User.query.filter_by(id_user =
-                                       user_id).first()
+    user =\
+        db.session.query(models.User).filter(models.User.id_user ==
+                                             user_id).first()
+
     api = client.InstagramAPI(client_id=CLIENT_ID,
                               client_secret=CLIENT_SECRET)
     user_data = api.user(user_id)
@@ -68,8 +71,9 @@ def update_user(user_id):
 
 
 def init_tag(tag_name):
-    tag = models.Tag.query.filter_by(name =
-                                     tag_name).first()
+    tag =\
+        db.session.query(models.Tag).filter(models.Tag.name ==
+                                            tag_name).first()
     if tag is not None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
@@ -82,8 +86,9 @@ def init_tag(tag_name):
 
 
 def init_comment(comment_data):
-    comment = models.Comment.query.filter_by(id_comment =
-                                             comment_data['id']).first()
+    comment =\
+        db.session.query(models.Comment).filter(models.Comment.id_comment ==
+                                                comment_data['id']).first()
     if comment is None:
         comment = models.Comment(comment_data)
         db.session.add(comment)
@@ -94,10 +99,8 @@ def init_comment(comment_data):
 
 def init_location(location_id):
     location =\
-        models.Location.query.filter_by(id_location =
-                                        location_id).first()
-        # db.session.query(models.Location).filter(models.Location.id_location ==
-        #                                          location_id).first()
+        db.session.query(models.Location).filter(models.Location.id_location ==
+                                                 location_id).first()
     if location is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
@@ -111,8 +114,10 @@ def init_location(location_id):
 
 
 def init_user_media(user_id):
-    user = models.User.query.filter_by(id_user =
-                                       user_id).first()
+    user =\
+        db.session.query(models.User).filter(models.User.id_user ==
+                                             user_id).first()
+
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token)
         next_ = 'start'
@@ -123,8 +128,9 @@ def init_user_media(user_id):
                 medias, next_ = api.user_recent_media(user_id=user_id,
                                                       max_id=next_)
             for media_data in medias:
-                media = models.Media.query.filter_by(id_media =
-                                                     media_data.id).first()
+                media =\
+                    db.session.query(models.Media).filter(models.Media.id_media ==
+                                                          media_data.id).first()
                 if media is None:
                     media = models.Media(media_data)
                     db.session.add(media)
@@ -132,8 +138,9 @@ def init_user_media(user_id):
 
 
 def update_user_media(user_id):
-    user = models.User.query.filter_by(id_user =
-                                       user_id).first()
+    user =\
+        db.session.query(models.User).filter(models.User.id_user ==
+                                             user_id).first()
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token)
         next_ = 'start'
@@ -144,8 +151,9 @@ def update_user_media(user_id):
                 medias, next_ = api.user_recent_media(user_id=user_id,
                                                       max_id=next_)
             for media_data in medias:
-                media = models.Media.query.filter_by(id_media =
-                                                     media_data.id).first()
+                media =\
+                    db.session.query(models.Media).filter(models.Media.id_media ==
+                                                          media_data.id).first()
                 if media is None:
                     media = models.Media(media_data)
                     db.session.add(media)
@@ -169,8 +177,12 @@ def update_user_media(user_id):
 
 
 def get_users_who_liked(user_id):
-    user_temp = models.Media.query.filter_by(user_id = user_id)
-    medias = models.Media.query.filter_by(user = user_temp)
+    user_temp =\
+        db.session.query(models.User).filter(models.User.user_id ==
+                                             user_id).first()
+    medias =\
+        db.session.query(models.Media).filter(models.Media.user ==
+                                              user_temp).first()
     users_who_liked = {}
     for media in medias:
         for user in media.liked_by:
