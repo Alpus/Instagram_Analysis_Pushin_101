@@ -185,7 +185,7 @@ class Location(db.Model):
     longitude = db.Column(db.Float(), nullable=False)
 
     medias = db.relationship(
-        'Location', backref='location', lazy='dynamic')
+        'Media', backref='location', lazy='dynamic')
 
     def __init__(self, location_data):
         id_location = int(location_data.id)
