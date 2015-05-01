@@ -58,6 +58,7 @@ class Media(db.Model):
                         autoincrement=True)
     inst_id_media = db.Column(db.String(50), nullable=False)
     type_media = db.Column(db.String(50), nullable=False)
+    caption = db.Column(db.String(100), nullable=False)
     filter_media = db.Column(db.String(50), nullable=False)
     link = db.Column(db.String(255), nullable=False)
     created_time = db.Column(db.DateTime, nullable=False)
@@ -65,7 +66,6 @@ class Media(db.Model):
     image_thumbnail = db.Column(db.String(255), nullable=False)
     image_standart = db.Column(db.String(255), nullable=False)
 
-    id_caption = db.Column(db.String(100), nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('Users.id_user'))
     id_location = db.Column(db.Integer,
                             db.ForeignKey('Locations.id_location'))
