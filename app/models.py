@@ -94,7 +94,7 @@ class Media(db.Model):
         self.image_thumbnail = media_data.images['thumbnail']
         self.image_standard = media_data.images['standard_resolution']
 
-        new_user = logic.init_user(media_data.user['id'])
+        new_user = logic.init_user(media_data.user.id)
         self.user = new_user
         new_location = logic.init_location(media_data.location['id'])
         self.location = new_location

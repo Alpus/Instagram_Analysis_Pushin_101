@@ -126,29 +126,29 @@ def init_user_media(user_id):
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        medias = api.user_recent_media(as_generator=True)
-        for case in medias:
-            for media_data in case[0]:
-                media =\
-                    db.session.query(models.Media).filter(models.Media.inst_id_media ==
-                                                          media_data.id).first()
-                if media is None:
-                    media = models.Media(media_data)
-                    db.session.add(media)
-
-        # next_ = 'start'
-        # while next_ is not None:
-        #     if next_ is 'start':
-        #         medias, next_ = api.user_recent_media(user_id="userid", count=20)
-        #     else:
-        #         medias, next_ = api.user_recent_media(user_id="userid", count=20, max_id=next_)
-        #     for media_data in medias:
+        # medias = api.user_recent_media(as_generator=True)
+        # for case in medias:
+        #     for media_data in case[0]:
         #         media =\
-        #             db.session.query(models.Media).filter(models.Media.id_media ==
+        #             db.session.query(models.Media).filter(models.Media.inst_id_media ==
         #                                                   media_data.id).first()
         #         if media is None:
         #             media = models.Media(media_data)
         #             db.session.add(media)
+
+        next_ = 'start'
+        while next_ is not None:
+            if next_ is 'start':
+                medias, next_ = api.user_recent_media()
+            else:
+                medias, next_ = api.user_recent_media(max_id=next_)
+            for media_data in medias:
+                media =\
+                    db.session.query(models.Media).filter(models.Media.id_media ==
+                                                          media_data.id).first()
+                if media is None:
+                    media = models.Media(media_data)
+                    db.session.add(media)
 
         db.session.commit()
 
