@@ -115,7 +115,7 @@ class Media(db.Model):
         self.user = new_user
 
         if 'location' in dir(media_data):
-            new_location = logic.init_location(media_data.location['id'])
+            new_location = logic.init_location(media_data.location.id)
         else:
             new_location = None
         self.location = new_location
