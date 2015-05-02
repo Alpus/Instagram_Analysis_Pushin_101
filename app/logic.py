@@ -18,7 +18,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_user = init_user(instagram_user['id'])
+    that_user = init_user_by_id(instagram_user['id'])
 
     that_user.registration_date = datetime.datetime.now()
     that_user.last_visit = datetime.datetime.now()
@@ -30,7 +30,7 @@ def process_login(code):
     return that_user.id_user
 
 
-def init_user(user_id):
+def init_user_by_id(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
@@ -45,7 +45,7 @@ def init_user(user_id):
     return user
 
 
-def init_user_by_like(like):
+def init_user_by_information(like):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              like.id).first()
@@ -102,12 +102,12 @@ def init_tag(tag_name):
     return tag
 
 
-def init_comment(comment_data, id_media):
+def init_comment(comment_data, media):
     comment =\
         db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data.id).first()
     if comment is None:
-        comment = models.Comment(comment_data=comment_data, id_media=id_media)
+        comment = models.Comment(comment_data=comment_data, media=media)
         db.session.add(comment)
         db.session.commit()
 
@@ -147,6 +147,9 @@ def init_user_media(user_id):
                 if media is None:
                     media = models.Media(media_data)
                     db.session.add(media)
+                    for comment in media_data.comments:
+                        comment_data = init_comment(comment_data=comment, media=media)
+                        # media.comments.append(comment_data)
 
         # next_ = 'start'
         # while next_ is not None:
@@ -189,10 +192,10 @@ def update_user_media(user_id):
                     media.caption = media_data.caption['text']
                     media.inst_id_location = media_data.location['id']
                     for like in media_data.likes['data']:
-                        user_data = init_user(like['id'])
+                        user_data = init_user_by_id(like['id'])
                         media.liked_by.append(user_data)
                     for mark in media_data.users_in_photo:
-                        user_data = init_user(mark['user']['id'])
+                        user_data = init_user_by_id(mark['user']['id'])
                         media.users_in_media.append(user_data)
                     for comment in media_data.comments['data']:
                         comment_data = init_comment(comment)

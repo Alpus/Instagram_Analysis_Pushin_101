@@ -111,7 +111,7 @@ class Media(db.Model):
         self.image_thumbnail = media_data.images['thumbnail']
         self.image_standard = media_data.images['standard_resolution']
 
-        new_user = logic.init_user(media_data.user.id)
+        new_user = logic.init_user_by_id(media_data.user.id)
         self.user = new_user
 
         if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
@@ -124,7 +124,7 @@ class Media(db.Model):
                                   client_secret=CLIENT_SECRET)
         likes = api.media_likes(media_id=media_data.id)
         for like in likes:
-            user = logic.init_user_by_like(like)
+            user = logic.init_user_by_information(like)
             self.liked_by.append(user)
 
         if 'tags' in dir(media_data):
@@ -133,12 +133,8 @@ class Media(db.Model):
                 self.tags.append(tag_data)
 
         # for mark in media_data.users_in_photo:
-        #     user = logic.init_user(mark['user']['id'])
+        #     user = logic.init_user_by_id(mark['user']['id'])
         #     self.users_in_media.append(user)
-
-        for comment in media_data.comments:
-            comment_data = logic.init_comment(comment_data=comment, id_media=self.id_media)
-            self.comments.append(comment_data)
 
     def __repr__(self):
         return '<Media %r>' % self.id_media
@@ -175,14 +171,12 @@ class Comment(db.Model):
 
 
 
-    def __init__(self, comment_data, id_media):
+    def __init__(self, comment_data, media):
         self.inst_id_comment = comment_data.id
         self.created_time = comment_data.created_at
         self.text = comment_data.text
         self.id_user = comment_data.user.id
-        self.media =\
-            db.session.query(Media).filter(Media.id_media ==
-                                           id_media).first()
+        self.media = media
 
     def __repr__(self):
         return '<Comment %r>' % self.id_comment
