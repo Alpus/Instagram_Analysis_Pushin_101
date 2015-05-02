@@ -71,8 +71,8 @@ class Media(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_media = db.Column(db.Integer, nullable=False, primary_key=True,
-                        autoincrement=True)
+    id_media = db.Column(db.Integer, primary_key=True,
+                         autoincrement=True)
     inst_id_media = db.Column(db.String(50), nullable=False)
     type_media = db.Column(db.String(50), nullable=False)
     caption = db.Column(db.String(100), nullable=False)
@@ -132,7 +132,7 @@ class Media(db.Model):
         #     self.users_in_media.append(user)
 
         for comment in media_data.comments:
-            comment_data = logic.init_comment(comment)
+            comment_data = logic.init_comment(comment, self)
             self.comments.append(comment_data)
 
         if 'tags' in dir(media_data):
@@ -141,7 +141,7 @@ class Media(db.Model):
                 self.tags.append(tag_data)
 
     def __repr__(self):
-        return '<Media %r>' % self.id_post
+        return '<Media %r>' % self.id_media
 
 
 likes = db.Table('likes',
@@ -175,11 +175,12 @@ class Comment(db.Model):
 
 
 
-    def __init__(self, comment_data):
+    def __init__(self, comment_data, media):
         self.inst_id_comment = comment_data.id
         self.created_time = comment_data.created_at
         self.text = comment_data.text
         self.id_user = comment_data.user.id
+        self.media = media
 
     def __repr__(self):
         return '<Comment %r>' % self.id_post

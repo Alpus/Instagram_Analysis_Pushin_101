@@ -102,13 +102,12 @@ def init_tag(tag_name):
     return tag
 
 
-def init_comment(comment_data):
+def init_comment(comment_data, media):
     comment =\
         db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data.id).first()
     if comment is None:
-        db.engine.execute("SET foreign_key_checks = 0")
-        comment = models.Comment(comment_data)
+        comment = models.Comment(comment_data, media)
         db.session.add(comment)
         db.session.commit()
 
