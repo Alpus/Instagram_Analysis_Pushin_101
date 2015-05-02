@@ -183,7 +183,7 @@ class Comment(db.Model):
         self.media = media
 
     def __repr__(self):
-        return '<Comment %r>' % self.id_post
+        return '<Comment %r>' % self.id_comment
 
 
 class Tag(db.Model):
@@ -202,7 +202,7 @@ class Tag(db.Model):
         self.name = tag_data.name
 
     def __repr__(self):
-        return '<Tag %r>' % self.id_post
+        return '<Tag %r>' % self.id_tag
 
 
 media_tags = db.Table('media_tags',
@@ -234,4 +234,4 @@ class Location(db.Model):
         self.longitude = location_data.point.longitude
 
     def __repr__(self):
-        return '<Location %r>' % self.id_post
+        return '<Location %r>' % self.id_location
