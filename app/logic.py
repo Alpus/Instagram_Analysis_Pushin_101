@@ -149,7 +149,7 @@ def init_user_media(user_id):
                     db.session.add(media)
                     for comment in media_data.comments:
                         comment_data = init_comment(comment_data=comment, media=media)
-                        # media.comments.append(comment_data)
+                        media.comments.append(comment_data)
 
         # next_ = 'start'
         # while next_ is not None:
