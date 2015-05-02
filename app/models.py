@@ -132,7 +132,7 @@ class Media(db.Model):
         #     self.users_in_media.append(user)
 
         for comment in media_data.comments:
-            comment_data = logic.init_comment(comment, self)
+            comment_data = logic.init_comment(comment)
             self.comments.append(comment_data)
 
         if 'tags' in dir(media_data):
@@ -175,12 +175,11 @@ class Comment(db.Model):
 
 
 
-    def __init__(self, comment_data, media):
+    def __init__(self, comment_data):
         self.inst_id_comment = comment_data.id
         self.created_time = comment_data.created_at
         self.text = comment_data.text
         self.id_user = comment_data.user.id
-        self.media = media
 
     def __repr__(self):
         return '<Comment %r>' % self.id_comment
