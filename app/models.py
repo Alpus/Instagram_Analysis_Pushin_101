@@ -45,11 +45,21 @@ class User(db.Model):
         self.login = user_data.username
         self.full_name = user_data.full_name
         self.profile_picture = user_data.profile_picture
-        self.bio = user_data.bio
-        self.website = user_data.website
-        self.count_media = user_data.counts['media']
-        self.count_follows = user_data.counts['follows']
-        self.count_followed_by = user_data.counts['followed_by']
+
+        if 'bio' in dir(user_data):
+            self.bio = user_data.bio
+        else:
+            self.bio = None
+
+        if 'website' in dir(user_data):
+            self.website = user_data.website
+        else:
+            self.website = None
+
+        if 'counts' in dir(user_data):
+            self.count_media = user_data.counts['media']
+            self.count_follows = user_data.counts['follows']
+            self.count_followed_by = user_data.counts['followed_by']
 
     def __repr__(self):
         return '<User %r>' % self.login
@@ -114,7 +124,7 @@ class Media(db.Model):
                                   client_secret=CLIENT_SECRET)
         likes = api.media_likes(media_id=media_data.id)
         for like in likes:
-            user = logic.init_user(like.id)
+            user = logic.init_user_by_like(like)
             self.liked_by.append(user)
 
         # for mark in media_data.users_in_photo:
