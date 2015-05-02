@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 from app import db
 import logic
-from sqlalchemy import UniqueConstraint
+from instagram import client
 import datetime
+from sqlalchemy import UniqueConstraint
+
+CLIENT_ID = logic.CLIENT_ID
+CLIENT_SECRET = logic.CLIENT_SECRET
+LOGGED_URL = logic.LOGGED_URL
+HOME_URL = logic.HOME_URL
+REDIRECT_URL = logic.REDIRECT_URL
 
 
 class User(db.Model):
@@ -96,24 +103,32 @@ class Media(db.Model):
 
         new_user = logic.init_user(media_data.user.id)
         self.user = new_user
-        try:
+
+        if 'location' in dir(media_data):
             new_location = logic.init_location(media_data.location['id'])
-        except AttributeError:
+        else:
             new_location = None
         self.location = new_location
 
-        for like in media_data.likes['data']:
-            user = logic.init_user(like['id'])
+        api = client.InstagramAPI(client_id=CLIENT_ID,
+                                  client_secret=CLIENT_SECRET)
+        likes = api.media_likes(media_id=media_data.id)
+        for like in likes:
+            user = logic.init_user(like.id)
             self.liked_by.append(user)
-        for mark in media_data.users_in_photo:
-            user = logic.init_user(mark['user']['id'])
-            self.users_in_media.append(user)
-        for comment in media_data.comments['data']:
+
+        # for mark in media_data.users_in_photo:
+        #     user = logic.init_user(mark['user']['id'])
+        #     self.users_in_media.append(user)
+
+        for comment in media_data.comments:
             comment_data = logic.init_comment(comment)
             self.comments.append(comment_data)
-        for tag in media_data.tags:
-            tag_data = logic.init_tag(tag['name'])
-            self.tags.append(tag_data)
+
+        if 'tags' in dir(media_data):
+            for tag in media_data.tags:
+                tag_data = logic.init_tag(tag.name)
+                self.tags.append(tag_data)
 
     def __repr__(self):
         return '<Media %r>' % self.id_post
@@ -152,9 +167,9 @@ class Comment(db.Model):
 
     def __init__(self, comment_data):
         self.inst_id_comment = comment_data.id
-        self.created_time = comment_data.created_time
+        self.created_at = comment_data.created_time
         self.text = comment_data.text
-        self.id_user = comment_data['from']['id']
+        self.id_user = comment_data.user.id
 
     def __repr__(self):
         return '<Comment %r>' % self.id_post
