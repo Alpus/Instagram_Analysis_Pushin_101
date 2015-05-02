@@ -94,12 +94,12 @@ class Media(db.Model):
         self.image_thumbnail = media_data.images['thumbnail']
         self.image_standard = media_data.images['standard_resolution']
 
-        try:
-            new_user = logic.init_user(media_data.user.id)
-        except TypeError:
-            new_user = None
+        new_user = logic.init_user(media_data.user.id)
         self.user = new_user
-        new_location = logic.init_location(media_data.location['id'])
+        try:
+            new_location = logic.init_location(media_data.location['id'])
+        except TypeError:
+            new_location = None
         self.location = new_location
 
         for like in media_data.likes['data']:
