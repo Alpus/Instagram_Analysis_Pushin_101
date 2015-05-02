@@ -18,7 +18,7 @@ class User(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8',
     }
-    id_user = db.Column(db.Integer, nullable=False, primary_key=True,
+    id_user = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
     inst_id_user = db.Column(db.String(50), nullable=False)
     access_token = db.Column(db.String(100))
@@ -162,7 +162,7 @@ class Comment(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_comment = db.Column(db.Integer, nullable=False, primary_key=True,
+    id_comment = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
     inst_id_comment = db.Column(db.String(50), nullable=False)
     created_time = db.Column(db.DateTime, nullable=False)
@@ -192,7 +192,7 @@ class Tag(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_tag = db.Column(db.Integer, nullable=False, primary_key=True,
+    id_tag = db.Column(db.Integer, primary_key=True,
                        autoincrement=True)
     count = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(255), nullable=False)
@@ -217,7 +217,7 @@ class Location(db.Model):
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_location = db.Column(db.Integer, nullable=False, primary_key=True,
+    id_location = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
     inst_id_location = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(255), nullable=False)
