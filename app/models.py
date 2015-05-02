@@ -98,7 +98,7 @@ class Media(db.Model):
         self.user = new_user
         try:
             new_location = logic.init_location(media_data.location['id'])
-        except TypeError:
+        except AttributeError:
             new_location = None
         self.location = new_location
 
