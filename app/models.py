@@ -177,7 +177,7 @@ class Comment(db.Model):
 
     def __init__(self, comment_data):
         self.inst_id_comment = comment_data.id
-        self.created_at = comment_data.created_time
+        self.created_time = comment_data.created_at
         self.text = comment_data.text
         self.id_user = comment_data.user.id
 
