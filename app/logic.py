@@ -102,12 +102,12 @@ def init_tag(tag_name):
     return tag
 
 
-def init_comment(comment_data):
+def init_comment(comment_data, id_media):
     comment =\
         db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data.id).first()
     if comment is None:
-        comment = models.Comment(comment_data)
+        comment = models.Comment(comment_data=comment_data, id_media=id_media)
         db.session.add(comment)
         db.session.commit()
 

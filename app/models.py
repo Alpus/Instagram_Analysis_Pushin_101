@@ -127,18 +127,18 @@ class Media(db.Model):
             user = logic.init_user_by_like(like)
             self.liked_by.append(user)
 
+        if 'tags' in dir(media_data):
+            for tag in media_data.tags:
+                tag_data = logic.init_tag(tag.name)
+                self.tags.append(tag_data)
+
         # for mark in media_data.users_in_photo:
         #     user = logic.init_user(mark['user']['id'])
         #     self.users_in_media.append(user)
 
         for comment in media_data.comments:
-            comment_data = logic.init_comment(comment)
+            comment_data = logic.init_comment(comment_data=comment, id_media=self.id_media)
             self.comments.append(comment_data)
-
-        if 'tags' in dir(media_data):
-            for tag in media_data.tags:
-                tag_data = logic.init_tag(tag.name)
-                self.tags.append(tag_data)
 
     def __repr__(self):
         return '<Media %r>' % self.id_media
@@ -175,11 +175,14 @@ class Comment(db.Model):
 
 
 
-    def __init__(self, comment_data):
+    def __init__(self, comment_data, id_media):
         self.inst_id_comment = comment_data.id
         self.created_time = comment_data.created_at
         self.text = comment_data.text
         self.id_user = comment_data.user.id
+        self.media =\
+            db.session.query(Media).filter(Media.id_media ==
+                                           id_media).first()
 
     def __repr__(self):
         return '<Comment %r>' % self.id_comment
