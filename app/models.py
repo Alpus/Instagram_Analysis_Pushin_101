@@ -192,11 +192,11 @@ class Tag(db.Model):
     id_tag = db.Column(db.Integer, primary_key=True,
                        autoincrement=True)
     count = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.Unicode, nullable=False)
 
     def __init__(self, tag_data):
         self.count = tag_data.media_count
-        self.name = tag_data.name.encode('utf-8')
+        self.name = tag_data.name
 
     def __repr__(self):
         return '<Tag %r>' % self.id_tag
