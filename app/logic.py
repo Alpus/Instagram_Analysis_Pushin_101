@@ -86,7 +86,7 @@ def init_tag(tag_name):
     tag =\
         db.session.query(models.Tag).filter(models.Tag.name ==
                                             tag_name).first()
-    if tag is not None:
+    if tag is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         tag_data = api.tag(tag_name)
