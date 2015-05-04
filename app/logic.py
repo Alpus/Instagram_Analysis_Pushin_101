@@ -61,18 +61,13 @@ def update_user(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    if user is None:
-        api = client.InstagramAPI(client_id=CLIENT_ID,
+    api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
-        user_data = api.user(user_id)
-
+    user_data = api.user(user_id)
+    if user is None:
         user = models.User(user_data)
         db.session.add(user)
     else:
-        api = client.InstagramAPI(client_id=CLIENT_ID,
-                                  client_secret=CLIENT_SECRET)
-        user_data = api.user(user_id)
-
         user.login = user_data.username
         user.full_name = user_data.full_name
         user.profile_picture = user_data.profile_picture

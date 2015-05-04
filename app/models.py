@@ -196,7 +196,7 @@ class Tag(db.Model):
 
     def __init__(self, tag_data):
         self.count = tag_data.media_count
-        self.name = tag_data.name
+        self.name = tag_data.name.encode('utf-8')
 
     def __repr__(self):
         return '<Tag %r>' % self.id_tag
