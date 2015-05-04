@@ -27,7 +27,7 @@ def process_login(code):
 
     init_user_media(instagram_user['id'])
 
-    return that_user.id_user
+    return that_user.inst_id_user
 
 
 def init_user_by_id(user_id):
