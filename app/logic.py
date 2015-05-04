@@ -102,12 +102,12 @@ def init_tag(tag_name):
     return tag
 
 
-def init_comment(comment_data, id_media):
+def init_comment(comment_data):
     comment =\
         db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data.id).first()
     if comment is None:
-        comment = models.Comment(comment_data=comment_data, id_media=id_media)
+        comment = models.Comment(comment_data=comment_data)
         db.session.add(comment)
         db.session.commit()
 
@@ -149,10 +149,14 @@ def init_user_media(user_id):
                     db.session.add(media)
                     db.session.commit()
                     for comment in media_data.comments:
-                        comment_data = init_comment(comment_data=comment, id_media=media.id_media)
+                        comment_data = init_comment(comment_data=comment)
                         db.session.add(comment_data)
                         db.session.commit()
-                        # media.comments.append(comment_data)
+                        
+                        comment_data =\
+                            db.session.query(models.Comment).filter(models.Comment.id_comment ==
+                                                                    comment_data.id_comment).first()
+                        media.comments.append(comment_data)
 
         # next_ = 'start'
         # while next_ is not None:

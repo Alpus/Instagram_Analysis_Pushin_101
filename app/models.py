@@ -170,14 +170,14 @@ class Comment(db.Model):
                         db.ForeignKey('Users.id_user'))
 
 
-    def __init__(self, comment_data, id_media):
+
+    def __init__(self, comment_data):
         self.inst_id_comment = comment_data.id
         self.created_time = comment_data.created_at
         self.text = comment_data.text
-        self.id_user = comment_data.user.id
-        media = db.session.query(Media).filter(Media.id_media ==
-                                               id_media).first()
-        self.media = media
+        user = db.session.query(User).filter(User.inst_id_user
+                                             == comment_data.user.id).first()
+        self.user = user
 
     def __repr__(self):
         return '<Comment %r>' % self.id_comment
