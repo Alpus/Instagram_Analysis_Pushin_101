@@ -103,7 +103,7 @@ class Media(db.Model):
     def __init__(self, media_data):
         self.inst_id_media = media_data.id
         self.type_media = media_data.type
-        self.caption = media_data.caption.id
+        self.caption = media_data.caption
         self.filter_media = media_data.filter
         self.link = media_data.link
         self.created_time = media_data.created_time
