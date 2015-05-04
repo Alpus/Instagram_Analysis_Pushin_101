@@ -233,7 +233,7 @@ def update_user_media(user_id):
 
 def get_users_who_liked(user_id):
     user_temp =\
-       db.session.query(models.User).filter(models.User.id_user ==
+       db.session.query(models.User).filter(models.User.inst_id_user ==
                                             user_id).first()
     medias = user_temp.medias
     users_who_liked = {}
