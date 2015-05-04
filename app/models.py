@@ -192,7 +192,7 @@ class Tag(db.Model):
     id_tag = db.Column(db.Integer, primary_key=True,
                        autoincrement=True)
     count = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.Unicode, nullable=False)
+    name = db.Column(db.Unicode(255), nullable=False)
 
     def __init__(self, tag_data):
         self.count = tag_data.media_count
