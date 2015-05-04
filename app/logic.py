@@ -150,6 +150,8 @@ def init_user_media(user_id):
                     db.session.commit()
                     for comment in media_data.comments:
                         comment_data = init_comment(comment_data=comment)
+                        db.session.add(comment_data)
+                        db.session.commit()
                         media.comments.append(comment_data)
 
         # next_ = 'start'
