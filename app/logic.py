@@ -200,9 +200,7 @@ def update_user_media(user_id):
                     media.location = new_location
                     db.session.commit()
 
-                    liked_by = db.session.query(models.Media.liked_by).all()
-                    for user in liked_by:
-                        media.liked_by.remove(user)
+                    media.liked_by = []
                     db.session.commit()
                     likes = api.media_likes(media_id=media_data.id)
                     for like in likes:
@@ -210,9 +208,7 @@ def update_user_media(user_id):
                         media.liked_by.append(user)
                     db.session.commit()
 
-                    tags = db.session.query(models.Media.tags).all()
-                    for tag in tags:
-                        media.tags.remove(tag)
+                    media.tags = []
                     db.session.commit()
                     if 'tags' in dir(media_data):
                         for tag in media_data.tags:
@@ -220,8 +216,7 @@ def update_user_media(user_id):
                             media.tags.append(tag_data)
                     db.session.commit()
 
-                    comments = db.session.query(models.Media.comments).all()
-                    for comment in comments:
+                    for comment in media.comments:
                         db.session.delete(comment)
                     db.session.commit()
                     for comment in media_data.comments:
