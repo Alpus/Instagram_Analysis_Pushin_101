@@ -152,11 +152,12 @@ def init_user_media(user_id):
                         comment_data = init_comment(comment_data=comment)
                         db.session.add(comment_data)
                         db.session.commit()
-                        
+
                         comment_data =\
                             db.session.query(models.Comment).filter(models.Comment.id_comment ==
                                                                     comment_data.id_comment).first()
                         media.comments.append(comment_data)
+                        db.session.commit()
 
         # next_ = 'start'
         # while next_ is not None:
