@@ -42,8 +42,8 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        logic.update_user(user_id)
-        logic.update_user_media(user_id)
+        # logic.update_user(user_id)
+        # logic.update_user_media(user_id)
         return render_template('analysis.html',
                                # profile_picture=user.profile_picture,
                                # user_id=user_id,
@@ -54,6 +54,6 @@ def analysis(user_id):
                                # count_media=user.count_media,
                                # count_follows=user.count_follows,
                                # count_followed_by=user.count_followed_by,
-                               user,
+                               user=user,
                                users_who_liked=enumerate(logic.get_users_who_liked(user_id)),
                                home_url=HOME_URL)

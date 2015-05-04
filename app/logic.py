@@ -232,17 +232,15 @@ def update_user_media(user_id):
 
 
 def get_users_who_liked(user_id):
-    #user_temp =\
-    #    db.session.query(models.User).filter(models.User.id_user ==
-    #                                         user_id).first()
-    medias =\
-        db.session.query(models.Media).filter(models.Media.id_user ==
-                                              user_id).first()
+    user_temp =\
+       db.session.query(models.User).filter(models.User.id_user ==
+                                            user_id).first()
+    medias = user_temp.medias
     users_who_liked = {}
     for media in medias:
         for user in media.liked_by:
-            if user not in users_who_liked:
-                users_who_liked[user] = 1
+            if user.login not in users_who_liked:
+                users_who_liked[user.login] = 1
             else:
-                users_who_liked[user] += 1
-    return users_who_liked.items().sort(key=lambda x: (x[1], x[0].login))
+                users_who_liked[user.login] += 1
+    return users_who_liked.items().sort(key=lambda x: (x[1], x[0]))
