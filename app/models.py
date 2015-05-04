@@ -75,7 +75,7 @@ class Media(db.Model):
                          autoincrement=True)
     inst_id_media = db.Column(db.String(50), nullable=False)
     type_media = db.Column(db.String(50), nullable=False)
-    caption = db.Column(db.String(100), nullable=False)
+    caption = db.Column(db.String(100))
     filter_media = db.Column(db.String(50), nullable=False)
     link = db.Column(db.String(255), nullable=False)
     created_time = db.Column(db.DateTime, nullable=False)
