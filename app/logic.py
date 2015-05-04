@@ -235,7 +235,7 @@ def get_users_who_liked(user_id):
     user_temp =\
        db.session.query(models.User).filter(models.User.inst_id_user ==
                                             user_id).first()
-    medias = user_temp.medias
+    medias = user_temp.medias.all()
     users_who_liked = {}
     for media in medias:
         for user in media.liked_by:
