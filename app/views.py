@@ -42,7 +42,7 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        # logic.update_user(user_id)
+        logic.update_user(user_id)
         # logic.update_user_media(user_id)
         return render_template('analysis.html',
                                # profile_picture=user.profile_picture,
