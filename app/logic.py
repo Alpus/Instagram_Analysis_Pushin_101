@@ -179,54 +179,55 @@ def update_user_media(user_id):
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
-        for media_data in medias:
-            media =\
-                db.session.query(models.Media).filter(models.Media.inst_id_media ==
-                                                      media_data.id).first()
-            if media is None:
-                media = models.Media(media_data)
-                db.session.add(media)
-                db.session.commit()
-                init_user_by_information()
-            else:
-                media.caption = media_data.caption
-                post_by_user = init_user_by_id(media_data.user.id)
-                media.user = post_by_user
-                if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
-                    new_location = init_location(media_data.location.id)
-                else:
-                    new_location = None
-                media.location = new_location
-
-                for user in media.liked_by:
-                    media.liked_by.remove(user)
-                db.session.commit()
-                likes = api.media_likes(media_id=media_data.id)
-                for like in likes:
-                    user = init_user_by_information(like)
-                    media.liked_by.append(user)
-                db.session.commit()
-
-                for tag in media.tags:
-                    media.tags.remove(tag)
-                db.session.commit()
-                if 'tags' in dir(media_data):
-                    for tag in media_data.tags:
-                        tag_data = init_tag(tag.name)
-                        media.tags.append(tag_data)
-                db.session.commit()
-
-                for comment in media.comments:
-                    db.session.delete(comment)
-                db.session.commit()
-                for comment in media_data.comments:
-                    comment_data = init_comment(comment_data=comment)
-                    db.session.add(comment_data)
-                    comment_data =\
-                        db.session.query(models.Comment).filter(models.Comment.id_comment ==
-                                                                comment_data.id_comment).first()
-                    media.comments.append(comment_data)
+        for case in medias:
+            for media_data in case[0]:
+                media =\
+                    db.session.query(models.Media).filter(models.Media.inst_id_media ==
+                                                          media_data.id).first()
+                if media is None:
+                    media = models.Media(media_data)
+                    db.session.add(media)
                     db.session.commit()
+                    init_user_by_information()
+                else:
+                    media.caption = media_data.caption
+                    post_by_user = init_user_by_id(media_data.user.id)
+                    media.user = post_by_user
+                    if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
+                        new_location = init_location(media_data.location.id)
+                    else:
+                        new_location = None
+                    media.location = new_location
+
+                    for user in media.liked_by:
+                        media.liked_by.remove(user)
+                    db.session.commit()
+                    likes = api.media_likes(media_id=media_data.id)
+                    for like in likes:
+                        user = init_user_by_information(like)
+                        media.liked_by.append(user)
+                    db.session.commit()
+
+                    for tag in media.tags:
+                        media.tags.remove(tag)
+                    db.session.commit()
+                    if 'tags' in dir(media_data):
+                        for tag in media_data.tags:
+                            tag_data = init_tag(tag.name)
+                            media.tags.append(tag_data)
+                    db.session.commit()
+
+                    for comment in media.comments:
+                        db.session.delete(comment)
+                    db.session.commit()
+                    for comment in media_data.comments:
+                        comment_data = init_comment(comment_data=comment)
+                        db.session.add(comment_data)
+                        comment_data =\
+                            db.session.query(models.Comment).filter(models.Comment.id_comment ==
+                                                                    comment_data.id_comment).first()
+                        media.comments.append(comment_data)
+                        db.session.commit()
 
         db.session.commit()
 
