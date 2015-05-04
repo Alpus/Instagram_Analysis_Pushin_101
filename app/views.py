@@ -36,8 +36,9 @@ def user_logged():
 
 @app.route('/analysis/<user_id>')
 def analysis(user_id):
-    user = models.User.query.filter_by(id_user =
-                                       user_id).first()
+    user =\
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
     if user is None:
         return redirect('/')
     else:
