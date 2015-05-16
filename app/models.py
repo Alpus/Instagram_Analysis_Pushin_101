@@ -1,253 +1,234 @@
 # -*- coding: utf-8 -*-
 from app import db
-from sqlalchemy import UniqueConstraint
+import logic
+from instagram import client
 import datetime
+from sqlalchemy import UniqueConstraint
+
+CLIENT_ID = logic.CLIENT_ID
+CLIENT_SECRET = logic.CLIENT_SECRET
+LOGGED_URL = logic.LOGGED_URL
+HOME_URL = logic.HOME_URL
+REDIRECT_URL = logic.REDIRECT_URL
+
 
 class User(db.Model):
+    __tablename__ = 'Users'
     __table_args__ = {
         'mysql_engine': 'InnoDB',
-        'mysql_charset': 'utf8'
+        'mysql_charset': 'utf8',
     }
-    id_user = db.Column(db.Integer(), db.ForeignKey('inst_profile.id_profile'),
-                        nullable=False, primary_key=True)
+    id_user = db.Column(db.Integer, primary_key=True,
+                        autoincrement=True)
+    inst_id_user = db.Column(db.String(50), nullable=False)
     access_token = db.Column(db.String(100))
-    registration_date = db.Column(db.DateTime, nullable=False)
-    last_visit = db.Column(db.DateTime, nullable=False)
-    rating = db.Column(db.Integer, nullable=False, default=0)
-
-    def __init__(self, id_user, access_token, registration_date):
-        self.id_user = id_user
-        self.access_token = access_token
-        self.registration_date = registration_date
-        self.last_visit = registration_date
-
-    def __repr__(self):
-        return '<User %r>' % self.id_user
-
-
-class InstProfile(db.Model):
-    __table_args__ = {
-        'mysql_engine': 'InnoDB',
-        'mysql_charset': 'utf8'
-    }
-    id_profile = db.Column(db.Integer, nullable=False, primary_key=True)
-    login = db.Column(db.String(100), nullable=False, unique=True)
-    full_name = db.Column(db.String(100), nullable=False)
-    profile_picture = db.Column(db.String(100))
+    login = db.Column(db.String(50), nullable=False)
+    full_name = db.Column(db.String(100))
+    profile_picture = db.Column(db.String(255))
     bio = db.Column(db.String(100))
     website = db.Column(db.String(100))
-    #post_count = db.Column(db.Integer, unsigned=True, nullable=False)
-    #followers_count = db.Column(db.Integer, unsigned=True, nullable=False)
-    #following_count = db.Column(db.Integer, unsigned=True, nullable=False)
-    #given_like = db.Column(db.Integer, unsigned=True)
-    #get_like = db.Column(db.Integer, unsigned=True)
-    #given_comment = db.Column(db.Integer, unsigned=True)
-    #get_comment = db.Column(db.Integer, unsigned=True)
-    #marked_count = db.Column(db.Integer, unsigned=True)
-    last_check = db.Column(db.DateTime, nullable=False,
-                              default=datetime.date(1000, 1, 1))
+    registration_date = db.Column(db.DateTime)
+    last_visit = db.Column(db.DateTime)
+    last_check = db.Column(db.DateTime)
+    rating = db.Column(db.Integer, nullable=False, default=0)
+    count_media = db.Column(db.Integer, nullable=False, default=0)
+    count_follows = db.Column(db.Integer, nullable=False, default=0)
+    count_followed_by = db.Column(db.Integer, nullable=False, default=0)
 
-    user = db.relationship('User', uselist=False, backref='inst_profile', lazy='dynamic')
-    followers = db.relationship('InstProfile', secondary='follows',
-        primaryjoin='InstProfile.id_profile==follows.c.id_follower',
-        secondaryjoin='InstProfile.id_profile==follows.c.id_following',
-        backref='following', lazy='dynamic')
-    words = db.relationship('Word', secondary='profile_words',
-        backref='inst_profiles', lazy='dynamic')
-    geos = db.relationship('Geo', secondary='profile_geos',
-        backref='inst_profiles', lazy='dynamic')
-    posts = db.relationship('Post', backref='ints_profile', lazy='dynamic')
-    filters = db.relationship('Filter', secondary='profile_filters',
-        backref='inst_profiles', lazy='dynamic')
-    usermarks = db.relationship('InstProfile', secondary='usermarks',
-        primaryjoin='InstProfile.id_profile==usermarks.c.id_profile',
-        secondaryjoin='InstProfile.id_profile==usermarks.c.id_mark',
-        backref='usermark_makers', lazy='dynamic')
+    medias = db.relationship(
+        'Media', backref='user', lazy='dynamic')
+    comments = db.relationship(
+        'Comment', backref='user', lazy='dynamic')
 
-    def __init__(self, id_profile, login, full_name):
-        self.id_profile = id_profile
-        self.login = login
-        self.full_name = full_name
+    def __init__(self, user_data):
+        self.inst_id_user = user_data.id
+        self.login = user_data.username
+        self.full_name = user_data.full_name
+        self.profile_picture = user_data.profile_picture
+
+        if 'bio' in dir(user_data):
+            self.bio = user_data.bio
+        else:
+            self.bio = None
+
+        if 'website' in dir(user_data):
+            self.website = user_data.website
+        else:
+            self.website = None
+
+        if 'counts' in dir(user_data):
+            self.count_media = user_data.counts['media']
+            self.count_follows = user_data.counts['follows']
+            self.count_followed_by = user_data.counts['followed_by']
 
     def __repr__(self):
-        return '<InstProfile %r>' % self.login
+        return '<User %r>' % self.login
 
 
-follows = db.Table('follows',
-    db.Column('id_follower', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    db.Column('id_following', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    UniqueConstraint('id_follower', 'id_following'),
-
-    db.Column('given_like', db.Integer),
-    db.Column('given_comment', db.Integer),
-    db.Column('last_check', db.DateTime, nullable=False,
-                              default=datetime.date(1000, 1, 1)))
-
-
-class Geo(db.Model):
+class Media(db.Model):
+    __tablename__ = 'Medias'
     __table_args__ = {
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_geo = db.Column(db.Integer, nullable=False, primary_key=True)
-    geo_name = db.Column(db.String(100), nullable=False, unique=True)
-    #using_count = db.Column(db.Integer, unsigned=True)
-    #get_like = db.Column(db.Integer, unsigned=True)
-    #get_comment = db.Column(db.Integer, unsigned=True)
+    id_media = db.Column(db.Integer, primary_key=True,
+                         autoincrement=True)
+    inst_id_media = db.Column(db.String(50), nullable=False)
+    type_media = db.Column(db.String(50), nullable=False)
+    caption = db.Column(db.String(100))
+    filter_media = db.Column(db.String(50), nullable=False)
+    link = db.Column(db.String(255), nullable=False)
+    created_time = db.Column(db.DateTime, nullable=False)
+    image_low = db.Column(db.String(255), nullable=False)
+    image_thumbnail = db.Column(db.String(255), nullable=False)
+    image_standard = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, id_geo, geo_name):
-        self.id_geo = id_geo
-        self.geo_name = geo_name
+    id_user = db.Column(db.Integer, db.ForeignKey('Users.id_user'))
+    id_location = db.Column(db.Integer,
+                            db.ForeignKey('Locations.id_location'))
+
+    comments = db.relationship(
+        'Comment', backref='media', lazy='dynamic')
+
+    liked_by = db.relationship(
+        'User', secondary='likes',
+        backref=db.backref('liked_media', lazy='dynamic'))
+    users_in_media = db.relationship(
+        'User', secondary='marks',
+        backref=db.backref('media_with_user', lazy='dynamic'))
+    tags = db.relationship(
+        'Tag', secondary='media_tags',
+        backref=db.backref('medias_with_tag', lazy='dynamic'))
+
+    def __init__(self, media_data):
+        self.inst_id_media = media_data.id
+        self.type_media = media_data.type
+        self.caption = media_data.caption
+        self.filter_media = media_data.filter
+        self.link = media_data.link
+        self.created_time = media_data.created_time
+        self.image_low = media_data.images['low_resolution']
+        self.image_thumbnail = media_data.images['thumbnail']
+        self.image_standard = media_data.images['standard_resolution']
+
+        new_user = logic.init_user_by_id(media_data.user.id)
+        self.user = new_user
+
+        if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
+            new_location = logic.init_location(media_data.location.id)
+        else:
+            new_location = None
+        self.location = new_location
+
+        api = client.InstagramAPI(client_id=CLIENT_ID,
+                                  client_secret=CLIENT_SECRET)
+        likes = api.media_likes(media_id=media_data.id)
+        for like in likes:
+            user = logic.init_user_by_information(like)
+            self.liked_by.append(user)
+
+        if 'tags' in dir(media_data):
+            for tag in media_data.tags:
+                tag_data = logic.init_tag(tag.name)
+                self.tags.append(tag_data)
+
+        # for mark in media_data.users_in_photo:
+        #     user = logic.init_user_by_id(mark['user']['id'])
+        #     self.users_in_media.append(user)
 
     def __repr__(self):
-        return '<Geo %r>' % self.id_geo
+        return '<Media %r>' % self.id_media
 
 
-profile_geos = db.Table('profile_geos',
-    db.Column('id_profile', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    db.Column('id_geo', db.Integer, db.ForeignKey('geo.id_geo'),
-               nullable=False),
-    UniqueConstraint('id_profile', 'id_geo'),
-
-    db.Column('using_count', db.Integer),
-    db.Column('get_like', db.Integer),
-    db.Column('get_comment', db.Integer))
+likes = db.Table('likes',
+    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+    db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
+)
 
 
-class Word(db.Model):
+marks = db.Table('marks',
+    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+    db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
+)
+
+
+class Comment(db.Model):
+    __tablename__ = 'Comments'
     __table_args__ = {
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_word = db.Column(db.Integer, nullable=False, primary_key=True,
+    id_comment = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
-    word_name = db.Column(db.String(100), nullable=False, unique=True)
-    #using_count = db.Column(db.Integer, unsigned=True)
-    #get_like = db.Column(db.Integer, unsigned=True)
-    #get_comment = db.Column(db.Integer, unsigned=True)
+    inst_id_comment = db.Column(db.String(50), nullable=False)
+    created_time = db.Column(db.DateTime, nullable=False)
+    text = db.Column(db.String(255), nullable=False)
 
-    meanings = db.relationship('Meaning', secondary='word_meanings',
-        backref='words', lazy='dynamic')
+    id_media = db.Column(db.Integer,
+                         db.ForeignKey('Medias.id_media'))
+    id_user = db.Column(db.Integer,
+                        db.ForeignKey('Users.id_user'))
 
-    def __init__(self, word_name):
-        self.word_name = word_name
+
+
+    def __init__(self, comment_data):
+        self.inst_id_comment = comment_data.id
+        self.created_time = comment_data.created_at
+        self.text = comment_data.text
+        user = db.session.query(User).filter(User.inst_id_user
+                                             == comment_data.user.id).first()
+        self.user = user
 
     def __repr__(self):
-        return '<Word %r>' % self.id_word
+        return '<Comment %r>' % self.id_comment
 
 
-profile_words = db.Table('profile_words',
-    db.Column('id_profile', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    db.Column('id_word', db.Integer, db.ForeignKey('word.id_word'),
-              nullable=False),
-
-    db.Column('using_count', db.Integer),
-    db.Column('get_like', db.Integer),
-    db.Column('get_comment', db.Integer),
-    db.Column('is_tag', db.Boolean, nullable=False, default=False),
-    UniqueConstraint('id_profile', 'id_word', 'is_tag'))
-
-
-class Meaning(db.Model):
+class Tag(db.Model):
+    __tablename__ = 'Tags'
     __table_args__ = {
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_meaning = db.Column(db.Integer, nullable=False, primary_key=True,
-                           autoincrement=True)
-    meaning_name = db.Column(db.String(100), nullable=False, unique=True)
-    #using_count = db.Column(db.Integer, unsigned=True)
-    #get_like = db.Column(db.Integer, unsigned=True)
-    #get_comment = db.Column(db.Integer, unsigned=True)
+    id_tag = db.Column(db.Integer, primary_key=True,
+                       autoincrement=True)
+    count = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.Unicode(255), nullable=False)
 
-    def __init__(self, id_meaning, meaning_name):
-        self.id_meaning = id_meaning
-        self.meaning_name = meaning_name
+    def __init__(self, tag_data):
+        self.count = tag_data.media_count
+        self.name = tag_data.name
 
     def __repr__(self):
-        return '<Meaning %r>' % self.id_meaning
+        return '<Tag %r>' % self.id_tag
 
 
-word_meanings = db.Table('word_meanings',
-    db.Column('id_word', db.Integer, db.ForeignKey('word.id_word'),
-              nullable=False),
-    db.Column('id_mean', db.Integer, db.ForeignKey('meaning.id_meaning'),
-              nullable=False),
-    UniqueConstraint('id_word', 'id_mean'),
-
-    db.Column('importance', db.Integer, nullable=False, default=0))
+media_tags = db.Table('media_tags',
+    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+    db.Column('id_tag', db.Integer, db.ForeignKey('Tags.id_tag'))
+)
 
 
-class Post(db.Model):
+class Location(db.Model):
+    __tablename__ = 'Locations'
     __table_args__ = {
         'mysql_engine': 'InnoDB',
         'mysql_charset': 'utf8'
     }
-    id_post = db.Column(db.Integer, nullable=False, primary_key=True)
-    id_profile = db.Column(db.Integer, db.ForeignKey('inst_profile.id_profile'),
-        nullable=False)
-    UniqueConstraint('id_post', 'id_profile')
-
-    get_like = db.Column(db.Integer)
-    get_comment = db.Column(db.Integer)
-    img_url = db.Column(db.String(100), nullable=False, unique=True)
-    filter = db.Column(db.String(100), nullable=False)
-    last_check = db.Column(db.DateTime, nullable=False,
-                              default=datetime.date(1000, 1, 1))
-
-    def __init__(self, id_post, id_profile, img_url, filter):
-        self.id_post = id_post
-        self.id_profile = id_profile
-        self.img_url = img_url
-        self.filter = filter
-
-
-    def __repr__(self):
-        return '<Posts %r>' % self.id_post
-
-
-class Filter(db.Model):
-    __table_args__ = {
-        'mysql_engine': 'InnoDB',
-        'mysql_charset': 'utf8'
-    }
-    id_filter = db.Column(db.Integer, nullable=False, primary_key=True,
+    id_location = db.Column(db.Integer, primary_key=True,
                         autoincrement=True)
-    filter_name = db.Column(db.String(100), nullable=False, unique=True)
-    #using_count = db.Column(db.Integer, unsigned=True)
-    #get_like = db.Column(db.Integer, unsigned=True)
-    #get_comment = db.Column(db.Integer, unsigned=True)
+    inst_id_location = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float(), nullable=False)
+    longitude = db.Column(db.Float(), nullable=False)
 
-    def __init__(self, filter_name):
-        self.filter_name = filter_name
+    medias = db.relationship(
+        'Media', backref='location', lazy='dynamic')
+
+    def __init__(self, location_data):
+        self.inst_id_location = location_data.id
+        self.name = location_data.name
+        self.latitude = location_data.point.latitude
+        self.longitude = location_data.point.longitude
 
     def __repr__(self):
-        return '<Filter %r>' % self.id_filter
-
-
-profile_filters = db.Table('profile_filters',
-    db.Column('id_profile', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    db.Column('id_filter', db.Integer, db.ForeignKey('filter.id_filter'),
-              nullable=False),
-    UniqueConstraint('id_profile', 'id_filter'),
-
-    db.Column('using_count', db.Integer),
-    db.Column('get_like', db.Integer),
-    db.Column('get_comment', db.Integer))
-
-
-usermarks = db.Table('profile_usermarks',
-    db.Column('id_profile', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    db.Column('id_mark', db.Integer, db.ForeignKey('inst_profile.id_profile'),
-              nullable=False),
-    UniqueConstraint('id_profile', 'id_mark'),
-
-    db.Column('using_count', db.Integer),
-    db.Column('get_like', db.Integer),
-    db.Column('get_comment', db.Integer))
+        return '<Location %r>' % self.id_location

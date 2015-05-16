@@ -8,16 +8,62 @@
     </div>
 
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-11">
-            <p class="lead">Hi, {{login}}!</p>
-            <p>Your Id is {{user_id}},</p>
-            {% if full_name %}
-                <p>Your full name is {{full_name}},</p>
-            {% if bio %}
-                <p>Your bio is "{{bio}}",</p>
-            {% if website %}
-                <p>Your website is "{{website}}",</p>
+        <div class="col-md-4 col-md-offset-2">
+            <img src={{user.profile_picture}} alt="Profile photo" align="middle" class="img-thumbnail">
+            <h2>Hi, {{user.login}}!</h2>
+
+            <p>Your Id is {{user.inst_id_user}},</p>
+
+            {% if user.full_name %}
+                <p>Your full name is {{user.full_name}},</p>
+            {% else %}
+                <p>You didn't write your fullname,</p>
+            {% endif %}
+
+            {% if user.bio %}
+                <p>Your bio is "{{user.bio}}",</p>
+            {% else %}
+                <p>You didn't write your bio,</p>
+            {% endif %}
+
+            {% if user.website %}
+                <p>Your website is "{{user.website}}".</p>
+            {% else %}
+                <p>You didn't write your website.</p>
+            {% endif %}
+
+            <h3>You have:</h3>
+            <p>{{user.count_media}} posts,</p>    
+            <p>{{user.count_follows}} follows,</p>
+            <p>{{user.count_followed_by}} followers.</p>
+        </div>
+        <div class="col-md-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Login</th>
+                        <th>Count of likes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for liker in users_who_liked %}
+                        <tr>
+                            <th>{{liker[0] + 1}}</th>
+                            <th>{{liker[1][0]}}</th>
+                            <th>{{liker[1][1]}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">
+                <a href={{home_url}} type="button" class="btn btn-danger btn-lg">Return</a>
+            </h1>
         </div>
     </div>
 {% endblock %}

@@ -2,3 +2,4 @@ help/
 flask/
 *.pyc
 HSE.pem
+.idea
