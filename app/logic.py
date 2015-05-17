@@ -180,7 +180,7 @@ def update_user_media(user_id):
                                   client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
         for case in medias:
-            old_medias = user.medias
+            old_medias = user.medias.all()
             new_medias = []
             for media_data in case[0]:
                 media =\
@@ -224,21 +224,21 @@ def update_user_media(user_id):
                     db.session.commit()
 
                     new_comments = []
-                    old_comments = media.comments
+                    old_comments = media.comments.all
                     for comment_data in media_data.comments:
                         new_comments.append(init_comment(comment_data))
                     media.comments = new_comments
                     db.session.commit()
                     to_delete = set(old_comments) - set(new_comments)
                     for comment in to_delete:
-                        db.session.remove(comment)
+                        db.session.delete(comment)
                     db.session.commit()
 
                 new_medias.append(media)
 
             to_delete = set(old_medias) - set(new_medias)
             for media in to_delete:
-                db.session.remove(media)
+                db.session.delete(media)
             db.session.commit()
 
         db.session.commit()
