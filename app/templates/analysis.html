@@ -32,6 +32,27 @@
                 <p>You haven't written your website.</p>
             {% endif %}
 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Count of likes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for media in most_liked_media[:10] %}
+                        <tr>
+                            <th>{{media[0] + 1}}</th>
+                            <th>
+                                <img src={{media[1].image_thumbnail}} alt="Media" align="middle" class="img-thumbnail">
+                            </th>
+                            <th>{{media[1].liked_by.count()}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
             <h3>You have:</h3>
             <p>{{user.count_media}} posts,</p>    
             <p>{{user.count_follows}} follows,</p>
@@ -42,6 +63,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Picture</th>
                         <th>Login</th>
                         <th>Count of likes</th>
                     </tr>
@@ -50,7 +72,10 @@
                     {% for liker in users_who_liked %}
                         <tr>
                             <th>{{liker[0] + 1}}</th>
-                            <th>{{liker[1][0]}}</th>
+                            <th>
+                                <img src={{liker[1][0].profile_picture}} width="30" height="30" alt="Profile photo" align="middle" class="img-thumbnail">
+                            </th>
+                            <th>{{liker[1][0].login}}</th>
                             <th>{{liker[1][1]}}</th>
                         </tr>
                     {% endfor %}
