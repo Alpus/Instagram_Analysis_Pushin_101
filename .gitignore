@@ -1,5 +1,6 @@
 help/
 flask/
-*.pyc
+db_repository/
 HSE.pem
+*.pyc
 .idea
