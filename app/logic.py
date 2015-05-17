@@ -180,6 +180,8 @@ def update_user_media(user_id):
                                   client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
         for case in medias:
+            old_medias = user.medias
+            new_medias = []
             for media_data in case[0]:
                 media =\
                     db.session.query(models.Media).filter(models.Media.inst_id_media ==
@@ -200,8 +202,6 @@ def update_user_media(user_id):
                         db.session.commit()
                 else:
                     media.caption = media_data.caption
-                    post_by_user = init_user_by_id(media_data.user.id)
-                    media.user = post_by_user
                     if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
                         new_location = init_location(media_data.location.id)
                     else:
@@ -210,53 +210,36 @@ def update_user_media(user_id):
                     db.session.commit()
 
                     likes = api.media_likes(media_id=media_data.id)
+                    new_likes = []
                     for like in likes:
-                        user = init_user_by_information(like)
-                        if (user not in media.liked_by):
-                            media.liked_by.append(user)
-                    db.session.commit()
-                    to_delete = []
-                    for user in media.liked_by:
-                        in_likes = False
-                        for like in likes:
-                            if user.inst_id_user == like.id:
-                                in_likes = True
-                                break
-                        if in_likes is False:
-                            to_delete.append(user)
-                    db.session.commit()
-                    for user in to_delete:
-                        media.liked_by.remove(user)
+                        new_likes.append(init_user_by_information(like))
+                    media.liked_by = new_likes
                     db.session.commit()
 
-                    media.tags = []
-                    db.session.commit()
+                    new_tags = []
                     if 'tags' in dir(media_data):
                         for tag in media_data.tags:
-                            tag_data = init_tag(tag.name)
-                            media.tags.append(tag_data)
+                            new_tags.append(init_tag(tag.name))
+                    media.tags = new_tags
                     db.session.commit()
 
-                    db.session.commit()
+                    new_comments = []
+                    old_comments = media.comments
                     for comment_data in media_data.comments:
-                        comment = init_comment(comment_data=comment_data)
-                        if comment not in media.comments:
-                            media.comments.append(comment)
+                        new_comments.append(init_comment(comment_data))
+                    media.comments = new_comments
                     db.session.commit()
-                    to_delete = []
-                    for comment in media.comments:
-                        in_comments = False
-                        for comment_data in media_data.comments:
-                            if comment.inst_id_comment == comment_data.id:
-                                in_comments = True
-                                break
-                        if in_comments is False:
-                            to_delete.append(comment)
-                    db.session.commit()
+                    to_delete = set(old_comments) - set(new_comments)
                     for comment in to_delete:
-                        media.comments.remove(comment)
                         db.session.remove(comment)
                     db.session.commit()
+
+                new_medias.append(media)
+
+            to_delete = set(old_medias) - set(new_medias)
+            for media in to_delete:
+                db.session.remove(media)
+            db.session.commit()
 
         db.session.commit()
 
