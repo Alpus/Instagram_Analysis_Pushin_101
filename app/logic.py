@@ -224,7 +224,7 @@ def update_user_media(user_id):
                     db.session.commit()
 
                     new_comments = []
-                    old_comments = media.comments.all
+                    old_comments = media.comments.all()
                     for comment_data in media_data.comments:
                         new_comments.append(init_comment(comment_data))
                     media.comments = new_comments
