@@ -32,6 +32,11 @@
                 <p>You haven't written your website.</p>
             {% endif %}
 
+            <h3>You have:</h3>
+            <p>{{user.count_media}} posts,</p>    
+            <p>{{user.count_follows}} follows,</p>
+            <p>{{user.count_followed_by}} followers.</p>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -53,10 +58,6 @@
                 </tbody>
             </table>
 
-            <h3>You have:</h3>
-            <p>{{user.count_media}} posts,</p>    
-            <p>{{user.count_follows}} follows,</p>
-            <p>{{user.count_followed_by}} followers.</p>
         </div>
         <div class="col-md-4">
             <table class="table">

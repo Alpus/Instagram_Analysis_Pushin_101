@@ -107,9 +107,9 @@ class Media(db.Model):
         self.filter_media = media_data.filter
         self.link = media_data.link
         self.created_time = media_data.created_time
-        self.image_low = media_data.images['low_resolution']
-        self.image_thumbnail = media_data.images['thumbnail']
-        self.image_standard = media_data.images['standard_resolution']
+        self.image_low = media_data.images['low_resolution'].url
+        self.image_thumbnail = media_data.images['thumbnail'].url
+        self.image_standard = media_data.images['standard_resolution'].url
 
         new_user = logic.init_user_by_id(media_data.user.id)
         self.user = new_user
