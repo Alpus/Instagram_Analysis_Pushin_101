@@ -239,7 +239,7 @@ def update_user_media(user_id):
         db.session.commit()
 
 
-def get_users_who_liked(user_id):
+def get_users_who_liked(user_id, count):
     user_temp =\
        db.session.query(models.User).filter(models.User.inst_id_user ==
                                             user_id).first()
@@ -253,7 +253,7 @@ def get_users_who_liked(user_id):
                 users_who_liked[user] += 1
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
-    return users_who_liked
+    return users_who_liked[:count]
 
 def get_most_liked_media(user_id, count):
     user_temp =\
