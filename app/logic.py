@@ -179,9 +179,9 @@ def update_user_media(user_id):
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
         medias = api.user_recent_media(as_generator=True)
+        old_medias = user.medias.all()
+        new_medias = []
         for case in medias:
-            old_medias = user.medias.all()
-            new_medias = []
             for media_data in case[0]:
                 media =\
                     db.session.query(models.Media).filter(models.Media.inst_id_media ==
@@ -194,10 +194,6 @@ def update_user_media(user_id):
                         comment_data = init_comment(comment_data=comment)
                         db.session.add(comment_data)
                         db.session.commit()
-
-                        comment_data =\
-                            db.session.query(models.Comment).filter(models.Comment.id_comment ==
-                                                                    comment_data.id_comment).first()
                         media.comments.append(comment_data)
                         db.session.commit()
                 else:
@@ -236,10 +232,10 @@ def update_user_media(user_id):
 
                 new_medias.append(media)
 
-            to_delete = set(old_medias) - set(new_medias)
-            for media in to_delete:
-                db.session.delete(media)
-            db.session.commit()
+        to_delete = set(old_medias) - set(new_medias)
+        for media in to_delete:
+            db.session.delete(media)
+        db.session.commit()
 
         db.session.commit()
 
