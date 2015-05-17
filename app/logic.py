@@ -188,7 +188,16 @@ def update_user_media(user_id):
                     media = models.Media(media_data)
                     db.session.add(media)
                     db.session.commit()
-                    init_user_by_information()
+                    for comment in media_data.comments:
+                        comment_data = init_comment(comment_data=comment)
+                        db.session.add(comment_data)
+                        db.session.commit()
+
+                        comment_data =\
+                            db.session.query(models.Comment).filter(models.Comment.id_comment ==
+                                                                    comment_data.id_comment).first()
+                        media.comments.append(comment_data)
+                        db.session.commit()
                 else:
                     media.caption = media_data.caption
                     post_by_user = init_user_by_id(media_data.user.id)
@@ -200,12 +209,23 @@ def update_user_media(user_id):
                     media.location = new_location
                     db.session.commit()
 
-                    media.liked_by = []
-                    db.session.commit()
                     likes = api.media_likes(media_id=media_data.id)
                     for like in likes:
                         user = init_user_by_information(like)
-                        media.liked_by.append(user)
+                        if (user not in media.liked_by):
+                            media.liked_by.append(user)
+                    db.session.commit()
+                    to_delete = []
+                    for user in media.liked_by:
+                        in_likes = False
+                        for like in likes:
+                            if user.inst_id_user == like.id:
+                                in_likes = True
+                                break
+                        if in_likes is False:
+                            to_delete.append(user)
+                    for user in to_delete:
+                        media.liked_by.remove(user)
                     db.session.commit()
 
                     media.tags = []
@@ -216,17 +236,28 @@ def update_user_media(user_id):
                             media.tags.append(tag_data)
                     db.session.commit()
 
-                    for comment in media.comments:
-                        db.session.delete(comment)
                     db.session.commit()
-                    for comment in media_data.comments:
-                        comment_data = init_comment(comment_data=comment)
-                        db.session.add(comment_data)
-                        comment_data =\
+                    for comment_data in media_data.comments:
+                        comment = init_comment(comment_data=comment_data)
+                        db.session.add(comment)
+                        comment =\
                             db.session.query(models.Comment).filter(models.Comment.id_comment ==
                                                                     comment_data.id_comment).first()
-                        media.comments.append(comment_data)
-                        db.session.commit()
+                        if comment not in media.comments:
+                            media.comments.append(comment_data)
+                    db.session.commit()
+                    to_delete = []
+                    for comment in media.comments:
+                        in_comments = False
+                        for comment_data in media_data.comments:
+                            if comment.inst_id_comment == comment_data.id:
+                                in_comments = True
+                                break
+                        if in_comments is False:
+                            to_delete.append(comment)
+                    for comment in to_delete:
+                        media.comments.remove(comment)
+                    db.session.commit()
 
         db.session.commit()
 
