@@ -218,8 +218,8 @@ class Location(db.Model):
                         autoincrement=True)
     inst_id_location = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(255), nullable=False)
-    latitude = db.Column(db.Float(), nullable=False)
-    longitude = db.Column(db.Float(), nullable=False)
+    latitude = db.Column(db.Float())
+    longitude = db.Column(db.Float())
 
     medias = db.relationship(
         'Media', backref='location', lazy='dynamic')
@@ -227,14 +227,8 @@ class Location(db.Model):
     def __init__(self, location_data):
         self.inst_id_location = location_data.id
         self.name = location_data.name
-        if location_data.point.latitude is None:
-            self.latitude = 0
-        else:
-            self.latitude = location_data.point.latitude
-        if location_data.point.latitude is None:
-            self.longitude = 0
-        else:
-            self.longitude = location_data.point.longitude
+        self.latitude = location_data.point.latitude
+        self.longitude = location_data.point.longitude
 
     def __repr__(self):
         return '<Location %r>' % self.id_location

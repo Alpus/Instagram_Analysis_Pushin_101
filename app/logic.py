@@ -196,10 +196,6 @@ def update_user_media(user_id):
                         media.comments.append(comment_data)
                         db.session.commit()
                 else:
-                    media.image_low = media_data.images['low_resolution'].url
-                    media.image_thumbnail = media_data.images['thumbnail'].url
-                    media.image_standard = media_data.images['standard_resolution'].url
-
                     media.caption = media_data.caption
                     if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
                         new_location = init_location(media_data.location.id)
