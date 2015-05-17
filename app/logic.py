@@ -255,10 +255,10 @@ def get_users_who_liked(user_id):
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
     return users_who_liked
 
-def get_most_liked_media(user_id):
+def get_most_liked_media(user_id, count):
     user_temp =\
        db.session.query(models.User).filter(models.User.inst_id_user ==
                                             user_id).first()
     most_liked_media = user_temp.medias.all()
     most_liked_media.sort(key=lambda x: -len(list(x.liked_by)))
-    return most_liked_media
+    return most_liked_media[:count]
