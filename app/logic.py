@@ -242,7 +242,7 @@ def update_user_media(user_id):
                         db.session.add(comment)
                         comment =\
                             db.session.query(models.Comment).filter(models.Comment.id_comment ==
-                                                                    comment_data.id_comment).first()
+                                                                    comment_data.id).first()
                         if comment not in media.comments:
                             media.comments.append(comment_data)
                     db.session.commit()
