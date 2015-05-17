@@ -227,8 +227,14 @@ class Location(db.Model):
     def __init__(self, location_data):
         self.inst_id_location = location_data.id
         self.name = location_data.name
-        self.latitude = location_data.point.latitude
-        self.longitude = location_data.point.longitude
+        if location_data.point.latitude is None:
+            self.latitude = 0
+        else:
+            self.latitude = location_data.point.latitude
+        if location_data.point.latitude is None:
+            self.longitude = 0
+        else:
+            self.longitude = location_data.point.longitude
 
     def __repr__(self):
         return '<Location %r>' % self.id_location

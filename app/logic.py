@@ -117,7 +117,6 @@ def init_location(location_id):
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         location_data = api.location(location_id)
-
         location = models.Location(location_data)
         db.session.add(location)
         db.session.commit()
