@@ -55,6 +55,6 @@ def analysis(user_id):
                                # count_follows=user.count_follows,
                                # count_followed_by=user.count_followed_by,
                                user=user,
-                               users_who_liked=enumerate(logic.get_users_who_liked(user_id, 10)),
+                               users_who_liked=enumerate(logic.get_users_who_liked(user_id, 20)),
                                most_liked_media=enumerate(logic.get_most_liked_media(user_id, 5)),
                                home_url=HOME_URL)
