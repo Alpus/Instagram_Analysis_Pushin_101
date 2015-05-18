@@ -75,7 +75,7 @@
             {% set user_count = users_who_liked | list | length %}
             {% if user_count == 0 or sum_of_likes / user_count > 360 %}
 
-                {{ users_who_liked }}
+                {{ users_who_liked | list | length }}
 
                 <h3>Sorry, you have to much likes to make representational statistic</h3>
                 <p>You are just too popular!)</p>
