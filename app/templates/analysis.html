@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for media in most_liked_media|list[0:5] %}
+                    {% for media in most_liked_media | list[0:5] %}
                         <tr>
                             <th>{{media[0] + 1}}</th>
                             <th>
@@ -68,7 +68,7 @@
         </div>
         <div class="col-md-4">
             <h3 class="text-center">Users who have liked you:</h3>
-            {% if sum / (users_who_liked|length) > 360 %}
+            {% if sum / (users_who_liked | length) > 360 %}
                 <h3>Sorry, you have to much likes to make representational statistic</h3>
                 <p>You are just too popular!)</p>
             {% else %}
@@ -82,7 +82,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for liker in users_who_liked|list[0:20] %}
+                        {% for liker in users_who_liked | list[0:20] %}
                             <tr>
                                 <th>{{liker[0] + 1}}</th>
                                 <th>
@@ -91,7 +91,7 @@
                                 </th>
                                 <th>{{liker[1][0].login}}</th>
                                 <th>
-                                    {% percent = (liker[1][1] / sum_of_likes)|float * 100) %}
+                                    {% percent = (liker[1][1] / sum_of_likes) | float * 100) %}
                                     ~{{'%0.2f' % percent}}%
                                 </th>
                             </tr>
