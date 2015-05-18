@@ -44,17 +44,22 @@
                     <tr>
                         <th>#</th>
                         <th>Image</th>
-                        <th>Count of likes</th>
+                        <th>Information</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for media in most_liked_media %}
+                    {% for media in most_liked_media|list[:5] %}
                         <tr>
                             <th>{{media[0] + 1}}</th>
                             <th>
                                 <img src={{media[1].image_thumbnail}} alt="Media" align="middle" class="img-thumbnail">
                             </th>
-                            <th>{{media[1].count_of_likes}}</th>
+                            <th>
+                                <p>Likes: {{media[1].count_of_likes}}</p>
+                                <p>Likes: {{media[1].location.name}}</p>
+                                <p>Filter: {{media[1].filter_media}}</p>
+                                <p>Caption: {{media[1].caption}}</p>
+                            </th>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -63,29 +68,37 @@
         </div>
         <div class="col-md-4">
             <h3 class="text-center">Users who have liked you:</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Picture</th>
-                        <th>Login</th>
-                        <th>Count of likes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for liker in users_who_liked %}
+            {% if sum / (users_who_liked|length) > 360 %}
+                <h3>Sorry, you have to much likes to make representational statistic</h3>
+                <p>You are just too popular!)</p>
+            {% else %}
+                <table class="table">
+                    <thead>
                         <tr>
-                            <th>{{liker[0] + 1}}</th>
-                            <th>
-                                <img src={{liker[1][0].profile_picture}} width="50" height="50" alt="Profile photo"
-                                     align="middle" class="img-thumbnail">
-                            </th>
-                            <th>{{liker[1][0].login}}</th>
-                            <th>{{liker[1][1]}}</th>
+                            <th>#</th>
+                            <th>Picture</th>
+                            <th>Login</th>
+                            <th>% of all your lkes</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for liker in users_who_liked|list[:20] %}
+                            <tr>
+                                <th>{{liker[0] + 1}}</th>
+                                <th>
+                                    <img src={{liker[1][0].profile_picture}} width="50" height="50" alt="Profile photo"
+                                         align="middle" class="img-thumbnail">
+                                </th>
+                                <th>{{liker[1][0].login}}</th>
+                                <th>
+                                    {% percent = (liker[1][1] / sum_of_likes)|float * 100) %}
+                                    ~{{'%0.2f' % percent}}%
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 
