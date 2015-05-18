@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for media in most_liked_media | list[0:5] %}
+                    {% for media in most_liked_media | batch(5) | first %}
                         <tr>
                             <th>{{media[0] + 1}}</th>
                             <th>
@@ -82,7 +82,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for liker in users_who_liked | list[0:20] %}
+                        {% for liker in users_who_liked | batch(20) | first %}
                             <tr>
                                 <th>{{liker[0] + 1}}</th>
                                 <th>
