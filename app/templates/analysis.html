@@ -91,7 +91,7 @@
                                 </th>
                                 <th>{{liker[1][0].login}}</th>
                                 <th>
-                                    {% percent = (liker[1][1] / sum_of_likes) | float * 100) %}
+                                    {% set percent = (liker[1][1] / sum_of_likes) | float * 100) %}
                                     ~{{'%0.2f' % percent}}%
                                 </th>
                             </tr>
