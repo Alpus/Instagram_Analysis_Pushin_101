@@ -182,7 +182,7 @@ def update_user_media(user_id):
                         db.session.commit()
                 else:
                     media.caption = media_data.caption
-                    media.count_of_like = media_data.likes['count']
+                    media.count_of_likes = media_data.likes['count']
                     if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
                         new_location = init_location(media_data.location.id)
                     else:
@@ -246,5 +246,5 @@ def get_most_liked_media(user_id, count):
        db.session.query(models.User).filter(models.User.inst_id_user ==
                                             user_id).first()
     most_liked_media = user_temp.medias.all()
-    most_liked_media.sort(key=lambda x: -len(list(x.liked_by)))
+    most_liked_media.sort(key=lambda x: -x.count_of_likes)
     return most_liked_media[:count]
