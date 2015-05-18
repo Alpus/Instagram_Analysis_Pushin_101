@@ -35,7 +35,7 @@ def init_user_by_id(user_id):
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
-        api = client.InstagramAPI(client_id=CLIENT_ID,
+        api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
         user_data = api.user(user_id)
         user = models.User(user_data=user_data)
@@ -61,8 +61,8 @@ def update_user(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    api = client.InstagramAPI(client_id=CLIENT_ID,
-                                  client_secret=CLIENT_SECRET)
+    api = client.InstagramAPI(access_token=user.access_token,
+                              client_secret=CLIENT_SECRET)
     user_data = api.user(user_id)
     if user is None:
         user = models.User(user_data)
@@ -154,7 +154,6 @@ def init_user_media(user_id):
                         db.session.commit()
 
         db.session.commit()
-
 
 def update_user_media(user_id):
     user =\
