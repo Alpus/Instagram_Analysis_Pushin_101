@@ -44,10 +44,11 @@ def analysis(user_id):
     else:
         logic.update_user(user_id)
         logic.update_user_media(user_id)
-        users_who_liked, sum_of_likes = logic.get_users_who_liked(user_id)
+        users_who_liked, sum_of_likes, liker_count = logic.get_users_who_liked(user_id)
         return render_template('analysis.html',
                                user=user,
                                users_who_liked=enumerate(users_who_liked),
                                sum_of_likes=sum_of_likes,
+                               liker_count=liker_count,
                                most_liked_media=enumerate(logic.get_most_liked_media(user_id)),
                                home_url=HOME_URL)

@@ -242,7 +242,7 @@ def get_users_who_liked(user_id):
             sum_of_likes += 1
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
-    return users_who_liked, sum_of_likes
+    return users_who_liked, sum_of_likes, len(users_who_liked)
 
 def get_most_liked_media(user_id):
     user_temp =\
