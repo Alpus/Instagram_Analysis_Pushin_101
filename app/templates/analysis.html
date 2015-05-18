@@ -96,7 +96,7 @@
                                 <th>{{liker[1][0].login}}</th>
                                 <th>
                                     {% set percent = (liker[1][1] / sum_of_likes) | float * 100 %}
-                                    ~{{'%0.2f' % percent}}%
+                                    ~{{'%0.3f' % percent}}%
                                 </th>
                             </tr>
                         {% endfor %}
