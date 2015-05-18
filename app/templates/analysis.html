@@ -56,9 +56,13 @@
                             </th>
                             <th>
                                 <p>Likes: {{media[1].count_of_likes}}</p>
-                                <p>Likes: {{media[1].location.name}}</p>
+                                {% if media[1].location %}
+                                    <p>Location: {{media[1].location.name}}</p>
+                                {% endif %}
                                 <p>Filter: {{media[1].filter_media}}</p>
-                                <p>Caption: {{media[1].caption}}</p>
+                                {% if media[1].caption %}
+                                    <p>Caption: {{media[1].caption}}</p>
+                                {% endif %}
                             </th>
                         </tr>
                     {% endfor %}
@@ -82,7 +86,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for liker in users_who_liked | batch(20) | first %}
+                        {% for liker in users_who_liked | list | batch(20) | first %}
                             <tr>
                                 <th>{{liker[0] + 1}}</th>
                                 <th>
