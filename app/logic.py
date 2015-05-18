@@ -153,20 +153,6 @@ def init_user_media(user_id):
                         media.comments.append(comment_data)
                         db.session.commit()
 
-        # next_ = 'start'
-        # while next_ is not None:
-        #     if next_ is 'start':
-        #         medias, next_ = api.user_recent_media()
-        #     else:
-        #         medias, next_ = api.user_recent_media(max_id=next_)
-        #     for media_data in medias:
-        #         media =\
-        #             db.session.query(models.Media).filter(models.Media.id_media ==
-        #                                                   media_data.id).first()
-        #         if media is None:
-        #             media = models.Media(media_data)
-        #             db.session.add(media)
-
         db.session.commit()
 
 

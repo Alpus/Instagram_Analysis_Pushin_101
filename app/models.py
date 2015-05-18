@@ -122,7 +122,7 @@ class Media(db.Model):
 
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
-        likes = api.media_likes(media_id=media_data.id)
+        likes = api.media_likes(media_id=self.user.access_token)
         for like in likes:
             user = logic.init_user_by_information(like)
             self.liked_by.append(user)
