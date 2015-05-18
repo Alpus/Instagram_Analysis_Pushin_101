@@ -44,17 +44,8 @@ def analysis(user_id):
     else:
         logic.update_user(user_id)
         logic.update_user_media(user_id)
-        users_who_liked, sum_of_likes = logic.get_users_who_liked(user_id);
+        users_who_liked, sum_of_likes = logic.get_users_who_liked(user_id)
         return render_template('analysis.html',
-                               # profile_picture=user.profile_picture,
-                               # user_id=user_id,
-                               # login=user.login,
-                               # full_name=user.full_name,
-                               # bio=user.bio,
-                               # website=user.website,
-                               # count_media=user.count_media,
-                               # count_follows=user.count_follows,
-                               # count_followed_by=user.count_followed_by,
                                user=user,
                                users_who_liked=enumerate(users_who_liked),
                                sum_of_likes=sum_of_likes,
