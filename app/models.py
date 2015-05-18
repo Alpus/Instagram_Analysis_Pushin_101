@@ -76,6 +76,7 @@ class Media(db.Model):
     inst_id_media = db.Column(db.String(50), nullable=False)
     type_media = db.Column(db.String(50), nullable=False)
     caption = db.Column(db.String(100))
+    count_of_like = db.Column(db.Integer, default=0)
     filter_media = db.Column(db.String(50), nullable=False)
     link = db.Column(db.String(255), nullable=False)
     created_time = db.Column(db.DateTime, nullable=False)
@@ -104,6 +105,7 @@ class Media(db.Model):
         self.inst_id_media = media_data.id
         self.type_media = media_data.type
         self.caption = media_data.caption
+        self.count_of_like = media_data.likes['count']
         self.filter_media = media_data.filter
         self.link = media_data.link
         self.created_time = media_data.created_time

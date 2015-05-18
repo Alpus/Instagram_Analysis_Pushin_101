@@ -182,6 +182,7 @@ def update_user_media(user_id):
                         db.session.commit()
                 else:
                     media.caption = media_data.caption
+                    media.count_of_like = media_data.likes['count']
                     if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
                         new_location = init_location(media_data.location.id)
                     else:
