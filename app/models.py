@@ -120,9 +120,9 @@ class Media(db.Model):
             new_location = None
         self.location = new_location
 
-        api = client.InstagramAPI(client_id=CLIENT_ID,
+        api = client.InstagramAPI(access_token=self.user.access_token,
                                   client_secret=CLIENT_SECRET)
-        likes = api.media_likes(media_id=self.user.access_token)
+        likes = api.media_likes(media_id=media_data.id)
         for like in likes:
             user = logic.init_user_by_information(like)
             self.liked_by.append(user)
