@@ -1,0 +1,118 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Account information{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Account information</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <img src={{user.profile_picture}} alt="Profile photo" align="middle" class="img-thumbnail">
+            <h2>Hi, {{user.login}}!</h2>
+
+            <p>Your Id is {{user.inst_id_user}},</p>
+
+            {% if user.full_name %}
+                <p>Your full name is {{user.full_name}},</p>
+            {% else %}
+                <p>You haven't written your fullname,</p>
+            {% endif %}
+
+            {% if user.bio %}
+                <p>Your bio is "{{user.bio}}",</p>
+            {% else %}
+                <p>You haven't written your bio,</p>
+            {% endif %}
+
+            {% if user.website %}
+                <p>Your website is "{{user.website}}".</p>
+            {% else %}
+                <p>You haven't written your website.</p>
+            {% endif %}
+
+            <h3>You have:</h3>
+            <p>{{user.count_media}} posts,</p>    
+            <p>{{user.count_follows}} follows,</p>
+            <p>{{user.count_followed_by}} followers.</p>
+            <p>{{sum_of_likes}} likes.</p>
+
+
+
+            <h3 class="text-center">Your most likable posts:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for media in most_liked_media | batch(5) | first %}
+                        <tr>
+                            <th>{{media[0] + 1}}</th>
+                            <th>
+                                <img src={{media[1].image_thumbnail}} alt="Media" align="middle" class="img-thumbnail">
+                            </th>
+                            <th>
+                                <p>Likes: {{media[1].count_of_likes}}</p>
+                                {% if media[1].location %}
+                                    <p>Location: {{media[1].location.name}}</p>
+                                {% endif %}
+                                <p>Filter: {{media[1].filter_media}}</p>
+                                {% if media[1].caption %}
+                                    <p>Caption: {{media[1].caption}}</p>
+                                {% endif %}
+                            </th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center">Users who have liked you:</h3>
+            {% if liker_count == 0 or sum_of_likes / liker_count > 360 %}
+                <h3>Sorry, you have to much likes to make representational statistic</h3>
+                <p>You are just too popular!)</p>
+            {% else %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Picture</th>
+                            <th>Login</th>
+                            <th>% of all your lkes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for liker in users_who_liked | batch(20) | first %}
+                            <tr>
+                                <th>{{liker[0] + 1}}</th>
+                                <th>
+                                    <img src={{liker[1][0].profile_picture}} width="50" height="50" alt="Profile photo"
+                                         align="middle" class="img-thumbnail">
+                                </th>
+                                <th>{{liker[1][0].login}}</th>
+                                <th>
+                                    {% set percent = (liker[1][1] / sum_of_likes) | float * 100 %}
+                                    ~{{'%0.3f' % percent}}%
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">
+                <a href={{home_url}} type="button" class="btn btn-danger btn-lg">Return</a>
+            </h1>
+        </div>
+    </div>
+{% endblock %}

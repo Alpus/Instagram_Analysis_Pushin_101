@@ -1,4 +1,6 @@
-bin/
-include/
-lib/
-local/
+help/
+flask/
+db_repository/
+HSE.pem
+*.pyc
+.idea
