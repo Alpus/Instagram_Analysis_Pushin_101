@@ -72,6 +72,9 @@
         </div>
         <div class="col-md-4">
             <h3 class="text-center">Users who have liked you:</h3>
+
+            <p>{{ users_who_liked | list | length }}</p>
+
             {% set user_count = users_who_liked | list | length %}
             {% if user_count == 0 or sum_of_likes / user_count > 360 %}
                 <h3>Sorry, you have to much likes to make representational statistic</h3>
