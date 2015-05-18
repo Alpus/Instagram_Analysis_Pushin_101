@@ -35,7 +35,7 @@ def init_user_by_id(user_id):
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
-        api = client.InstagramAPI(access_token=user.access_token,
+        api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         user_data = api.user(user_id)
         user = models.User(user_data=user_data)
