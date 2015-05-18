@@ -68,7 +68,7 @@
         </div>
         <div class="col-md-4">
             <h3 class="text-center">Users who have liked you:</h3>
-            {% if sum / (users_who_liked | length) > 360 %}
+            {% if sum / (users_who_liked | list | length) > 360 %}
                 <h3>Sorry, you have to much likes to make representational statistic</h3>
                 <p>You are just too popular!)</p>
             {% else %}
