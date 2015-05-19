@@ -74,7 +74,7 @@
         </div>
         <div class="col-md-4">
             <h3 class="text-center">Users who have liked you:</h3>
-            {% if liker_count == 0 or sum_of_likes / liker_count > 360 %}
+            {% if liker_count == 0 or sum_of_likes / liker_count > 240 %}
                 <h3>Sorry, you have to much likes to make representational statistic</h3>
                 <p>You are just too popular!)</p>
             {% else %}
@@ -84,7 +84,7 @@
                             <th>#</th>
                             <th>Picture</th>
                             <th>Login</th>
-                            <th>% of all your lkes</th>
+                            <th>~Count of like</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,8 +97,12 @@
                                 </th>
                                 <th>{{liker[1][0].login}}</th>
                                 <th>
-                                    {% set percent = (liker[1][1] / sum_of_likes) | float * 100 %}
-                                    ~{{'%0.3f' % percent}}%
+                                    {% if sum_of_likes / liker_count > 120 %}
+                                        {% set ratio = (sum_of_likes / liker_count) / 120 %}
+                                    {% else %}
+                                        {% set ratio = 1 %}
+                                    {% endif %}
+                                    ~{{ liker[1][1] * ratio }}
                                 </th>
                             </tr>
                         {% endfor %}
