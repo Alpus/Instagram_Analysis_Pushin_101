@@ -3,6 +3,7 @@ from instagram import client
 from app import db
 import models
 import datetime
+import unicodedata
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
@@ -15,6 +16,7 @@ def process_login(code):
     instagram_client = client.InstagramAPI(client_id=CLIENT_ID,
                                            client_secret=CLIENT_SECRET,
                                            redirect_uri=REDIRECT_URL)
+    unicodedata.normalize('NFKD', code).encode('ascii','ignore')
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
@@ -242,7 +244,9 @@ def get_users_who_liked(user_id):
             sum_of_likes += 1
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
-    return users_who_liked, sum_of_likes, len(users_who_liked)
+    liker_count = len(users_who_liked)
+    return users_who_liked, sum_of_likes, liker_count
+
 
 def get_most_liked_media(user_id):
     user_temp =\
@@ -251,3 +255,23 @@ def get_most_liked_media(user_id):
     most_liked_media = user_temp.medias.all()
     most_liked_media.sort(key=lambda x: -x.count_of_likes)
     return most_liked_media
+
+
+def get_user_tags(user_id):
+    user_temp =\
+       db.session.query(models.User).filter(models.User.inst_id_user ==
+                                            user_id).first()
+    medias = user_temp.medias.all()
+    user_tags = {}
+    tag_count_all = 0
+    for media in medias:
+        for tag in media.tags:
+            if tag not in user_tags:
+                user_tags[tag] = 1
+            else:
+                user_tags[tag] += 1
+            tag_count_all += 1
+    user_tags = user_tags.items()
+    user_tags.sort(key=lambda x: (-x[1], x[0].name))
+    tag_count_unique = len(user_tags)
+    return user_tags, tag_count_all, tag_count_unique
