@@ -16,7 +16,7 @@ def process_login(code):
     instagram_client = client.InstagramAPI(client_id=CLIENT_ID,
                                            client_secret=CLIENT_SECRET,
                                            redirect_uri=REDIRECT_URL)
-    unicodedata.normalize('NFKD', code).encode('ascii','ignore')
+    code = unicodedata.normalize('NFKD', code).encode('ascii','ignore')
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
