@@ -284,7 +284,7 @@ def get_tags_likes(user_id):
     for media in medias:
         for tag in media.tags:
             if tag not in tags_likes:
-                tags_likes[tag] = (1, media.count_of_likes)
+                tags_likes[tag] = [1, media.count_of_likes]
             else:
                 tags_likes[tag][0] += 1
                 tags_likes[tag][1] += media.count_of_likes

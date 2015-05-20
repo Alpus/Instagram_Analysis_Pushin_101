@@ -131,7 +131,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for tag in user_tags | batch(20) | first %}
+                    {% for tag in user_tags | batch(18) | first %}
                         <tr>
                             <th>{{tag[0] + 1}}</th>
                             <th>
