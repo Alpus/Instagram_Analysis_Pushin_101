@@ -37,6 +37,10 @@ class User(db.Model):
         'Media', backref='user', lazy='dynamic')
     comments = db.relationship(
         'Comment', backref='user', lazy='dynamic')
+    follows = db.relationship('Users', secondary='follows',
+        primaryjoin='Users.id_user==follows.c.user_id_to',
+        secondaryjoin='Users.id_user==follows.c.user_id_from',
+        backref='followed_by', lazy='dynamic')
 
     def __init__(self, user_data):
         self.inst_id_user = user_data.id
@@ -61,6 +65,12 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.login
+
+
+follows = db.Table('follows',
+                 db.Column('user_id_from', db.Integer, db.ForeignKey('Users.id_user')),
+                 db.Column('user_id_to', db.Integer, db.ForeignKey('Users.id_user'))
+                 )
 
 
 class Media(db.Model):
@@ -125,7 +135,7 @@ class Media(db.Model):
                                   client_secret=CLIENT_SECRET)
         likes = api.media_likes(media_id=media_data.id)
         for like in likes:
-            user = requests.init_user_by_information(like)
+            user = requests.init_user_by_data(like)
             self.liked_by.append(user)
 
         if 'tags' in dir(media_data):
