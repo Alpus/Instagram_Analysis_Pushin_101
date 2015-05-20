@@ -37,7 +37,7 @@ class User(db.Model):
         'Media', backref='user', lazy='dynamic')
     comments = db.relationship(
         'Comment', backref='user', lazy='dynamic')
-    follows = db.relationship('Users', secondary='follows',
+    follows = db.relationship('User', secondary='follows',
         primaryjoin='User.id_user==follows.c.id_user_to',
         secondaryjoin='User.id_user==follows.c.id_user_from',
         backref='followed_by', lazy='dynamic')
