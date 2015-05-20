@@ -146,7 +146,29 @@
             </table>
         </div>
         <div class="col-md-4">
-
+            <h3 class="text-center">Tag liking</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tag</th>
+                        <th>Average like count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tag in user_tags | batch(20) | first %}
+                        <tr>
+                            <th>{{tag[0] + 1}}</th>
+                            <th>
+                                {{ tag[1][0].name }}
+                            </th>
+                            <th>
+                                {{ '%0.2f' % tag[1][1] }}
+                            </th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 

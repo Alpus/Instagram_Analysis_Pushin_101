@@ -46,6 +46,7 @@ def analysis(user_id):
         logic.update_user_media(user_id)
         users_who_liked, sum_of_likes, liker_count = logic.get_users_who_liked(user_id)
         user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
+        tags_likes = logic.get_tags_likes(user_id)
         return render_template('analysis.html',
                                user=user,
 
@@ -58,5 +59,7 @@ def analysis(user_id):
                                user_tags = enumerate(user_tags),
                                tag_count_all = tag_count_all,
                                tag_count_unique = tag_count_unique,
+
+                               tags_likes = enumerate(tags_likes),
 
                                home_url=HOME_URL)

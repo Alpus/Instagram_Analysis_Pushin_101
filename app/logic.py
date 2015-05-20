@@ -3,7 +3,6 @@ from instagram import client
 from app import db
 import models
 import datetime
-import unicodedata
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
@@ -16,7 +15,6 @@ def process_login(code):
     instagram_client = client.InstagramAPI(client_id=CLIENT_ID,
                                            client_secret=CLIENT_SECRET,
                                            redirect_uri=REDIRECT_URL)
-    code = unicodedata.normalize('NFKD', code).encode('ascii','ignore')
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
@@ -275,3 +273,25 @@ def get_user_tags(user_id):
     user_tags.sort(key=lambda x: (-x[1], x[0].name))
     tag_count_unique = len(user_tags)
     return user_tags, tag_count_all, tag_count_unique
+
+
+def get_tags_likes(user_id):
+    user_temp =\
+       db.session.query(models.User).filter(models.User.inst_id_user ==
+                                            user_id).first()
+    medias = user_temp.medias.all()
+    tags_likes = {}
+    for media in medias:
+        for tag in media.tags:
+            if tag not in tags_likes:
+                tags_likes[tag][0] = 1
+                tags_likes[tag][1] = media.count_of_likes
+            else:
+                tags_likes[tag][0] += 1
+                tags_likes[tag][1] += media.count_of_likes
+    for tag in tags_likes:
+        tag = tag[1]/tag[0]
+    tags_likes = tags_likes.items()
+    tags_likes.sort(key=lambda x: (-x[1], x[0].name))
+    tag_count_unique = len(tags_likes)
+    return tags_likes
