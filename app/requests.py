@@ -184,7 +184,7 @@ def update_user_media(user_id):
                         db.session.delete(comment)
                     db.session.commit()
 
-        new_medias.append(media)
+                new_medias.append(media)
 
         to_delete = set(old_medias) - set(new_medias)
         for media in to_delete:
