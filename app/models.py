@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 from app import db
-import logic
+import requests
 from instagram import client
-import datetime
-from sqlalchemy import UniqueConstraint
 
-CLIENT_ID = logic.CLIENT_ID
-CLIENT_SECRET = logic.CLIENT_SECRET
-LOGGED_URL = logic.LOGGED_URL
-HOME_URL = logic.HOME_URL
-REDIRECT_URL = logic.REDIRECT_URL
+CLIENT_ID = requests.CLIENT_ID
+CLIENT_SECRET = requests.CLIENT_SECRET
+LOGGED_URL = requests.LOGGED_URL
+HOME_URL = requests.HOME_URL
+REDIRECT_URL = requests.REDIRECT_URL
 
 
 class User(db.Model):
@@ -114,11 +112,11 @@ class Media(db.Model):
         self.image_thumbnail = media_data.images['thumbnail'].url
         self.image_standard = media_data.images['standard_resolution'].url
 
-        new_user = logic.init_user_by_id(media_data.user.id)
+        new_user = requests.init_user_by_id(media_data.user.id)
         self.user = new_user
 
         if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
-            new_location = logic.init_location(media_data.location.id)
+            new_location = requests.init_location(media_data.location.id)
         else:
             new_location = None
         self.location = new_location
@@ -127,32 +125,27 @@ class Media(db.Model):
                                   client_secret=CLIENT_SECRET)
         likes = api.media_likes(media_id=media_data.id)
         for like in likes:
-            user = logic.init_user_by_information(like)
+            user = requests.init_user_by_information(like)
             self.liked_by.append(user)
 
         if 'tags' in dir(media_data):
             for tag in media_data.tags:
-                tag_data = logic.init_tag(tag.name)
+                tag_data = requests.init_tag(tag.name)
                 self.tags.append(tag_data)
-
-        # for mark in media_data.users_in_photo:
-        #     user = logic.init_user_by_id(mark['user']['id'])
-        #     self.users_in_media.append(user)
 
     def __repr__(self):
         return '<Media %r>' % self.id_media
 
 
 likes = db.Table('likes',
-    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
-    db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
-)
-
+                 db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+                 db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
+                 )
 
 marks = db.Table('marks',
-    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
-    db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
-)
+                 db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+                 db.Column('id_user', db.Integer, db.ForeignKey('Users.id_user'))
+                 )
 
 
 class Comment(db.Model):
@@ -162,7 +155,7 @@ class Comment(db.Model):
         'mysql_charset': 'utf8'
     }
     id_comment = db.Column(db.Integer, primary_key=True,
-                        autoincrement=True)
+                           autoincrement=True)
     inst_id_comment = db.Column(db.String(50), nullable=False)
     created_time = db.Column(db.DateTime, nullable=False)
     text = db.Column(db.String(255), nullable=False)
@@ -171,8 +164,6 @@ class Comment(db.Model):
                          db.ForeignKey('Medias.id_media'))
     id_user = db.Column(db.Integer,
                         db.ForeignKey('Users.id_user'))
-
-
 
     def __init__(self, comment_data):
         self.inst_id_comment = comment_data.id
@@ -206,9 +197,9 @@ class Tag(db.Model):
 
 
 media_tags = db.Table('media_tags',
-    db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
-    db.Column('id_tag', db.Integer, db.ForeignKey('Tags.id_tag'))
-)
+                      db.Column('id_media', db.Integer, db.ForeignKey('Medias.id_media')),
+                      db.Column('id_tag', db.Integer, db.ForeignKey('Tags.id_tag'))
+                      )
 
 
 class Location(db.Model):
@@ -218,7 +209,7 @@ class Location(db.Model):
         'mysql_charset': 'utf8'
     }
     id_location = db.Column(db.Integer, primary_key=True,
-                        autoincrement=True)
+                            autoincrement=True)
     inst_id_location = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(255), nullable=False)
     latitude = db.Column(db.Float())
