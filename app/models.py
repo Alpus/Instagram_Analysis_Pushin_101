@@ -38,8 +38,8 @@ class User(db.Model):
     comments = db.relationship(
         'Comment', backref='user', lazy='dynamic')
     follows = db.relationship('Users', secondary='follows',
-        primaryjoin='Users.id_user==follows.c.user_id_to',
-        secondaryjoin='Users.id_user==follows.c.user_id_from',
+        primaryjoin='User.id_user==follows.c.id_user_to',
+        secondaryjoin='User.id_user==follows.c.id_user_from',
         backref='followed_by', lazy='dynamic')
 
     def __init__(self, user_data):
@@ -68,8 +68,8 @@ class User(db.Model):
 
 
 follows = db.Table('follows',
-                 db.Column('user_id_from', db.Integer, db.ForeignKey('Users.id_user')),
-                 db.Column('user_id_to', db.Integer, db.ForeignKey('Users.id_user'))
+                 db.Column('id_user_from', db.Integer, db.ForeignKey('Users.id_user')),
+                 db.Column('id_user_to', db.Integer, db.ForeignKey('Users.id_user'))
                  )
 
 
