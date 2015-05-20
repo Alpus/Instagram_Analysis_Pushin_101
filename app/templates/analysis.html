@@ -74,7 +74,7 @@
         </div>
         <div class="col-md-4">
             <h3 class="text-center">Users who have liked you:</h3>
-            {% if liker_count == 0 or sum_of_likes / liker_count > 360 %}
+            {% if liker_count == 0 or sum_of_likes / liker_count > 240 %}
                 <h3>Sorry, you have to much likes to make representational statistic</h3>
                 <p>You are just too popular!)</p>
             {% else %}
@@ -84,7 +84,7 @@
                             <th>#</th>
                             <th>Picture</th>
                             <th>Login</th>
-                            <th>% of all your lkes</th>
+                            <th>~Count of like</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,14 +97,78 @@
                                 </th>
                                 <th>{{liker[1][0].login}}</th>
                                 <th>
-                                    {% set percent = (liker[1][1] / sum_of_likes) | float * 100 %}
-                                    ~{{'%0.3f' % percent}}%
+                                    {% if sum_of_likes / liker_count > 120 %}
+                                        {% set ratio = (sum_of_likes / liker_count) / 120 %}
+                                    {% else %}
+                                        {% set ratio = 1 %}
+                                    {% endif %}
+                                    ~{{ liker[1][1] * ratio }}
                                 </th>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Tags</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <h3 class="text-center">Tags counting</h3>
+            <p class="text-center">You have used {{ tag_count_all }} tags when {{ tag_count_unique }} is unique.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tag</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tag in user_tags | batch(9) | first %}
+                        <tr>
+                            <th>{{tag[0] + 1}}</th>
+                            <th>
+                                {{ tag[1][0].name }}
+                            </th>
+                            <th>
+                                {{ tag[1][1] }}
+                            </th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center">Tag liking</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tag</th>
+                        <th>Average like count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tag in tags_likes | batch(10) | first %}
+                        <tr>
+                            <th>{{tag[0] + 1}}</th>
+                            <th>
+                                {{ tag[1][0].name }}
+                            </th>
+                            <th>
+                                {{ '%0.2f' % tag[1][1] }}
+                            </th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
