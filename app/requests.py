@@ -207,6 +207,8 @@ def update_user_follows(user_id):
                 new_follows.append(follow_user)
         user.follows = new_follows
 
+        db.session.commit()
+
 
 def update_user_followed_by(user_id):
     user =\
@@ -223,7 +225,4 @@ def update_user_followed_by(user_id):
                 new_followed_by.append(followed_by_user)
         user.followed_by = new_followed_by
 
-
-
-
-
+        db.session.commit()
