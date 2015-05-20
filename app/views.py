@@ -41,7 +41,7 @@ def analysis(user_id):
     else:
         requests.update_user(user_id)
         requests.update_user_media(user_id)
-        #requests.update_user_followed_by(user_id)
+        requests.update_user_followed_by(user_id)
         requests.update_user_follows(user_id)
 
         users_who_liked, sum_of_likes, liker_count = logic.get_users_who_liked(user_id)
