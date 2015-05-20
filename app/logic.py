@@ -289,7 +289,7 @@ def get_tags_likes(user_id):
                 tags_likes[tag][0] += 1
                 tags_likes[tag][1] += media.count_of_likes
     for tag in tags_likes:
-        tag = tag[1]/tag[0]
+        tags_likes[tag] = float(tags_likes[tag][1])/float(tags_likes[tag][0])
     tags_likes = tags_likes.items()
     tags_likes.sort(key=lambda x: (-x[1], x[0].name))
     tag_count_unique = len(tags_likes)
