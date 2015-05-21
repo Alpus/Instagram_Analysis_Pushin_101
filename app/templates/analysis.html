@@ -42,6 +42,8 @@
 
             <p>{{ sum_of_likes }} likes.</p>
 
+            <p>Average like count is {{ (sum_of_likes/liker_count)|float }} and median is {{ median_like_count }}.</p>
+
 
             <h3 class="text-center">Your most likable posts:</h3>
             <table class="table">
@@ -76,18 +78,18 @@
 
         </div>
         <div class="col-md-4">
-            <h3 class="text-center">Users who have liked you:</h3>
-            {% if liker_count == 0 or sum_of_likes / liker_count > 240 %}
-                <h3>Sorry, you have to much likes to make representational statistic</h3>
+            {% if liker_count == 0 or median_like_count > 240 %}
+                <h3>Sorry, you have too much likes to make representational user statistic</h3>
                 <p>You are just too popular!)</p>
             {% else %}
+                <h3 class="text-center">Users who have liked you:</h3>
                 <table class="table">
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Picture</th>
-                        <th>Login</th>
-                        <th>~Count of like</th>
+                        <th>User picture</th>
+                        <th>Information</th>
+                        <th>~Count of likes</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -98,14 +100,17 @@
                                 <img src={{ liker[1][0].profile_picture }} width="50" height="50" alt="Profile photo"
                                      align="middle" class="img-thumbnail">
                             </th>
-                            <th>{{ liker[1][0].login }}</th>
                             <th>
-                                {% if sum_of_likes / liker_count > 120 %}
-                                    {% set ratio = (sum_of_likes / liker_count) / 120 %}
-                                {% else %}
-                                    {% set ratio = 1 %}
+                                <p>Login: {{ liker[1][0].login }}</p>
+                                {%  if liker[1][0] in followed_by %}
+                                    <p>Follower</p>
                                 {% endif %}
-                                ~{{ liker[1][1] * ratio }}
+                                {%  if liker[1][0] in follows %}
+                                    <p>Followed by you</p>
+                                {% endif %}
+                            </th>
+                            <th>
+                                {{ liker[1][1] }}
                             </th>
                         </tr>
                     {% endfor %}

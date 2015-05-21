@@ -44,22 +44,29 @@ def analysis(user_id):
         requests.update_user_followed_by(user_id)
         requests.update_user_follows(user_id)
 
-        users_who_liked, sum_of_likes, liker_count = logic.get_users_who_liked(user_id)
+        most_liked_media = logic.get_most_liked_media(user_id)
+        users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
         user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
         tags_likes = logic.get_tags_likes(user_id)
+        follows = logic.get_follows(user_id)
+        followed_by = logic.get_followed_by(user_id)
         return render_template('analysis.html',
                                user=user,
 
-                               most_liked_media=enumerate(logic.get_most_liked_media(user_id)),
+                               most_liked_media=enumerate(most_liked_media),
 
                                users_who_liked=enumerate(users_who_liked),
                                sum_of_likes=sum_of_likes,
                                liker_count=liker_count,
+                               median_like_count=median_like_count,
 
                                user_tags=enumerate(user_tags),
                                tag_count_all=tag_count_all,
                                tag_count_unique=tag_count_unique,
 
                                tags_likes=enumerate(tags_likes),
+
+                               follows=follows,
+                               followed_by=followed_by,
 
                                home_url=HOME_URL)

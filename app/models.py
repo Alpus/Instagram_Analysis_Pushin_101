@@ -143,6 +143,10 @@ class Media(db.Model):
                 tag_data = requests.init_tag(tag.name)
                 self.tags.append(tag_data)
 
+        for comment_data in media_data.comments:
+            comment = requests.init_comment_by_data(comment_data)
+            self.comments.append(comment)
+
     def __repr__(self):
         return '<Media %r>' % self.id_media
 

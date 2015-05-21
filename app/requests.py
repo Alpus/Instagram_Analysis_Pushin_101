@@ -96,7 +96,7 @@ def init_tag(tag_name):
     return tag
 
 
-def init_comment(comment_data):
+def init_comment_by_data(comment_data):
     comment =\
         db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data.id).first()
@@ -142,21 +142,16 @@ def update_user_media(user_id):
                     media = models.Media(media_data)
                     db.session.add(media)
                     db.session.commit()
-                    for comment in media_data.comments:
-                        comment_data = init_comment(comment_data=comment)
-                        db.session.add(comment_data)
-                        db.session.commit()
-                        media.comments.append(comment_data)
-                        db.session.commit()
                 else:
                     if media_data.caption:
                         media.caption = media_data.caption.text
+                    else:
+                        media.caption = None
                     media.count_of_likes = media_data.like_count
                     if ('location' in dir(media_data)) and (media_data.location.id is not '0'):
-                        new_location = init_location(media_data.location.id)
+                        media.location = init_location(media_data.location.id)
                     else:
-                        new_location = None
-                    media.location = new_location
+                        media.location = None
                     db.session.commit()
 
                     likes = api.media_likes(media_id=media_data.id)
@@ -176,7 +171,7 @@ def update_user_media(user_id):
                     new_comments = []
                     old_comments = media.comments.all()
                     for comment_data in media_data.comments:
-                        new_comments.append(init_comment(comment_data))
+                        new_comments.append(init_comment_by_data(comment_data))
                     media.comments = new_comments
                     db.session.commit()
                     to_delete = set(old_comments) - set(new_comments)
