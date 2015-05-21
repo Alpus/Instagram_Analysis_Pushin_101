@@ -41,7 +41,8 @@ def get_users_who_liked(user_id):
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
 
     liker_count = len(users_who_liked)
-    median_like_count = medias.sort(key=lambda x: (-x.count_of_likes))[len(medias) // 2].count_of_likes
+    medias.sort(key=lambda x: (-x.count_of_likes))
+    median_like_count = medias[len(medias) // 2].count_of_likes
     return users_who_liked, sum_of_likes, liker_count, median_like_count
 
 
