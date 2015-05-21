@@ -38,11 +38,13 @@
 
             <p>{{ user.count_follows }} follows,</p>
 
-            <p>{{ user.count_followed_by }} followers.</p>
+            <p>{{ user.count_followed_by }} followers,</p>
 
-            <p>{{ sum_of_likes }} likes.</p>
+            <p>{{ sum_of_likes }} likes,</p>
 
-            <p>Average like count is {{ (sum_of_likes/liker_count)|float }} and median is {{ median_like_count }}.</p>
+            <p>Average like count is {{'%0.2f' % (sum_of_likes/user.count_media)|float }},</p>
+
+            <p>Median user have liked you {{ median_like_count }} times, and average count of likes by one user is {{ sum_of_likes/liker_count }}.</p>
 
 
             <h3 class="text-center">Your most likable posts:</h3>

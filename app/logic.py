@@ -35,13 +35,13 @@ def get_users_who_liked(user_id):
     possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
     for liker in possible_user_likes:
         if liker[0] in users_who_liked:
-            users_who_liked[liker[0]] += int(liker[1] * (users_who_liked[liker[0]] / user_temp.count_media))
+            users_who_liked[liker[0]] += liker[1] * (users_who_liked[liker[0]] // user_temp.count_media)
 
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
 
     liker_count = len(users_who_liked)
-    median_like_count = medias[len(medias)/2]
+    median_like_count = medias.sort(key=lambda x: (-x.count_of_likes))[len(medias) // 2].count_of_likes
     return users_who_liked, sum_of_likes, liker_count, median_like_count
 
 
@@ -88,7 +88,7 @@ def get_tags_likes(user_id):
                 tags_likes[tag][0] += 1
                 tags_likes[tag][1] += media.count_of_likes
     for tag in tags_likes:
-        tags_likes[tag] = float(tags_likes[tag][1]) / float(tags_likes[tag][0])
+        tags_likes[tag] = tags_likes[tag][1] / tags_likes[tag][0]
     tags_likes = tags_likes.items()
     tags_likes.sort(key=lambda x: (-x[1], x[0].name))
     return tags_likes
