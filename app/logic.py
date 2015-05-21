@@ -26,7 +26,8 @@ def get_users_who_liked(user_id):
             else:
                 users_who_liked[user] += 1
             sum_media_likes += 1
-            possible_user_likes[user] -= 1
+            if user in possible_user_likes:
+                possible_user_likes[user] -= 1
 
         sum_of_likes += sum_media_likes
 
