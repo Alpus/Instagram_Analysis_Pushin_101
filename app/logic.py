@@ -31,7 +31,7 @@ def get_users_who_liked(user_id):
 
         sum_of_likes += sum_media_likes
 
-    possible_user_likes.items()
+    possible_user_likes = possible_user_likes.items()
     possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
     for liker in possible_user_likes:
         users_who_liked[liker[0]] += int(liker[1] * (users_who_liked[liker[0]] / user_temp.count_media))
