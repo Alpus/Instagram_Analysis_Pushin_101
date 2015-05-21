@@ -44,8 +44,6 @@
 
             <p>Average like count is {{'%0.2f' % (sum_of_likes/user.count_media)|float }},</p>
 
-            <p>Median user have liked you {{ median_like_count }} times, and average count of likes by one user is {{ sum_of_likes/liker_count }}.</p>
-
 
             <h3 class="text-center">Your most likable posts:</h3>
             <table class="table">
@@ -57,7 +55,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for media in most_liked_media | batch(5) | first %}
+                {% for media in most_liked_media | batch(8) | first %}
                     <tr>
                         <th>{{ media[0] + 1 }}</th>
                         <th>
