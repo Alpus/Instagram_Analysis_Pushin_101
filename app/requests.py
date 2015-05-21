@@ -130,7 +130,7 @@ def update_user_media(user_id):
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        medias = api.user_recent_media(as_generator=True)
+        medias = api.user_recent_media(as_generator=True, max_pages=None)
         old_medias = user.medias.all()
         new_medias = []
         for case in medias:
@@ -194,7 +194,7 @@ def update_user_follows(user_id):
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        follows = api.user_follows(as_generator=True)
+        follows = api.user_follows(as_generator=True, max_pages=None)
         new_follows = []
         for case in follows:
             for follow in case[0]:
@@ -212,7 +212,7 @@ def update_user_followed_by(user_id):
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        followed_by_list = api.user_followed_by(as_generator=True)
+        followed_by_list = api.user_followed_by(as_generator=True, max_pages=None)
         new_followed_by = []
         for case in followed_by_list:
             for followed_by in case[0]:
