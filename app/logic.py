@@ -106,5 +106,5 @@ def get_followed_by(user_id):
     user_temp = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    user_followed_by = user_temp.followed_by.all()
+    user_followed_by = user_temp.followed_by
     return user_followed_by
