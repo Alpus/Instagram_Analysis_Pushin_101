@@ -33,7 +33,13 @@ def index():
     if Login.validate_on_submit():
         return redirect(login_url)
 
-    return render_template('login.html', login_url=login_url, user_id=user_id)
+    return render_template('login.html',
+
+                           Analyse=Analyse,
+                           Login=Login,
+
+                           login_url=login_url,
+                           user_id=user_id)
 
 
 @app.route(LOGGED_URL)
