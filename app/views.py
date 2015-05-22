@@ -13,7 +13,7 @@ HOME_URL = requests.HOME_URL
 REDIRECT_URL = requests.REDIRECT_URL
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def index():
     login_url = ('https://api.instagram.com/oauth/authorize/?client_id=' +
                  CLIENT_ID +

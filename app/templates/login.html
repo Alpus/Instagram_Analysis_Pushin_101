@@ -10,16 +10,16 @@
     <div class="row">
         <div class="col-md-12">
             {% if not user_id %}
-                <form action="/" method="get">
+                <form method="POST" action="/">
                     {{ Login.hidden_tag() }}
                     <p align="center">
-                        <input type="submit" value="Login" class="btn btn-primary">
+                        <input type="submit" value="Login" class="btn btn-primary btn-lg">
                     </p>
                 </form>
             {% else %}
                 <form method="POST" action="/">
                     {{ Analyse.hidden_tag() }}
-                    <button type="button" id="analyse" data-loading-text="Loading..." class="btn btn-primary"
+                    <button type="button" id="analyse" data-loading-text="Loading..." class="btn btn-primary btn-lg"
                             autocomplete="off">
                         Analyse
                     </button>
