@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from app import app
 from app import db, models
-from flask import render_template, redirect, request
+from flask import make_response, render_template, redirect, request, session
 import logic
 import requests
+import forms
 
 CLIENT_ID = requests.CLIENT_ID
 CLIENT_SECRET = requests.CLIENT_SECRET
@@ -18,7 +19,17 @@ def index():
                  CLIENT_ID +
                  '&redirect_uri=' + REDIRECT_URL +
                  '&response_type=code&scope=basic')
-    return render_template('login.html', login_url=login_url)
+    user_id = session.get('user_id', None)
+
+    form = forms.Analyse()
+    if form.validate_on_submit():
+        requests.update_user(user_id)
+        requests.update_user_media(user_id)
+        requests.update_user_followed_by(user_id)
+        requests.update_user_follows(user_id)
+        return redirect('/analysis/'+str(user_id))
+
+    return render_template('login.html', login_url=login_url, user_id=user_id)
 
 
 @app.route(LOGGED_URL)
@@ -28,7 +39,11 @@ def user_logged():
     if error is 'access_denied':
         return redirect('/')
     user_id = requests.process_login(code)
-    return redirect('/analysis/' + str(user_id))
+
+    session.permanent = True
+    session['user_id'] = user_id
+    
+    return redirect('/')
 
 
 @app.route('/analysis/<user_id>')
@@ -39,11 +54,6 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        requests.update_user(user_id)
-        requests.update_user_media(user_id)
-        requests.update_user_followed_by(user_id)
-        requests.update_user_follows(user_id)
-
         most_liked_media = logic.get_most_liked_media(user_id)
         users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
         user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)

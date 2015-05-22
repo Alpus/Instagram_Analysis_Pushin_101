@@ -2,6 +2,7 @@ from instagram import client
 from app import db
 import models
 import datetime
+from app import celery
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
@@ -10,6 +11,7 @@ HOME_URL = 'http://54.149.115.96'
 REDIRECT_URL = HOME_URL + LOGGED_URL
 
 
+@celery.task()
 def process_login(code):
     instagram_client = client.InstagramAPI(client_id=CLIENT_ID,
                                            client_secret=CLIENT_SECRET,
@@ -29,6 +31,7 @@ def process_login(code):
     return that_user.inst_id_user
 
 
+@celery.task()
 def init_user_by_id(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -44,6 +47,7 @@ def init_user_by_id(user_id):
     return user
 
 
+@celery.task()
 def init_user_by_data(user_data):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -56,6 +60,7 @@ def init_user_by_data(user_data):
     return user
 
 
+@celery.task()
 def update_user(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -81,6 +86,7 @@ def update_user(user_id):
     return user
 
 
+@celery.task()
 def init_tag(tag_name):
     tag =\
         db.session.query(models.Tag).filter(models.Tag.name ==

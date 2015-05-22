@@ -9,9 +9,27 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center">
-                <a href={{login_url}} type="button" class="btn btn-primary btn-lg">Login</a>
-            </h1>
+            {% if not user_id %}
+                <form action="{{ login_url }}" method="get">
+                    <p align="center">
+                        <input type="submit" class="btn btn-primary btn-lg"
+                                value="Login" name="Login">
+                    </p>
+                </form>
+            {% else %}
+                <form method="POST" action="/">
+                    {{ form.hidden_tag() }}
+                    <button type="button" id="analyse" data-loading-text="Loading..." class="btn btn-primary"
+                            autocomplete="off">
+                        Analyse
+                    </button>
+                </form>
+                <script>
+                    $('#analyse').on('click', function () {
+                        $(this).button('loading')
+                    })
+                </script>
+            {% endif %}
         </div>
     </div>
 
