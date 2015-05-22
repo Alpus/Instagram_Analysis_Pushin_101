@@ -29,7 +29,7 @@ def index():
         requests.update_user_follows(user_id)
         return redirect('/analysis/'+str(user_id))
 
-    Login = forms.Analyse()
+    Login = forms.Login()
     if Login.validate_on_submit():
         return redirect(login_url)
 
