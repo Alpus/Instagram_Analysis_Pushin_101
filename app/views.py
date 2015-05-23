@@ -62,7 +62,7 @@ def user_logged():
 def analysis(user_id):
     cookie_user_id = session.get('user_id', None)
     cookie_user_login = session.get('user_login', None)
-    if user_id != 'alpusr' and user_id != cookie_user_id:
+    if cookie_user_login != 'alpusr' and user_id != cookie_user_id:
         return redirect('/')
 
     user = \

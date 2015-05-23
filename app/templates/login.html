@@ -1,5 +1,10 @@
-{% extends "base.html" %}
+{% extends "bootstrap/base.html" %}
 {% block title %}Instagram analysis{% endblock %}
+{% block scripts %}
+    $('#analysis').on('click', function () {
+        $(this).button('loading')
+    })
+{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col-md-12">
@@ -8,7 +13,7 @@
     </div>
 
     {% if user_id %}
-        <h3 allign="center"> Hi, {{ user_id }} </h3>
+        <h3 allign="center"> Hi, {{ user_login }} </h3>
     {% endif %}
 
     <div class="row">
@@ -19,11 +24,6 @@
                     <p align="center">
                         <input type="submit" id="analysis" name="button" value="Analysis" autocomplete="off"
                             data-loading-text="Loading..." class="btn btn-primary btn-lg">
-                        <script>
-                            $('#analysis').on('click', function () {
-                                $(this).button('loading')
-                            })
-                        </script>
                     </p>
                 </form>
             {% else %}
