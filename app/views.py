@@ -35,7 +35,7 @@ def index():
 
     return render_template('login.html',
 
-                           Analyse=Analysis,
+                           Analysis=Analysis,
                            Login=Login,
 
                            login_url=login_url,
