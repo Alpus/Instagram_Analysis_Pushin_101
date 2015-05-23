@@ -1,24 +1,100 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Account information{% endblock %}
-{% block body %}
+{% block title %}Instagram analysis{% endblock %}
+{% block content %}
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center">Login by Instagram</h1>
+            <h1 class="text-center">Instagram analysis</h1>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="text-center">
-                <a href={{login_url}} type="button" class="btn btn-primary btn-lg">Login</a>
-            </h1>
-        </div>
-    </div>
+    {% if user_id %}
+        <h3 class="text-center"> Hi, {{ user_login }} </h3>
+    {% endif %}
 
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">After login please wait.</h3>
-            <h4 class="text-center">Analysis can take a while...</h4>
+            {% if user_id %}
+                <form method="POST" action="">
+                    {{ button.hidden_tag() }}
+                    <p align="center">
+                        <input type="submit" id="analysis" name="button" value="Analysis" autocomplete="off"
+                            data-loading-text="Loading..." class="btn btn-primary btn-lg">
+                    </p>
+                </form>
+            {% else %}
+                <form method="POST" action="">
+                    {{ button.hidden_tag() }}
+                    <p align="center">
+                        <input type="submit" name="button" value="Log in" class="btn btn-primary btn-lg">
+                    </p>
+                </form>
+            {% endif %}
         </div>
     </div>
+
+    {% if user_id %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Please press and wait</h3>
+                <h4 class="text-center">Analysis can take a while...</h4>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">You will be redirected to instagram to log in.</h3>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {% if users and user_login == 'alpusr' %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <h3 class="text-center">Users:</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Img</th>
+                            <th>Login</th>
+                            <th>Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users | batch(15) | first %}
+                        <tr>
+                            <th>
+                                <img src={{ user.profile_picture }} width="50" height="50" alt="User photo"
+                                     align="middle" class="img-thumbnail">
+                            </th>
+                            <th>
+                                {{ user.login }}
+                            </th>
+                            <th>
+                                <form method="POST" action="">
+                                    {{ button.hidden_tag() }}
+                                    <p align="center">
+                                        <input type="submit" id="analysis" name="button"
+                                               value={{ user.inst_id_user }} autocomplete="off"
+                                               data-loading-text="Loading..." class="btn btn-default btn-sm">
+                                    </p>
+                                </form>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $('#analysis').on('click', function () {
+            $(this).button('loading')
+        })
+    </script>
 {% endblock %}

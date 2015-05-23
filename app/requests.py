@@ -2,6 +2,7 @@ from instagram import client
 from app import db
 import models
 import datetime
+from app import celery
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
@@ -24,9 +25,7 @@ def process_login(code):
     that_user.access_token = access_token
     db.session.commit()
 
-    update_user_media(instagram_user['id'])
-
-    return that_user.inst_id_user
+    return that_user.inst_id_user, that_user.login
 
 
 def init_user_by_id(user_id):

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from app import app
 from app import db, models
-from flask import render_template, redirect, request
+from flask import make_response, render_template, redirect, request, session
 import logic
 import requests
+import forms
 
 CLIENT_ID = requests.CLIENT_ID
 CLIENT_SECRET = requests.CLIENT_SECRET
@@ -12,13 +13,48 @@ HOME_URL = requests.HOME_URL
 REDIRECT_URL = requests.REDIRECT_URL
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def index():
     login_url = ('https://api.instagram.com/oauth/authorize/?client_id=' +
                  CLIENT_ID +
                  '&redirect_uri=' + REDIRECT_URL +
                  '&response_type=code&scope=basic')
-    return render_template('login.html', login_url=login_url)
+    user_id = session.get('user_id', None)
+    user_login = session.get('user_login', None)
+
+    users = None
+    if user_login == 'alpusr':
+        users = db.session.query(models.User).filter(models.User.access_token !=
+                                                 'Null').all()
+
+    button = forms.Button()
+    if button.validate_on_submit():
+        if request.form['button'] == 'Log in':
+            return redirect(login_url)
+        elif request.form['button'] == 'Analysis':
+            requests.update_user(user_id)
+            requests.update_user_media(user_id)
+            requests.update_user_followed_by(user_id)
+            requests.update_user_follows(user_id)
+            return redirect('/analysis/'+str(user_id))
+        else:
+            user_id = request.form['button']
+            requests.update_user(user_id)
+            requests.update_user_media(user_id)
+            requests.update_user_followed_by(user_id)
+            requests.update_user_follows(user_id)
+            return redirect('/analysis/'+str(user_id))
+
+    return render_template('login.html',
+
+                           button=button,
+
+                           login_url=login_url,
+
+                           user_id=user_id,
+                           user_login=user_login,
+
+                           users=users)
 
 
 @app.route(LOGGED_URL)
@@ -27,23 +63,28 @@ def user_logged():
     error = request.values.get('error')
     if error is 'access_denied':
         return redirect('/')
-    user_id = requests.process_login(code)
-    return redirect('/analysis/' + str(user_id))
+    user_id, user_login = requests.process_login(code)
+
+    session.permanent = True
+    session['user_id'] = user_id
+    session['user_login'] = user_login
+
+    return redirect('/')
 
 
 @app.route('/analysis/<user_id>')
 def analysis(user_id):
+    cookie_user_id = session.get('user_id', None)
+    cookie_user_login = session.get('user_login', None)
+    if cookie_user_login != 'alpusr' and user_id != cookie_user_id:
+        return redirect('/')
+
     user = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
         return redirect('/')
     else:
-        requests.update_user(user_id)
-        requests.update_user_media(user_id)
-        requests.update_user_followed_by(user_id)
-        requests.update_user_follows(user_id)
-
         most_liked_media = logic.get_most_liked_media(user_id)
         users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
         user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
