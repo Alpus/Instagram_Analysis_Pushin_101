@@ -21,6 +21,10 @@ def index():
                  '&response_type=code&scope=basic')
     user_id = session.get('user_id', None)
 
+    Login = forms.Login()
+    if Login.validate_on_submit():
+        return redirect(login_url)
+
     Analyse = forms.Analyse()
     if Analyse.validate_on_submit():
         requests.update_user(user_id)
@@ -28,10 +32,6 @@ def index():
         requests.update_user_followed_by(user_id)
         requests.update_user_follows(user_id)
         return redirect('/analysis/'+str(user_id))
-
-    Login = forms.Login()
-    if Login.validate_on_submit():
-        return redirect(login_url)
 
     return render_template('login.html',
 
