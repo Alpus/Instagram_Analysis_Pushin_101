@@ -30,8 +30,8 @@ def index():
         return redirect('/analysis/'+str(user_id))
 
     Login = forms.Login()
-    if Login.validate_on_submit():
-        return redirect(login_url)
+    #if Login.validate_on_submit():
+    #    return redirect(login_url)
 
     return render_template('login.html',
 
