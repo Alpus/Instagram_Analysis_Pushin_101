@@ -55,7 +55,8 @@ def init_user_by_data(user_data):
         db.session.add(user)
         db.session.commit()
 
-    return user
+    return db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_data.id).first()
 
 
 @celery.task()
@@ -100,6 +101,7 @@ def init_tag(tag_name):
     return tag
 
 
+@celery.task()
 def init_comment_by_data(comment_data):
     comment =\
         db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
@@ -112,6 +114,7 @@ def init_comment_by_data(comment_data):
     return comment
 
 
+@celery.task()
 def init_location(location_id):
     location =\
         db.session.query(models.Location).filter(models.Location.id_location ==
@@ -127,6 +130,7 @@ def init_location(location_id):
     return location
 
 
+@celery.task()
 def update_user_media(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -191,6 +195,7 @@ def update_user_media(user_id):
         db.session.commit()
 
 
+@celery.task()
 def update_user_follows(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -209,6 +214,7 @@ def update_user_follows(user_id):
         db.session.commit()
 
 
+@celery.task()
 def update_user_followed_by(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
