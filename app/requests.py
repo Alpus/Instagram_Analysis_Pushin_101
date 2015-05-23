@@ -41,6 +41,8 @@ def init_user_by_id(user_id):
         user = models.User(user_data=user_data)
         db.session.add(user)
         db.session.commit()
+        user = db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
 
     return user
 
@@ -54,9 +56,10 @@ def init_user_by_data(user_data):
         user = models.User(user_data=user_data)
         db.session.add(user)
         db.session.commit()
-
-    return db.session.query(models.User).filter(models.User.inst_id_user ==
+        user = db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_data.id).first()
+
+    return user
 
 
 @celery.task()
@@ -70,6 +73,10 @@ def update_user(user_id):
     if user is None:
         user = models.User(user_data)
         db.session.add(user)
+        db.session.commit()
+        user =\
+            db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
     else:
         user.login = user_data.username
         user.full_name = user_data.full_name
@@ -80,8 +87,8 @@ def update_user(user_id):
         user.count_follows = user_data.counts['follows']
         user.count_followed_by = user_data.counts['followed_by']
         user.last_check = datetime.datetime.now()
+        db.session.commit()
 
-    db.session.commit()
     return user
 
 
@@ -97,6 +104,9 @@ def init_tag(tag_name):
         tag = models.Tag(tag_data)
         db.session.add(tag)
         db.session.commit()
+        tag =\
+            db.session.query(models.Tag).filter(models.Tag.name ==
+                                            tag_name).first()
 
     return tag
 
@@ -110,6 +120,9 @@ def init_comment_by_data(comment_data):
         comment = models.Comment(comment_data=comment_data)
         db.session.add(comment)
         db.session.commit()
+        comment =\
+            db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
+                                                    comment_data.id).first()
 
     return comment
 
@@ -126,6 +139,9 @@ def init_location(location_id):
         location = models.Location(location_data)
         db.session.add(location)
         db.session.commit()
+        location =\
+            db.session.query(models.Location).filter(models.Location.id_location ==
+                                                     location_id).first()
 
     return location
 
@@ -150,6 +166,9 @@ def update_user_media(user_id):
                     media = models.Media(media_data)
                     db.session.add(media)
                     db.session.commit()
+                    media =\
+                        db.session.query(models.Media).filter(models.Media.inst_id_media ==
+                                                              media_data.id).first()
                 else:
                     if media_data.caption:
                         media.caption = media_data.caption.text
@@ -177,7 +196,7 @@ def update_user_media(user_id):
                     db.session.commit()
 
                     new_comments = []
-                    old_comments = media.comments.all()
+                    old_comments = media.comments
                     for comment_data in media_data.comments:
                         new_comments.append(init_comment_by_data(comment_data))
                     media.comments = new_comments
