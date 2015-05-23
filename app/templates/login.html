@@ -11,9 +11,11 @@
         <div class="col-md-12">
             {% if user_id %}
                 <form method="POST" action="">
-                    {{ Analyse.hidden_tag() }}
-                    <input type="submit" id="analysis" value="Analysis" autocomplete="off"
-                           data-loading-text="Loading..." class="btn btn-primary btn-lg">
+                    {{ Analysis.hidden_tag() }}
+                    <p align="center">
+                        <input type="submit" id="analysis" value="Analysis" autocomplete="off"
+                            data-loading-text="Loading..." class="btn btn-primary btn-lg">
+                    </p>
                 </form>
                 <script>
                     $('#analysis').on('click', function () {

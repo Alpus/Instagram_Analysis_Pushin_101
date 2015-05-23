@@ -25,8 +25,8 @@ def index():
     if Login.validate_on_submit():
         return redirect(login_url)
 
-    Analyse = forms.Analyse()
-    if Analyse.validate_on_submit():
+    Analysis = forms.Analysis()
+    if Analysis.validate_on_submit():
         requests.update_user(user_id)
         requests.update_user_media(user_id)
         requests.update_user_followed_by(user_id)
@@ -35,7 +35,7 @@ def index():
 
     return render_template('login.html',
 
-                           Analyse=Analyse,
+                           Analyse=Analysis,
                            Login=Login,
 
                            login_url=login_url,

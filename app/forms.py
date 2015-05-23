@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
 
-class Analyse(Form):
+class Analysis(Form):
     None
 
 
