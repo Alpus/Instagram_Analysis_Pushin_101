@@ -1,8 +1,6 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Account information{% endblock %}
 {% block body %}
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-center">Instagram analysis</h1>
@@ -18,7 +16,7 @@
                         <input type="submit" id="analysis" name="button" value="Analysis" autocomplete="off"
                             data-loading-text="Loading..." class="btn btn-primary btn-lg">
                     </p>
-                    <script>
+                    <script type="text/javascript" src="js/bootstrap.js">
                         $('#analysis').on('click', function () {
                             $(this).button('loading')
                         })
