@@ -1,10 +1,10 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Instagram analysis{% endblock %}
 {% block scripts %}
+    {{ super() }}
     $('#analysis').on('click', function () {
         $(this).button('loading')
     })
-    {{ super() }}
 {% endblock %}
 {% block body %}
     <div class="row">
