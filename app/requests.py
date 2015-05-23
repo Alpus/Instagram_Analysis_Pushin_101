@@ -26,8 +26,6 @@ def process_login(code):
     that_user.access_token = access_token
     db.session.commit()
 
-    update_user_media(instagram_user['id'])
-
     return that_user.inst_id_user
 
 
