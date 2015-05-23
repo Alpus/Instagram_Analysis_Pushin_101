@@ -30,7 +30,7 @@ def process_login(code):
 
     return that_user.inst_id_user
 
-s
+
 @celery.task()
 def init_user_by_id(user_id):
     user =\
