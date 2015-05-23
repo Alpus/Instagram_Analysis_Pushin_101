@@ -11,22 +11,22 @@
         <div class="col-md-12">
             {% if user_id %}
                 <form method="POST" action="">
-                    {{ Analysis.hidden_tag() }}
+                    {{ button.hidden_tag() }}
                     <p align="center">
-                        <input type="submit" id="analysis" value="Analysis" autocomplete="off"
+                        <input type="submit" id="analysis" name="button" value="analysis" autocomplete="off"
                             data-loading-text="Loading..." class="btn btn-primary btn-lg">
                     </p>
+                    <script>
+                        $('#analysis').on('click', function () {
+                            $(this).button('loading')
+                        })
+                    </script>
                 </form>
-                <script>
-                    $('#analysis').on('click', function () {
-                        $(this).button('loading')
-                    })
-                </script>
             {% else %}
                 <form method="POST" action="">
-                    {{ Login.hidden_tag() }}
+                    {{ button.hidden_tag() }}
                     <p align="center">
-                        <input type="submit" value="Login" class="btn btn-primary btn-lg">
+                        <input type="submit" name="button" value="login" class="btn btn-primary btn-lg">
                     </p>
                 </form>
             {% endif %}

@@ -21,22 +21,20 @@ def index():
                  '&response_type=code&scope=basic')
     user_id = session.get('user_id', None)
 
-    Login = forms.Login(prefix='Login')
-    if Login.validate_on_submit() and Login.submit.data:
-        return redirect(login_url)
-
-    Analysis = forms.Analysis(prefix='Analysis')
-    if Analysis.validate_on_submit() and Analysis.submit.data:
-        requests.update_user(user_id)
-        requests.update_user_media(user_id)
-        requests.update_user_followed_by(user_id)
-        requests.update_user_follows(user_id)
-        return redirect('/analysis/'+str(user_id))
+    button = forms.Button()
+    if button.validate_on_submit():
+        if request.form['button'] == 'login':
+            return redirect(login_url)
+        elif request.form['button'] == 'analysis':
+            requests.update_user(user_id)
+            requests.update_user_media(user_id)
+            requests.update_user_followed_by(user_id)
+            requests.update_user_follows(user_id)
+            return redirect('/analysis/'+str(user_id))
 
     return render_template('login.html',
 
-                           Analysis=Analysis,
-                           Login=Login,
+                           button=button,
 
                            login_url=login_url,
                            user_id=user_id)
