@@ -1,12 +1,6 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Instagram analysis{% endblock %}
-{% block scripts %}
-    {{ super() }}
-    $('#analysis').on('click', function () {
-        $(this).button('loading')
-    })
-{% endblock %}
-{% block body %}
+{% block content %}
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-center">Instagram analysis</h1>
@@ -52,4 +46,10 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+{% block scripts %}
+    $('#analysis').on('click', function () {
+        $(this).button('loading')
+    })
+    {{ super() }}
 {% endblock %}
