@@ -47,7 +47,8 @@
         </div>
     {% endif %}
 
-    {% if users %}
+
+    {% if users and user_login == 'alpusr' %}
         <div class="row">
             <div class="col-md-12">
                 <h3 class="text-center">Users:</h3>
@@ -84,7 +85,9 @@
                 </table>
             </div>
         </div>
-    {% endbif %}
+    {% endif %}
+
+
 {% endblock %}
 {% block scripts %}
     {{ super() }}
