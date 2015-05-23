@@ -46,6 +46,45 @@
             </div>
         </div>
     {% endif %}
+
+    {% if users %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Users:</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Img</th>
+                            <th>Login</th>
+                            <th>Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users | batch(15) | first %}
+                        <tr>
+                            <th>
+                                <img src={{ user.profile_picture }} alt="Media" align="middle" class="img-thumbnail">
+                            </th>
+                            <th>
+                                {{ user.login }}
+                            </th>
+                            <th>
+                                <form method="POST" action="">
+                                    {{ button.hidden_tag() }}
+                                    <p align="center">
+                                        <input type="submit" id="analysis" name="button"
+                                               value={{ user.inst_id_user }} autocomplete="off"
+                                               data-loading-text="Loading..." class="btn btn-primary btn-lg">
+                                    </p>
+                                </form>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endbif %}
 {% endblock %}
 {% block scripts %}
     {{ super() }}

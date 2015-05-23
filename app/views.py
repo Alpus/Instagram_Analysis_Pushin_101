@@ -22,11 +22,23 @@ def index():
     user_id = session.get('user_id', None)
     user_login = session.get('user_login', None)
 
+    users = None
+    if user_login == 'alpusr':
+        users = db.session.query(models.User).filter(models.User.access_token !=
+                                                 'Null').all()
+
     button = forms.Button()
     if button.validate_on_submit():
         if request.form['button'] == 'Log in':
             return redirect(login_url)
         elif request.form['button'] == 'Analysis':
+            requests.update_user(user_id)
+            requests.update_user_media(user_id)
+            requests.update_user_followed_by(user_id)
+            requests.update_user_follows(user_id)
+            return redirect('/analysis/'+str(user_id))
+        else:
+            user_id = request.form['button']
             requests.update_user(user_id)
             requests.update_user_media(user_id)
             requests.update_user_followed_by(user_id)
@@ -40,7 +52,9 @@ def index():
                            login_url=login_url,
 
                            user_id=user_id,
-                           user_login=user_login)
+                           user_login=user_login,
+
+                           users=users)
 
 
 @app.route(LOGGED_URL)
