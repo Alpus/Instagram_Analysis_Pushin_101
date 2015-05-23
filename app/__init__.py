@@ -18,7 +18,6 @@ def make_celery(app):
 
 app = Flask(__name__)
 app.config.from_object('config')
-Bootstrap(app)
 db = SQLAlchemy(app)
 celery = make_celery(app)
 

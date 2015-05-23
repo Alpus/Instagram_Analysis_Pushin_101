@@ -1,5 +1,5 @@
-{% extends "bootstrap/base.html" %}
-{% block title %}Account information{% endblock %}
+{% extends "base.html" %}
+{% block title %}Instagram analysis{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col-md-12">
@@ -8,7 +8,7 @@
     </div>
 
     {% if user_id %}
-        <h3> Hi, {{ user_id }} </h3>
+        <h3 allign="center"> Hi, {{ user_id }} </h3>
     {% endif %}
 
     <div class="row">
@@ -19,7 +19,7 @@
                     <p align="center">
                         <input type="submit" id="analysis" name="button" value="Analysis" autocomplete="off"
                             data-loading-text="Loading..." class="btn btn-primary btn-lg">
-                        <script type="text/javascript" src="js/bootstrap.js">
+                        <script>
                             $('#analysis').on('click', function () {
                                 $(this).button('loading')
                             })

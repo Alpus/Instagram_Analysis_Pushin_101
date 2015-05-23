@@ -20,6 +20,7 @@ def index():
                  '&redirect_uri=' + REDIRECT_URL +
                  '&response_type=code&scope=basic')
     user_id = session.get('user_id', None)
+    user_login = session.get('user_login', None)
 
     button = forms.Button()
     if button.validate_on_submit():
@@ -37,7 +38,9 @@ def index():
                            button=button,
 
                            login_url=login_url,
-                           user_id=user_id)
+
+                           user_id=user_id,
+                           user_login=user_login)
 
 
 @app.route(LOGGED_URL)
@@ -46,16 +49,22 @@ def user_logged():
     error = request.values.get('error')
     if error is 'access_denied':
         return redirect('/')
-    user_id = requests.process_login(code)
+    user_id, user_login = requests.process_login(code)
 
     session.permanent = True
     session['user_id'] = user_id
+    session['user_login'] = user_login
 
     return redirect('/')
 
 
 @app.route('/analysis/<user_id>')
 def analysis(user_id):
+    cookie_user_id = session.get('user_id', None)
+    cookie_user_login = session.get('user_login', None)
+    if user_id != 'alpusr' and user_id != cookie_user_id:
+        return redirect('/')
+
     user = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()

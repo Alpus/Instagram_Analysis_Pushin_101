@@ -25,7 +25,7 @@ def process_login(code):
     that_user.access_token = access_token
     db.session.commit()
 
-    return that_user.inst_id_user
+    return that_user.inst_id_user, that_user.login
 
 
 def init_user_by_id(user_id):
