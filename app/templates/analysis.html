@@ -114,7 +114,7 @@
                                 {{ liker[1][1] }}
                             </th>
                             <th>
-                                {{ '%0.2f' %  (liker[1][1] / user.count_media) | float }}
+                                {{ ((liker[1][1] / user.count_media) * 100) | int }}
                             </th>
                         </tr>
                     {% endfor %}
