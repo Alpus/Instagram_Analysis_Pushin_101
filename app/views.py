@@ -21,12 +21,12 @@ def index():
                  '&response_type=code&scope=basic')
     user_id = session.get('user_id', None)
 
-    Login = forms.Login()
-    if Login.validate_on_submit():
+    Login = forms.Login(prefix='Login')
+    if Login.validate_on_submit() and Login.submit.data:
         return redirect(login_url)
 
-    Analysis = forms.Analysis()
-    if Analysis.validate_on_submit():
+    Analysis = forms.Analysis(prefix='Analysis')
+    if Analysis.validate_on_submit() and Analysis.submit.data:
         requests.update_user(user_id)
         requests.update_user_media(user_id)
         requests.update_user_followed_by(user_id)
