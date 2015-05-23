@@ -10,6 +10,8 @@ LOGGED_URL = '/logged'
 HOME_URL = 'http://54.149.115.96'
 REDIRECT_URL = HOME_URL + LOGGED_URL
 
+dbsession = db.session
+
 
 @celery.task()
 def process_login(code):
@@ -24,25 +26,23 @@ def process_login(code):
     that_user.registration_date = datetime.datetime.now()
     that_user.last_visit = datetime.datetime.now()
     that_user.access_token = access_token
-    db.session.commit()
+    dbsession.commit()
 
     return that_user.inst_id_user
 
-
+s
 @celery.task()
 def init_user_by_id(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.inst_id_user ==
+        dbsession.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
         api = client.InstagramAPI(access_token=user.access_token,
                               client_secret=CLIENT_SECRET)
         user_data = api.user(user_id)
         user = models.User(user_data=user_data)
-        db.session.add(user)
-        db.session.commit()
-        user = db.session.query(models.User).filter(models.User.inst_id_user ==
-                                             user_id).first()
+        dbsession.add(user)
+        dbsession.commit()
 
     return user
 
@@ -50,14 +50,12 @@ def init_user_by_id(user_id):
 @celery.task()
 def init_user_by_data(user_data):
     user =\
-        db.session.query(models.User).filter(models.User.inst_id_user ==
+        dbsession.query(models.User).filter(models.User.inst_id_user ==
                                              user_data.id).first()
     if user is None:
         user = models.User(user_data=user_data)
-        db.session.add(user)
-        db.session.commit()
-        user = db.session.query(models.User).filter(models.User.inst_id_user ==
-                                             user_data.id).first()
+        dbsession.add(user)
+        dbsession.commit()
 
     return user
 
@@ -65,18 +63,14 @@ def init_user_by_data(user_data):
 @celery.task()
 def update_user(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.inst_id_user ==
+        dbsession.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     api = client.InstagramAPI(access_token=user.access_token,
                               client_secret=CLIENT_SECRET)
     user_data = api.user(user_id)
     if user is None:
         user = models.User(user_data)
-        db.session.add(user)
-        db.session.commit()
-        user =\
-            db.session.query(models.User).filter(models.User.inst_id_user ==
-                                             user_id).first()
+        dbsession.add(user)
     else:
         user.login = user_data.username
         user.full_name = user_data.full_name
@@ -87,26 +81,23 @@ def update_user(user_id):
         user.count_follows = user_data.counts['follows']
         user.count_followed_by = user_data.counts['followed_by']
         user.last_check = datetime.datetime.now()
-        db.session.commit()
 
+    dbsession.commit()
     return user
 
 
 @celery.task()
 def init_tag(tag_name):
     tag =\
-        db.session.query(models.Tag).filter(models.Tag.name ==
+        dbsession.query(models.Tag).filter(models.Tag.name ==
                                             tag_name).first()
     if tag is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         tag_data = api.tag(tag_name)
         tag = models.Tag(tag_data)
-        db.session.add(tag)
-        db.session.commit()
-        tag =\
-            db.session.query(models.Tag).filter(models.Tag.name ==
-                                            tag_name).first()
+        dbsession.add(tag)
+        dbsession.commit()
 
     return tag
 
@@ -114,15 +105,12 @@ def init_tag(tag_name):
 @celery.task()
 def init_comment_by_data(comment_data):
     comment =\
-        db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
+        dbsession.query(models.Comment).filter(models.Comment.inst_id_comment ==
                                                 comment_data.id).first()
     if comment is None:
         comment = models.Comment(comment_data=comment_data)
-        db.session.add(comment)
-        db.session.commit()
-        comment =\
-            db.session.query(models.Comment).filter(models.Comment.inst_id_comment ==
-                                                    comment_data.id).first()
+        dbsession.add(comment)
+        dbsession.commit()
 
     return comment
 
@@ -130,18 +118,15 @@ def init_comment_by_data(comment_data):
 @celery.task()
 def init_location(location_id):
     location =\
-        db.session.query(models.Location).filter(models.Location.id_location ==
+        dbsession.query(models.Location).filter(models.Location.id_location ==
                                                  location_id).first()
     if location is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         location_data = api.location(location_id)
         location = models.Location(location_data)
-        db.session.add(location)
-        db.session.commit()
-        location =\
-            db.session.query(models.Location).filter(models.Location.id_location ==
-                                                     location_id).first()
+        dbsession.add(location)
+        dbsession.commit()
 
     return location
 
@@ -149,7 +134,7 @@ def init_location(location_id):
 @celery.task()
 def update_user_media(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.inst_id_user ==
+        dbsession.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
@@ -160,15 +145,12 @@ def update_user_media(user_id):
         for case in medias:
             for media_data in case[0]:
                 media =\
-                    db.session.query(models.Media).filter(models.Media.inst_id_media ==
+                    dbsession.query(models.Media).filter(models.Media.inst_id_media ==
                                                           media_data.id).first()
                 if media is None:
                     media = models.Media(media_data)
-                    db.session.add(media)
-                    db.session.commit()
-                    media =\
-                        db.session.query(models.Media).filter(models.Media.inst_id_media ==
-                                                              media_data.id).first()
+                    dbsession.add(media)
+                    dbsession.commit()
                 else:
                     if media_data.caption:
                         media.caption = media_data.caption.text
@@ -179,45 +161,45 @@ def update_user_media(user_id):
                         media.location = init_location(media_data.location.id)
                     else:
                         media.location = None
-                    db.session.commit()
+                    dbsession.commit()
 
                     likes = api.media_likes(media_id=media_data.id)
                     new_likes = []
                     for like in likes:
                         new_likes.append(init_user_by_data(like))
                     media.liked_by = new_likes
-                    db.session.commit()
+                    dbsession.commit()
 
                     new_tags = []
                     if 'tags' in dir(media_data):
                         for tag in media_data.tags:
                             new_tags.append(init_tag(tag.name))
                     media.tags = new_tags
-                    db.session.commit()
+                    dbsession.commit()
 
                     new_comments = []
-                    old_comments = media.comments
+                    old_comments = media.comments.all()
                     for comment_data in media_data.comments:
                         new_comments.append(init_comment_by_data(comment_data))
                     media.comments = new_comments
-                    db.session.commit()
+                    dbsession.commit()
                     to_delete = set(old_comments) - set(new_comments)
                     for comment in to_delete:
-                        db.session.delete(comment)
-                    db.session.commit()
+                        dbsession.delete(comment)
+                    dbsession.commit()
 
                 new_medias.append(media)
 
         to_delete = set(old_medias) - set(new_medias)
         for media in to_delete:
-            db.session.delete(media)
-        db.session.commit()
+            dbsession.delete(media)
+        dbsession.commit()
 
 
 @celery.task()
 def update_user_follows(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.inst_id_user ==
+        dbsession.query(models.User).filter(models.User.inst_id_user ==
                                               user_id).first()
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
@@ -230,13 +212,12 @@ def update_user_follows(user_id):
                 new_follows.append(follow_user)
         user.follows = new_follows
 
-        db.session.commit()
-
+        dbsession.commit()
 
 @celery.task()
 def update_user_followed_by(user_id):
     user =\
-        db.session.query(models.User).filter(models.User.inst_id_user ==
+        dbsession.query(models.User).filter(models.User.inst_id_user ==
                                               user_id).first()
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
@@ -249,4 +230,4 @@ def update_user_followed_by(user_id):
                 new_followed_by.append(followed_by_user)
         user.followed_by = new_followed_by
 
-        db.session.commit()
+        dbsession.commit()
