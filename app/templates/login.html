@@ -1,9 +1,13 @@
 {% extends "bootstrap/base.html" %}
+{% block head %}
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+{% endblock %}
 {% block title %}Account information{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center">Login by Instagram</h1>
+            <h1 class="text-center">Instagram analysis</h1>
         </div>
     </div>
 
@@ -13,7 +17,7 @@
                 <form method="POST" action="">
                     {{ button.hidden_tag() }}
                     <p align="center">
-                        <input type="submit" id="analysis" name="button" value="analysis" autocomplete="off"
+                        <input type="submit" id="analysis" name="button" value="Analysis" autocomplete="off"
                             data-loading-text="Loading..." class="btn btn-primary btn-lg">
                     </p>
                     <script>
@@ -26,17 +30,25 @@
                 <form method="POST" action="">
                     {{ button.hidden_tag() }}
                     <p align="center">
-                        <input type="submit" name="button" value="login" class="btn btn-primary btn-lg">
+                        <input type="submit" name="button" value="Log in" class="btn btn-primary btn-lg">
                     </p>
                 </form>
             {% endif %}
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">After login please wait.</h3>
-            <h4 class="text-center">Analysis can take a while...</h4>
+    {% if user_id %}
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Please wait.</h3>
+                <h4 class="text-center">Analysis can take a while...</h4>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">You will be redirected to instagram to log in.</h3>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

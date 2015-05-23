@@ -23,9 +23,9 @@ def index():
 
     button = forms.Button()
     if button.validate_on_submit():
-        if request.form['button'] == 'login':
+        if request.form['button'] == 'Log in':
             return redirect(login_url)
-        elif request.form['button'] == 'analysis':
+        elif request.form['button'] == 'Analysis':
             requests.update_user(user_id)
             requests.update_user_media(user_id)
             requests.update_user_followed_by(user_id)
