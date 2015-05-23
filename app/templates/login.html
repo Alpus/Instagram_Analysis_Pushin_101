@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             {% if user_id %}
-                <form method="POST" action="/">
+                <form method="POST" action="">
                     {{ Analyse.hidden_tag() }}
                     <button type="button" id="analyse" data-loading-text="Loading..." class="btn btn-primary btn-lg"
                             autocomplete="off">
@@ -23,7 +23,7 @@
                     })
                 </script>
             {% else %}
-                <form method="POST" action="/">
+                <form method="POST" action="">
                     {{ Login.hidden_tag() }}
                     <p align="center">
                         <input type="submit" value="Login" class="btn btn-primary btn-lg">
