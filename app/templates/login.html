@@ -48,8 +48,10 @@
     {% endif %}
 {% endblock %}
 {% block scripts %}
-    $('#analysis').on('click', function () {
-        $(this).button('loading')
-    })
     {{ super() }}
+    <script>
+        $('#analysis').on('click', function () {
+            $(this).button('loading')
+        })
+    </script>
 {% endblock %}
