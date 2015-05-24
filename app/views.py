@@ -91,7 +91,7 @@ def analysis(user_id):
         tags_likes = logic.get_tags_likes(user_id)
         follows = logic.get_follows(user_id)
         followed_by = logic.get_followed_by(user_id)
-        user_filters, filter_count_all, filter_count_unique = logic.get_user_filter(user_id)
+        user_filters, filter_count = logic.get_user_filter(user_id)
         filter_likes = logic.get_filters_likes(user_id)
         return render_template('analysis.html',
                                user=user,
@@ -116,6 +116,6 @@ def analysis(user_id):
                                filter_count_all=user_filters,
                                filter_count_unique=user_filters,
 
-                               filter_likes=enumerate(user_filters),
+                               filter_likes=enumerate(filter_likes),
 
                                home_url=HOME_URL)

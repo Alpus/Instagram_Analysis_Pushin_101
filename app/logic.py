@@ -117,18 +117,15 @@ def get_user_filter(user_id):
                                              user_id).first()
      medias = user_temp.medias
      user_filters = {}
-     filter_count_all = 0
      for media in medias:
-         for filter in media.tags:
-             if filter not in user_filters:
-                 user_filters[filter] = 1
-             else:
-                 user_filters[filter] += 1
-             filter_count_all += 1
+         if media.filter_media not in user_filters:
+             user_filters[media.filter_media] = 1
+         else:
+             user_filters[media.filter_media] += 1
      user_filters = user_filters.items()
      user_filters.sort(key=lambda x: (-x[1], x[0].name))
-     filter_count_unique = len(user_filters)
-     return user_filters, filter_count_all, filter_count_unique
+     filter_count = len(user_filters)
+     return user_filters, filter_count
 
 
 def get_filters_likes(user_id):
@@ -138,13 +135,13 @@ def get_filters_likes(user_id):
     medias = user_temp.medias
     filter_likes = {}
     for media in medias:
-        for filter in media.tags:
-            if filter not in filter_likes:
-                filter_likes[filter] = [1, media.count_of_likes, media.image_thumbnail]
-            else:
-                filter_likes[filter][0] += 1
-                filter_likes[filter][1] += media.count_of_likes
-                filter_likes[filter][2] += media.image_thumbnail
+        if media.filter_media not in filter_likes:
+            filter_likes[media.filter_media] = [1, media.count_of_likes, media]
+        else:
+            filter_likes[media.filter_media][0] += 1
+            filter_likes[media.filter_media][1] += media.count_of_likes
+            if (filter_likes[media.filter_media][2].count_of_likes < media.count_of_likes):
+                filter_likes[media.filter_media][2] = media
     for filter in filter_likes:
         filter_likes[filter] = [filter_likes[filter][1] / filter_likes[filter][0], filter_likes[filter][2]]
     filter_likes = filter_likes.items()
