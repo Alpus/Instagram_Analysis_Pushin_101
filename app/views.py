@@ -93,6 +93,8 @@ def analysis(user_id):
         followed_by = logic.get_followed_by(user_id)
         user_filters, filter_count = logic.get_user_filter(user_id)
         filter_likes = logic.get_filters_likes(user_id)
+        user_locations, location_count_all, location_count_unique = logic.get_user_filter(user_id)
+        location_likes = logic.get_filters_likes(user_id)
         return render_template('analysis.html',
                                user=user,
 
@@ -116,5 +118,11 @@ def analysis(user_id):
                                filter_count=filter_count,
 
                                filter_likes=enumerate(filter_likes),
+
+                               user_locations=enumerate(user_locations),
+                               location_count_all=location_count_all,
+                               location_count_unique=location_count_unique,
+
+                               location_likes=enumerate(location_likes),
 
                                home_url=HOME_URL)
