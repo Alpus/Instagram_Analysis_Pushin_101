@@ -126,9 +126,73 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h2 class="text-center">Tags</h2>
+            <h2 class="text-center">Filters</h2>
         </div>
     </div>
+
+    {% if filter_count_all %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <h3 class="text-center">Filters counting</h3>
+
+                <p class="text-center">You have used {{ filter_count_all }} filters where {{ filter_count_unique }} is unique.</p>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Filter</th>
+                        <th>Count</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for filter in user_filters | batch(9) | first %}
+                        <tr>
+                            <th>{{ filter[0] + 1 }}</th>
+                            <th>
+                                {{ filter[1][0].name }}
+                            </th>
+                            <th>
+                                {{ filter[1][1] }}
+                            </th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-center">Filter liking</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Filter</th>
+                        <th>Average like count</th>
+                        <th>The most liked post with filter</th>
+                    </tr>>
+                    </thead>
+                    <tbody>
+                    {% for filter in filters_likes | batch(10) | first %}
+                        <tr>
+                            <th>{{ filter[0] + 1 }}</th>
+                            <th>
+                                {{ filter[1][0].name }}
+                            </th>
+                            <th>
+                                {{ '%0.2f' % filter[1][1][0] }}
+                            </th>
+                            <th>
+                                <img src={{ liker[1][1][1] }} width="50" height="50" alt="Media photo"
+                                     align="middle" class="img-thumbnail">
+                            </th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center">You have no filters</p>
+    {% endif %}
 
     {% if tag_count_all %}
         <div class="row">

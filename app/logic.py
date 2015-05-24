@@ -109,3 +109,44 @@ def get_followed_by(user_id):
                                              user_id).first()
     user_followed_by = user_temp.followed_by
     return user_followed_by
+
+
+def get_user_filter(user_id):
+     user_temp = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+     medias = user_temp.medias
+     user_filters = {}
+     filter_count_all = 0
+     for media in medias:
+         for filter in media.tags:
+             if filter not in user_filters:
+                 user_filters[filter] = 1
+             else:
+                 user_filters[filter] += 1
+             filter_count_all += 1
+     user_filters = user_filters.items()
+     user_filters.sort(key=lambda x: (-x[1], x[0].name))
+     filter_count_unique = len(user_filters)
+     return user_filters, filter_count_all, filter_count_unique
+
+
+def get_filters_likes(user_id):
+    user_temp = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    medias = user_temp.medias
+    filter_likes = {}
+    for media in medias:
+        for filter in media.tags:
+            if filter not in filter_likes:
+                filter_likes[filter] = [1, media.count_of_likes, media.image_thumbnail]
+            else:
+                filter_likes[filter][0] += 1
+                filter_likes[filter][1] += media.count_of_likes
+                filter_likes[filter][2] += media.image_thumbnail
+    for filter in filter_likes:
+        filter_likes[filter] = [filter_likes[filter][1] / filter_likes[filter][0], filter_likes[filter][2]]
+    filter_likes = filter_likes.items()
+    filter_likes.sort(key=lambda x: (-x[1][0], x[0].name))
+    return filter_likes

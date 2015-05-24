@@ -93,8 +93,10 @@
 {% block scripts %}
     {{ super() }}
     <script>
+    $(document).ready( function() {
         $('#analysis').on('click', function () {
-            $(this).button('loading')
-        })
+            $(this).button('loading');
+        });
+    });
     </script>
 {% endblock %}
