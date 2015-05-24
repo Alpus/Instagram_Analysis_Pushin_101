@@ -226,6 +226,5 @@ def update_user_followed_by(user_id):
 def clear_locations():
     locations = db.session.query(models.Location).all()
     for location in locations:
-        if len(location.medias) is 0:
-            db.session.delete(location)
+        db.session.delete(location)
     db.session.commit()
