@@ -89,7 +89,7 @@ def get_tags_likes(user_id):
                 tags_likes[tag][0] += 1
                 tags_likes[tag][1] += media.count_of_likes
     for tag in tags_likes:
-        tags_likes[tag] = tags_likes[tag][1] / tags_likes[tag][0]
+        tags_likes[tag] = float(tags_likes[tag][1] / tags_likes[tag][0])
     tags_likes = tags_likes.items()
     tags_likes.sort(key=lambda x: (-x[1], x[0].name))
     return tags_likes
@@ -143,7 +143,7 @@ def get_filters_likes(user_id):
             if (filter_likes[media.filter_media][2].count_of_likes < media.count_of_likes):
                 filter_likes[media.filter_media][2] = media
     for filter in filter_likes:
-        filter_likes[filter] = [filter_likes[filter][1] / filter_likes[filter][0], filter_likes[filter][2]]
+        filter_likes[filter] = [float(filter_likes[filter][1] / filter_likes[filter][0]), filter_likes[filter][2]]
     filter_likes = filter_likes.items()
     filter_likes.sort(key=lambda x: (-x[1][0], x[0]))
     return filter_likes
