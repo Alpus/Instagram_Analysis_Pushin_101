@@ -178,7 +178,7 @@
                                 {{ filter[1][0] }}
                             </th>
                             <th>
-                                {{ '%0.2f' % filter[1][1][0] }}
+                                {{ '%0.2f' % filter[1][1][0] | float }}
                             </th>
                             <th>
                                 <img src={{ filter[1][1][1].image_thumbnail }} width="50" height="50" alt="Media photo"
@@ -248,7 +248,7 @@
                                 {{ tag[1][0].name }}
                             </th>
                             <th>
-                                {{ '%0.2f' % tag[1][1] }}
+                                {{ '%0.2f' % tag[1][1] | float }}
                             </th>
                         </tr>
                     {% endfor %}
