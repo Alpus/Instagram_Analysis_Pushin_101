@@ -35,14 +35,14 @@ def get_users_who_liked(user_id):
     possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
     for liker in possible_user_likes:
         if liker[0] in users_who_liked:
-            users_who_liked[liker[0]] += liker[1] * (users_who_liked[liker[0]] // user_temp.count_media)
+            users_who_liked[liker[0]] += liker[1] * (users_who_liked[liker[0]] / user_temp.count_media)
 
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
 
     liker_count = len(users_who_liked)
     medias.sort(key=lambda x: (-x.count_of_likes))
-    median_like_count = medias[len(medias) // 2].count_of_likes
+    median_like_count = medias[len(medias) / 2].count_of_likes
     return users_who_liked, sum_of_likes, liker_count, median_like_count
 
 
@@ -89,7 +89,7 @@ def get_tags_likes(user_id):
                 tags_likes[tag][0] += 1
                 tags_likes[tag][1] += media.count_of_likes
     for tag in tags_likes:
-        tags_likes[tag] = tags_likes[tag][1] / tags_likes[tag][0]
+        tags_likes[tag] = float(tags_likes[tag][1]) / tags_likes[tag][0]
     tags_likes = tags_likes.items()
     tags_likes.sort(key=lambda x: (-x[1], x[0].name))
     return tags_likes
@@ -109,3 +109,86 @@ def get_followed_by(user_id):
                                              user_id).first()
     user_followed_by = user_temp.followed_by
     return user_followed_by
+
+
+def get_user_filter(user_id):
+     user_temp = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+     medias = user_temp.medias
+     user_filters = {}
+     for media in medias:
+         if media.filter_media not in user_filters:
+             user_filters[media.filter_media] = 1
+         else:
+             user_filters[media.filter_media] += 1
+     user_filters = user_filters.items()
+     user_filters.sort(key=lambda x: (-x[1], x[0]))
+     filter_count = len(user_filters)
+     return user_filters, filter_count
+
+
+def get_filters_likes(user_id):
+    user_temp = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    medias = user_temp.medias
+    filter_likes = {}
+    for media in medias:
+        if media.filter_media not in filter_likes:
+            filter_likes[media.filter_media] = [1, media.count_of_likes, media]
+        else:
+            filter_likes[media.filter_media][0] += 1
+            filter_likes[media.filter_media][1] += media.count_of_likes
+            if (filter_likes[media.filter_media][2].count_of_likes < media.count_of_likes):
+                filter_likes[media.filter_media][2] = media
+    for filter in filter_likes:
+        filter_likes[filter] = [float(filter_likes[filter][1]) / filter_likes[filter][0], filter_likes[filter][2]]
+    filter_likes = filter_likes.items()
+    filter_likes.sort(key=lambda x: (-x[1][0], x[0]))
+    return filter_likes
+
+
+def get_user_location(user_id):
+     user_temp = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+     medias = user_temp.medias
+     user_locations = {}
+     location_count_all = 0
+     for media in medias:
+         if media.location is not None:
+             if media.location not in user_locations:
+                 user_locations[media.location] = 1
+             else:
+                 user_locations[media.location] += 1
+             location_count_all += 1
+     user_locations = user_locations.items()
+     user_locations.sort(key=lambda x: (-x[1], x[0].name))
+     location_count_unique = len(user_locations)
+     return user_locations, location_count_all, location_count_unique
+
+
+def get_locations_likes(user_id):
+    user_temp = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    medias = user_temp.medias
+    location_likes = {}
+    for media in medias:
+        if media.location is not None:
+            if media.location not in location_likes:
+                location_likes[media.location] = [1, media.count_of_likes, media]
+            else:
+                location_likes[media.location][0] += 1
+                location_likes[media.location][1] += media.count_of_likes
+                if (location_likes[media.location][2].count_of_likes < media.count_of_likes):
+                    location_likes[media.location][2] = media
+    for location in location_likes:
+        location_likes[location] = [float(location_likes[location][1]) / location_likes[location][0],
+                                    location_likes[location][2]]
+    location_likes = location_likes.items()
+    location_likes.sort(key=lambda x: (-x[1][0], x[0].name))
+    return location_likes
+
+

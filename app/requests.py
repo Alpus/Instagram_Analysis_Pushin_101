@@ -109,7 +109,7 @@ def init_comment_by_data(comment_data):
 
 def init_location(location_id):
     location =\
-        db.session.query(models.Location).filter(models.Location.id_location ==
+        db.session.query(models.Location).filter(models.Location.inst_id_location ==
                                                  location_id).first()
     if location is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
@@ -220,3 +220,13 @@ def update_user_followed_by(user_id):
         user.followed_by = new_followed_by
 
         db.session.commit()
+
+###############################################################################
+
+def clear_locations():
+    locations = db.session.query(models.Location).filter(models.Location.medias
+                                                         == None)
+    for location in locations:
+        db.session.delete(location)
+        
+    db.session.commit()

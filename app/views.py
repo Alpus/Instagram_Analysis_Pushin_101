@@ -85,12 +85,19 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
+        ###################
+        requests.clear_locations()
+        #################
         most_liked_media = logic.get_most_liked_media(user_id)
         users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
         user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
         tags_likes = logic.get_tags_likes(user_id)
         follows = logic.get_follows(user_id)
         followed_by = logic.get_followed_by(user_id)
+        user_filters, filter_count = logic.get_user_filter(user_id)
+        filter_likes = logic.get_filters_likes(user_id)
+        user_locations, location_count_all, location_count_unique = logic.get_user_location(user_id)
+        location_likes = logic.get_locations_likes(user_id)
         return render_template('analysis.html',
                                user=user,
 
@@ -109,5 +116,16 @@ def analysis(user_id):
 
                                follows=follows,
                                followed_by=followed_by,
+
+                               user_filters=enumerate(user_filters),
+                               filter_count=filter_count,
+
+                               filter_likes=enumerate(filter_likes),
+
+                               user_locations=enumerate(user_locations),
+                               location_count_all=location_count_all,
+                               location_count_unique=location_count_unique,
+
+                               location_likes=enumerate(location_likes),
 
                                home_url=HOME_URL)
