@@ -95,6 +95,9 @@ def analysis(user_id):
         filter_likes = logic.get_filters_likes(user_id)
         user_locations, location_count_all, location_count_unique = logic.get_user_location(user_id)
         location_likes = logic.get_locations_likes(user_id)
+        ###################
+        requests.clear_locations()
+        #################
         return render_template('analysis.html',
                                user=user,
 
