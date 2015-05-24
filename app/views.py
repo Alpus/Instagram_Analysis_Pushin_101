@@ -92,7 +92,7 @@ def analysis(user_id):
         follows = logic.get_follows(user_id)
         followed_by = logic.get_followed_by(user_id)
         user_filters, filter_count_all, filter_count_unique = logic.get_user_filter(user_id)
-        filter_likes = logic.get_filters_likes()
+        filter_likes = logic.get_filters_likes(user_id)
         return render_template('analysis.html',
                                user=user,
 
