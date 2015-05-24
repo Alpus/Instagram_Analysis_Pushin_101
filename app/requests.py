@@ -228,4 +228,5 @@ def clear_locations():
                                                          == None)
     for location in locations:
         db.session.delete(location)
+        
     db.session.commit()
