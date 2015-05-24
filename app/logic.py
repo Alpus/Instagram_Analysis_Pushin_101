@@ -123,7 +123,7 @@ def get_user_filter(user_id):
          else:
              user_filters[media.filter_media] += 1
      user_filters = user_filters.items()
-     user_filters.sort(key=lambda x: (-x[1], x[0].name))
+     user_filters.sort(key=lambda x: (-x[1], x[0]))
      filter_count = len(user_filters)
      return user_filters, filter_count
 
@@ -145,5 +145,5 @@ def get_filters_likes(user_id):
     for filter in filter_likes:
         filter_likes[filter] = [filter_likes[filter][1] / filter_likes[filter][0], filter_likes[filter][2]]
     filter_likes = filter_likes.items()
-    filter_likes.sort(key=lambda x: (-x[1][0], x[0].name))
+    filter_likes.sort(key=lambda x: (-x[1][0], x[0]))
     return filter_likes
