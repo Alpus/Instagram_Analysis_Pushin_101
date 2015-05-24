@@ -145,7 +145,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for filter in user_filters | batch(9) | first %}
+                        {% for filter in user_filters | batch(15) | first %}
                         <tr>
                             <th>{{ filter[0] + 1 }}</th>
                             <th>
