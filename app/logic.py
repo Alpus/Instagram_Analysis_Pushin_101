@@ -151,7 +151,7 @@ def get_filters_likes(user_id):
 
 def get_user_location(user_id):
      user_temp = \
-        db.session.query(models.User).location(models.User.inst_id_user ==
+        db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
      medias = user_temp.medias
      user_locations = {}
@@ -170,7 +170,7 @@ def get_user_location(user_id):
 
 def get_locations_likes(user_id):
     user_temp = \
-        db.session.query(models.User).location(models.User.inst_id_user ==
+        db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     medias = user_temp.medias
     location_likes = {}
