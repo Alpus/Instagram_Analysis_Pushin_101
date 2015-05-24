@@ -113,8 +113,7 @@ def analysis(user_id):
                                followed_by=followed_by,
 
                                user_filters=enumerate(user_filters),
-                               filter_count_all=user_filters,
-                               filter_count_unique=user_filters,
+                               filter_count=filter_count,
 
                                filter_likes=enumerate(filter_likes),
 

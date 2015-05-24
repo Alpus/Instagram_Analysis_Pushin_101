@@ -138,14 +138,14 @@
                 <p class="text-center">You have used {{ filter_count }} filters.</p>
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Filter</th>
-                        <th>Count</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Filter</th>
+                            <th>Count</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for filter in user_filters | batch(9) | first %}
+                        {% for filter in user_filters | batch(9) | first %}
                         <tr>
                             <th>{{ filter[0] + 1 }}</th>
                             <th>
@@ -155,7 +155,7 @@
                                 {{ filter[1][1] }}
                             </th>
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -168,10 +168,10 @@
                             <th>Filter</th>
                             <th>Average like count</th>
                             <th>The most liked post with filter</th>
-                        </tr>>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for filter in filters_likes | batch(8) | first %}
+                    {% for filter in filter_likes | batch(8) | first %}
                         <tr>
                             <th>{{ filter[0] + 1 }}</th>
                             <th>
