@@ -112,10 +112,10 @@ def analysis(user_id):
                                follows=follows,
                                followed_by=followed_by,
 
-                               user_filters=user_filters,
+                               user_filters=enumerate(user_filters),
                                filter_count_all=user_filters,
                                filter_count_unique=user_filters,
 
-                               filter_likes=user_filters,
+                               filter_likes=enumerate(user_filters),
 
                                home_url=HOME_URL)
