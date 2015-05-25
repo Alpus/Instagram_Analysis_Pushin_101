@@ -94,7 +94,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for liker in users_who_liked | batch(20) | first %}
+                    {% for liker in users_who_liked | batch(120) | first %}
                         <tr>
                             <th>{{ liker[0] + 1 }}</th>
                             <th>
