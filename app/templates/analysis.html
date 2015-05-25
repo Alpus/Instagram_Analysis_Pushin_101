@@ -1,6 +1,13 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Account information{% endblock %}
 {% block body %}
+    <style>
+       .scrollable {
+        overflow: auto; /* Добавляем полосы прокрутки */
+        height: 800px; /* Высота блока */
+       }
+    </style>
+
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-center">Account information</h1>
@@ -46,7 +53,7 @@
 
 
             <h3 class="text-center">Your most likable posts:</h3>
-            <table class="table">
+            <table class="table scrollable">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -55,7 +62,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for media in most_liked_media | batch(8) | first %}
+                {% for media in most_liked_media %}
                     <tr>
                         <th>{{ media[0] + 1 }}</th>
                         <th>
@@ -83,7 +90,7 @@
                 <p>You are just too popular!)</p>
             {% else %}
                 <h3 class="text-center">Users who have liked you:</h3>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -94,7 +101,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for liker in users_who_liked | batch(120) | first %}
+                    {% for liker in users_who_liked %}
                         <tr>
                             <th>{{ liker[0] + 1 }}</th>
                             <th>
@@ -138,7 +145,7 @@
 
                 <p class="text-center">You have used {{ location_count_all }} tags where
                     {{ location_count_unique }} is unique.</p>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -147,7 +154,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for location in user_locations | batch(15) | first %}
+                        {% for location in user_locations %}
                         <tr>
                             <th>{{ location[0] + 1 }}</th>
                             <th>
@@ -163,7 +170,7 @@
             </div>
             <div class="col-md-4">
                 <h3 class="text-center">Location liking</h3>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -173,7 +180,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for location in location_likes | batch(8) | first %}
+                    {% for location in location_likes %}
                         <tr>
                             <th>{{ location[0] + 1 }}</th>
                             <th>
@@ -209,7 +216,7 @@
                 <h3 class="text-center">Filters counting</h3>
 
                 <p class="text-center">You have used {{ filter_count }} filters.</p>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -218,7 +225,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for filter in user_filters | batch(15) | first %}
+                        {% for filter in user_filters %}
                         <tr>
                             <th>{{ filter[0] + 1 }}</th>
                             <th>
@@ -234,7 +241,7 @@
             </div>
             <div class="col-md-4">
                 <h3 class="text-center">Filter liking</h3>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -244,7 +251,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for filter in filter_likes | batch(8) | first %}
+                    {% for filter in filter_likes %}
                         <tr>
                             <th>{{ filter[0] + 1 }}</th>
                             <th>
@@ -280,7 +287,7 @@
                 <h3 class="text-center">Tags counting</h3>
 
                 <p class="text-center">You have used {{ tag_count_all }} tags where {{ tag_count_unique }} is unique.</p>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -289,7 +296,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for tag in user_tags | batch(9) | first %}
+                    {% for tag in user_tags %}
                         <tr>
                             <th>{{ tag[0] + 1 }}</th>
                             <th>
@@ -305,7 +312,7 @@
             </div>
             <div class="col-md-4">
                 <h3 class="text-center">Tag liking</h3>
-                <table class="table">
+                <table class="table scrollable">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -314,7 +321,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for tag in tags_likes | batch(10) | first %}
+                    {% for tag in tags_likes %}
                         <tr>
                             <th>{{ tag[0] + 1 }}</th>
                             <th>
