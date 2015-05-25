@@ -8,21 +8,21 @@ def get_users_who_liked(user_id):
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     medias = user_temp.medias.all()
-    ##followed_by = user_temp.followed_by
+    followed_by = user_temp.followed_by
     users_who_liked = {}
     sum_of_likes = 0
 
-    ##possible_user_likes = {x:0 for x in followed_by}
+    possible_user_likes = {x:0 for x in followed_by}
 
-    ##medias_with_extra_likes = 0
+    medias_with_extra_likes = 0
     #count_of_extra_likes = 0
-    ##for media in medias:
-        ##if media.count_of_likes > 120:
-            ##medias_with_extra_likes += 1
+    for media in medias:
+        if media.count_of_likes > 120:
+            medias_with_extra_likes += 1
             #count_of_extra_likes += media.count_of_likes - 120
 
-    ##for user in followed_by:
-        ##possible_user_likes[user] += medias_with_extra_likes
+    for user in followed_by:
+        possible_user_likes[user] += medias_with_extra_likes
 
     for media in medias:
         sum_media_likes = 0
@@ -32,8 +32,8 @@ def get_users_who_liked(user_id):
             else:
                 users_who_liked[user] += 1
             sum_media_likes += 1
-            ##if user in possible_user_likes:
-                ##possible_user_likes[user] -= 1
+            if user in possible_user_likes:
+                possible_user_likes[user] -= 1
 
         sum_of_likes += sum_media_likes
 
