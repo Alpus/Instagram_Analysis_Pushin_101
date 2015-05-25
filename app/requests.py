@@ -221,9 +221,8 @@ def update_user_followed_by(user_id):
 
         db.session.commit()
 
-###############################################################################
 
-def clear_locations():
+def clear_extra_locations():
     locations = db.session.query(models.Location).filter(models.Location.medias
                                                          == None)
     for location in locations:

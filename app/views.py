@@ -85,9 +85,6 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        ###################
-        requests.clear_locations()
-        #################
         most_liked_media = logic.get_most_liked_media(user_id)
         users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
         user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
