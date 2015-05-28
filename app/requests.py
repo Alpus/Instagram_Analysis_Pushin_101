@@ -126,8 +126,6 @@ def update_user_media(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-
-    user.is_media_on_update = True;
     db.session.commit()
 
     if user is not None:
@@ -243,6 +241,7 @@ def update_all_user_information(user_id):
     user = db.session.query(models.User).filter(models.User.inst_id_user ==
                                                 user_id).first()
     if datetime.datetime.now() - user.last_check > datetime.timedelta(720):
+        user.is_media_on_update = True;
         update_user_media.delay(user_id)
         update_user(user_id)
         update_user_followed_by(user_id)
