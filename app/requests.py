@@ -126,6 +126,10 @@ def update_user_media(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
+
+    user.is_media_on_update = True;
+    db.session.commit()
+
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
@@ -186,6 +190,7 @@ def update_user_media(user_id):
         db.session.commit()
 
     user.last_check = datetime.datetime.now()
+    user.is_media_on_update = False
     db.session.commit()
 
 
@@ -235,7 +240,10 @@ def clear_extra_locations():
 
 
 def update_all_user_information(user_id):
-    update_user_media.delay(user_id)
-    update_user(user_id)
-    update_user_followed_by(user_id)
-    update_user_follows(user_id)
+    user = db.session.query(models.User).filter(models.User.inst_id_user
+                                                == user_id)
+    if datetime.datetime.now() - user.last_check > 1440:
+        update_user_media.delay(user_id)
+        update_user(user_id)
+        update_user_followed_by(user_id)
+        update_user_follows(user_id)
