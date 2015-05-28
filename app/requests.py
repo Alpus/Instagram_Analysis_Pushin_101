@@ -20,7 +20,8 @@ def process_login(code):
 
     that_user = init_user_by_id(instagram_user['id'])
 
-    that_user.registration_date = datetime.datetime.now()
+    if that_user.registration_date == None:
+        that_user.registration_date = datetime.datetime.now()
     that_user.last_visit = datetime.datetime.now()
     that_user.access_token = access_token
     db.session.commit()
