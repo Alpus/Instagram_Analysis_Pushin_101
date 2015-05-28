@@ -74,7 +74,6 @@ def update_user(user_id):
         user.count_media = user_data.counts['media']
         user.count_follows = user_data.counts['follows']
         user.count_followed_by = user_data.counts['followed_by']
-        user.last_check = datetime.datetime.now()
 
     db.session.commit()
     return user
@@ -122,6 +121,7 @@ def init_location(location_id):
     return location
 
 
+@celery.task()
 def update_user_media(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -185,6 +185,9 @@ def update_user_media(user_id):
             db.session.delete(media)
         db.session.commit()
 
+    user.last_check = datetime.datetime.now()
+    db.session.commit()
+
 
 def update_user_follows(user_id):
     user =\
@@ -229,3 +232,10 @@ def clear_extra_locations():
         db.session.delete(location)
 
     db.session.commit()
+
+
+def update_all_user_information(user_id):
+    update_user_media.delay(user_id)
+    update_user(user_id)
+    update_user_followed_by(user_id)
+    update_user_follows(user_id)
