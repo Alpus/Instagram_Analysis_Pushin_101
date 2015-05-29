@@ -133,7 +133,7 @@ def is_on_update(user_id):
     user = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    return user.is_media_on_update
+    return jsonify(is_on_update=user.is_media_on_update)
 
 
 #@app.route('/static/<path:filename>')

@@ -393,19 +393,15 @@
         {{ super() }}
         <script>
         function reload_with_analysis () {
-            $.ajax({
-                type:'get',
-                url: location.href + '/is_on_update',
-                response:'text',
-                success: function (is_on_update) {
-                    if (!is_on_update) {
-                        location.reload(true);
-                    }
-	            }
-            })
+            $.getJSON(location.href + '/is_on_update',
+                    function (data) {
+                        if (!data.is_on_update) {
+                            location.reload(true);
+                }
+            });
         }
         $(document).ready( function() {
-            setInterval(reload_with_analysis, 10000);
+            setInterval(reload_with_analysis, 5000);
         });
         </script>
     {% endif %}
