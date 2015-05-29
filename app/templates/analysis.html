@@ -393,7 +393,7 @@
         {{ super() }}
         <script>
         function reload_with_analysis () {
-            !$.ajax({
+            $.ajax({
                 type:'get',
                 url: location.href + '/is_on_update',
                 response:'text',
