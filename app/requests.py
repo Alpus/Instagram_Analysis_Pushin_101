@@ -241,8 +241,9 @@ def clear_extra_locations():
 def update_all_user_information(user_id):
     user = db.session.query(models.User).filter(models.User.inst_id_user ==
                                                 user_id).first()
-    if datetime.datetime.now() - user.last_check > datetime.timedelta(720):
+    if datetime.datetime.now() - user.last_check > datetime.timedelta(hours=24):
         user.is_media_on_update = True;
+        db.session.commit()
         update_user_media.delay(user_id)
         update_user(user_id)
         update_user_followed_by(user_id)
