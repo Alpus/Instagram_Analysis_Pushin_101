@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Account information{% endblock %}
-{% block body %}
+{% block content %}
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-center">Account information</h1>
@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-4">
             <h2 class="text-center">Your profile is on updating, please try again a bit later</h2>
-            <img src="/static/img/loading.gif" alt="Loading" align="middle">
+            <img src= {{ url_for('static', filename='img/loading.gif') }} alt="Loading" align="middle">
             <h4 class="text-center">Page will be automatically updated when analysis is completed</h4>
         </div>
     </div>
@@ -386,6 +386,8 @@
         </div>
     </div>
 {% endblock %}
+
+
 {% block scripts %}
     {{ super() }}
     <script>
