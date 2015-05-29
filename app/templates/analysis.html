@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-4">
             <h2 class="text-center">Your profile is on updating, please try again a bit later</h2>
-            <img src='../static/img/loading.gif' alt="Loading" align="center">
+            <img src= {{ url_for('static', filename='img/loading.gif') }} alt="Loading" align="center">
             <h4 class="text-center">Page will be automatically updated when analysis is completed</h4>
         </div>
     </div>
@@ -393,7 +393,9 @@
     <script>
     $(document).ready( function() {
         if ($.ajax({url: location.href + '/is_on_update'})) {
-            setInterval(location.reload, 10000);
+            setInterval(function() {
+                        location.reload(true);
+            }, 10000);
         }
     });
     </script>
