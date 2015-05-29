@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-4">
             <h2 class="text-center">Your profile is on updating, please try again a bit later</h2>
-            <img src= 'img/loading.gif' alt="Loading" class="text-center">
+            <img src= {{ url_for('static', filename='img/loading.gif') }} alt="Loading" class="center-block">
             <h4 class="text-center">Page will be automatically updated when analysis is completed</h4>
         </div>
     </div>
@@ -389,14 +389,17 @@
 
 
 {% block scripts %}
-    {{ super() }}
-    <script>
-    $(document).ready( function() {
-        if ($.ajax({url: location.href + '/is_on_update'})) {
-            setInterval(function() {
-                        location.reload(true);
-            }, 10000);
+    {% if is_media_on_update %}
+        {{ super() }}
+        <script>
+        function reload_with_analysis () {
+            if (!$.ajax({url: location.href + '/is_on_update'})) {
+                location.reload(true);
+            }
         }
-    });
-    </script>
+        $(document).ready( function() {
+            setInterval(reload_with_analysis, 10000);
+        });
+        </script>
+    {% endif %}
 {% endblock %}
