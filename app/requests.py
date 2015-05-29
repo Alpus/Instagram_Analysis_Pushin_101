@@ -4,6 +4,7 @@ from app import db
 import models
 import datetime
 from app import celery
+import sys
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
@@ -110,10 +111,13 @@ def init_tag(tag_name):
     if tag is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
-        tag_data = api.tag(tag_name)
-        tag = models.Tag(tag_data)
-        db.session.add(tag)
-        db.session.commit()
+        try:
+            tag_data = api.tag(tag_name)
+            tag = models.Tag(tag_data)
+            db.session.add(tag)
+            db.session.commit()
+        except InstagramAPIError as error:
+            tag = None
 
     return tag
 
@@ -188,7 +192,9 @@ def update_user_media(user_id):
                     new_tags = []
                     if 'tags' in dir(media_data):
                         for tag in media_data.tags:
-                            new_tags.append(init_tag(tag.name))
+                            tag = init_tag(tag.name)
+                            if tag is not None:
+                                new_tags.append(tag)
                     media.tags = new_tags
                     db.session.commit()
 
