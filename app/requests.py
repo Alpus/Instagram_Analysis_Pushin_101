@@ -105,9 +105,13 @@ def update_user(user_id):
 
 
 def init_tag(tag_name):
-    tag =\
+    try:
+        tag =\
         db.session.query(models.Tag).filter(models.Tag.name ==
                                             tag_name).first()
+    except:
+        pass
+
     if tag is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
