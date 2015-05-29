@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app
 from app import db, models
-from flask import make_response, render_template, redirect, request, session
+from flask import make_response, render_template, redirect, request, session, send_from_directory
 import logic
 import requests
 import forms
@@ -134,3 +134,8 @@ def is_on_update(user_id):
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     return user.is_media_on_update
+
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)

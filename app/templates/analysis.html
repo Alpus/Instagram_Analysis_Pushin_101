@@ -391,14 +391,9 @@
 {% block scripts %}
     {{ super() }}
     <script>
-    function reload_page_with_analysis () {
-        if (!$ajax({url: location.href + '/is_on_update'})) {
-            location.reload();
-        }
-    }
     $(document).ready( function() {
-        if (is_media_on_update) {
-            setInterval(reload_page_with_analysis, 10000);
+        if ($ajax({url: location.href + '/is_on_update'})) {
+            setInterval(location.reload, 10000);
         }
     });
     </script>
