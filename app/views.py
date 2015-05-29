@@ -32,12 +32,20 @@ def index():
         if request.form['button'] == 'Log in':
             return redirect(login_url)
         elif request.form['button'] == 'Analysis':
-            requests.update_all_user_information(user_id)
-            return redirect('/analysis/'+str(user_id))
+            if requests.is_access_token_valid(user_id):
+                requests.update_all_user_information(user_id)
+                return redirect('/analysis/'+str(user_id))
+            else:
+                session['user_id'] = None
+                session['user_login'] = None
+                return redirect('/')
         else:
             user_id = request.form['button']
-            requests.update_all_user_information(user_id)
-            return redirect('/analysis/'+str(user_id))
+            if requests.is_access_token_valid(user_id):
+                requests.update_all_user_information(user_id)
+                return redirect('/analysis/'+str(user_id))
+            else:
+                return redirect('/')
 
     return render_template('login.html',
 

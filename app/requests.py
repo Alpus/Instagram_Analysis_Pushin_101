@@ -1,3 +1,4 @@
+from instagram.bind import InstagramAPIError
 from instagram import client
 from app import db
 import models
@@ -51,6 +52,28 @@ def init_user_by_data(user_data):
     if user is None:
         user = models.User(user_data=user_data)
         db.session.add(user)
+        db.session.commit()
+    else:
+        user.inst_id_user = user_data.id
+        user.login = user_data.username
+        user.full_name = user_data.full_name
+        user.profile_picture = user_data.profile_picture
+
+        if 'bio' in dir(user_data):
+            user.bio = user_data.bio
+        else:
+            user.bio = None
+
+        if 'website' in dir(user_data):
+            user.website = user_data.website
+        else:
+            user.website = None
+
+        if 'counts' in dir(user_data):
+            user.count_media = user_data.counts['media']
+            user.count_follows = user_data.counts['follows']
+            user.count_followed_by = user_data.counts['followed_by']
+            
         db.session.commit()
 
     return user
@@ -127,7 +150,6 @@ def update_user_media(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    db.session.commit()
 
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
@@ -251,3 +273,17 @@ def update_all_user_information(user_id):
         update_user(user_id)
         update_user_followed_by(user_id)
         update_user_follows(user_id)
+
+def is_access_token_valid(user_id):
+    user =\
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    try:
+       api = client.InstagramAPI(access_token=user.access_token,
+                              client_secret=CLIENT_SECRET)
+       user = api.user(user_id)
+    except InstagramAPIError as error:
+       if (error.status_code == 400):
+          return False
+
+    return True
