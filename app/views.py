@@ -126,3 +126,11 @@ def analysis(user_id):
 
                                    home_url=HOME_URL,
                                    is_media_on_update=False)
+
+
+@app.route('/analysis/<user_id>/is_on_update', methods=['GET'])
+def is_on_update(user_id):
+    user = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    return user.is_media_on_update

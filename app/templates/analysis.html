@@ -42,7 +42,9 @@
             <p>{{ user.count_followed_by }} followers,</p>
         </div>
         <div class="col-md-4">
-            <h2>Your profile is on updating, please try again a bit later</h2>
+            <h2 class="text-center">Your profile is on updating, please try again a bit later</h2>
+            <img src="/static/img/loading.gif" alt="Loading" align="middle">
+            <h4 class="text-center">Page will be automatically updated when analysis is completed</h4>
         </div>
     </div>
 
@@ -383,4 +385,19 @@
             </h1>
         </div>
     </div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+    function reload_page_with_analysis () {
+        if (!$ajax({url: location.href + '/is_on_update'})) {
+            location.reload();
+        }
+    }
+    $(document).ready( function() {
+        if (is_media_on_update) {
+            setInterval(reload_page_with_analysis, 10000);
+        }
+    });
+    </script>
 {% endblock %}
