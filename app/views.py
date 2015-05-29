@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app
 from app import db, models
-from flask import make_response, render_template, redirect, request, session, send_from_directory
+from flask import jsonify, make_response, render_template, redirect, request, session, send_from_directory
 import logic
 import requests
 import forms

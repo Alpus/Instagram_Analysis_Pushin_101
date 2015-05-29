@@ -393,12 +393,19 @@
         {{ super() }}
         <script>
         function reload_with_analysis () {
-            if (!$.ajax({url: location.href + '/is_on_update'})) {
-                location.reload(true);
-            }
+            !$.ajax({
+                type:'get',
+                url: location.href + '/is_on_update',
+                response:'text',
+                success: function (is_on_update) {
+                    if (!is_on_update) {
+                        location.reload(true);
+                    }
+	            }
+            })
         }
         $(document).ready( function() {
-            setInterval(reload_with_analysis(), 10000);
+            setInterval(reload_with_analysis, 10000);
         });
         </script>
     {% endif %}
