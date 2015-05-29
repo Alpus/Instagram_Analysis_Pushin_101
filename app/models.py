@@ -2,6 +2,7 @@
 from app import db
 import requests
 from instagram import client
+import datetime
 
 CLIENT_ID = requests.CLIENT_ID
 CLIENT_SECRET = requests.CLIENT_SECRET
@@ -27,7 +28,7 @@ class User(db.Model):
     website = db.Column(db.String(100))
     registration_date = db.Column(db.DateTime)
     last_visit = db.Column(db.DateTime)
-    last_check = db.Column(db.DateTime)
+    last_check = db.Column(db.DateTime, default=datetime.date(year=1814, month=7, day=19))
     rating = db.Column(db.Integer, nullable=False, default=0)
     count_media = db.Column(db.Integer, nullable=False, default=0)
     count_follows = db.Column(db.Integer, nullable=False, default=0)
