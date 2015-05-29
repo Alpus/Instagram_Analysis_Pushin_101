@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-4">
             <h2 class="text-center">Your profile is on updating, please try again a bit later</h2>
-            <img src= {{ url_for('static', filename='img/loading.gif') }} alt="Loading" align="middle">
+            <img src='../static/img/loading.gif' alt="Loading" align="center">
             <h4 class="text-center">Page will be automatically updated when analysis is completed</h4>
         </div>
     </div>
@@ -102,7 +102,7 @@
                     <tr>
                         <th>{{ media[0] + 1 }}</th>
                         <th>
-                            <img src={{ media[1].image_thumbnail }} alt="Media" align="middle" class="img-thumbnail">
+                            <img src={{ media[1].image_thumbnail }} alt="Media" class="img-thumbnail">
                         </th>
                         <th>
                             <p>Likes: {{ media[1].count_of_likes }}</p>
@@ -392,7 +392,7 @@
     {{ super() }}
     <script>
     $(document).ready( function() {
-        if ($ajax({url: location.href + '/is_on_update'})) {
+        if ($.ajax({url: location.href + '/is_on_update'})) {
             setInterval(location.reload, 10000);
         }
     });
