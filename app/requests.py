@@ -110,7 +110,7 @@ def init_tag(tag_name):
         db.session.query(models.Tag).filter(models.Tag.name ==
                                             tag_name).first()
     except:
-        pass
+        tag = None
 
     if tag is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
