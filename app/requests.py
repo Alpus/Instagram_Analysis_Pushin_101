@@ -244,7 +244,7 @@ def update_all_user_information(user_id):
     if user.last_check is None:
         user.last_check = datetime.date(year=1814, month=7, day=19)
         db.session.commit()
-    if datetime.datetime.now() - user.last_check > datetime.timedelta(hours=24):
+    if user.is_media_on_update is False and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=24):
         user.is_media_on_update = True;
         db.session.commit()
         update_user_media.delay(user_id)
