@@ -61,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for user in users | batch(15) | first %}
+                    {% for user in users | batch(30) | first %}
                         <tr>
                             <th>
                                 <img src={{ user.profile_picture }} width="50" height="50" alt="User photo"
