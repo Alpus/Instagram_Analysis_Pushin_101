@@ -6,7 +6,7 @@ import datetime
 
 while True:
     print 'new user'
-    dbsession = db.sessionmaker()
+    dbsession = db.sessionmaker()()
     user = dbsession.query(models.User).filter(models.User.access_token != None,
                                                  models.User.is_media_on_update == False)\
                                                  .order_by(models.User.last_check).first()
