@@ -40,12 +40,13 @@ def get_users_who_liked(user_id):
 
     possible_user_likes = possible_user_likes.items()
     #possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
-    for liker in possible_user_likes:
-        if liker[0] in users_who_liked:
-            extra_likes = liker[1] * (users_who_liked[liker[0]] / user_temp.count_media)
-            #if medias_with_extra_likes:
-            #    extra_likes = int(extra_likes * (count_of_extra_likes / (medias_with_extra_likes * len(followed_by))))
-            users_who_liked[liker[0]] += extra_likes
+    if user_temp.count_media is not 0:
+        for liker in possible_user_likes:
+            if liker[0] in users_who_liked:
+                extra_likes = liker[1] * (users_who_liked[liker[0]] / user_temp.count_media)
+                #if medias_with_extra_likes:
+                #    extra_likes = int(extra_likes * (count_of_extra_likes / (medias_with_extra_likes * len(followed_by))))
+                users_who_liked[liker[0]] += extra_likes
 
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
