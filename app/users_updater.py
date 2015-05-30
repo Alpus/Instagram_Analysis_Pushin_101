@@ -5,7 +5,6 @@ import models
 import datetime
 
 
-@celery.task()
 def update_users_media():
     while True:
         user = db.session.query(models.User).order_by(models.User.last_check)
@@ -16,5 +15,6 @@ def update_users_media():
                 datetime.timedelta(hours=24) and requests.is_access_token_valid(user.inst_id_user):
             user.is_media_on_update = True;
             db.session.commit()
-            requests.update_user_media()
+            task = requests.update_user_media.delay(user.inst_id_user)
+            task.wait()
 
