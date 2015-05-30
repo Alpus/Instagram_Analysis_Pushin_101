@@ -1,6 +1,7 @@
 #!flask/bin/python2.7
 # -*- coding: utf-8 -*-
 import requests
+from app import app
 from app import db
 from app import celery
 import models
