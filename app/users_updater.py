@@ -4,11 +4,12 @@ import models
 import datetime
 
 
-def update_media():
+while True:
     print 'new user'
     user = db.session.query(models.User).filter(models.User.access_token != None,
                                                  models.User.is_media_on_update == False)\
                                                  .order_by(models.User.last_check).first()
+    db.session.commit()
     print user.login
     print user.last_check
     print datetime.datetime.now() - user.last_check > datetime.timedelta(hours=24)
@@ -26,6 +27,3 @@ def update_media():
         print 'waiting started'
         task.wait()
         print 'waiting end'
-
-while True:
-    update_media()
