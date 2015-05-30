@@ -99,6 +99,7 @@ def update_user(user_id):
         user.count_media = user_data.counts['media']
         user.count_follows = user_data.counts['follows']
         user.count_followed_by = user_data.counts['followed_by']
+        db.session.commit()
 
     db.session.commit()
     return user
@@ -289,6 +290,7 @@ def clear_extra_locations():
 def update_all_user_information(user_id):
     user = db.session.query(models.User).filter(models.User.inst_id_user ==
                                                 user_id).first()
+    update_user(user_id)
     if user.last_check is None:
         user.last_check = datetime.date(year=1814, month=7, day=19)
         db.session.commit()
@@ -298,8 +300,6 @@ def update_all_user_information(user_id):
         update_user_media.delay(user_id)
         update_user_followed_by.delay(user_id)
         update_user_follows.delay(user_id)
-        db.session.commit()
-        update_user(user_id)
 
 def is_access_token_valid(user_id):
     user =\
