@@ -6,6 +6,7 @@ import datetime
 
 while True:
     print 'new user'
+    db.session.refresh()
     user = db.session.query(models.User).filter(models.User.access_token != None,
                                                  models.User.is_media_on_update == False)\
                                                  .order_by(models.User.last_check).first()
@@ -26,5 +27,3 @@ while True:
         print 'waiting started'
         task.wait()
         print 'waiting end'
-        
-    db.session.flush()
