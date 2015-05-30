@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from sqlalchemy.dialects.mysql import TINYINT
 from app import db
 import requests
 from instagram import client
@@ -33,7 +34,7 @@ class User(db.Model):
     count_media = db.Column(db.Integer, nullable=False, default=0)
     count_follows = db.Column(db.Integer, nullable=False, default=0)
     count_followed_by = db.Column(db.Integer, nullable=False, default=0)
-    is_media_on_update = db.Column(db.Boolean, default=0)
+    is_media_on_update = db.Column(TINYINT, default=0)
 
     medias = db.relationship(
         'Media', backref='user', lazy='dynamic')

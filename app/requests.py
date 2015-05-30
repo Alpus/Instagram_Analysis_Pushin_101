@@ -220,11 +220,11 @@ def update_user_media(user_id):
             db.session.delete(media)
         db.session.commit()
 
-    user.last_check = datetime.datetime.now()
-    user.is_media_on_update = False
+    user.is_media_on_update -= 1
     db.session.commit()
 
 
+@celery.task()
 def update_user_follows(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -242,7 +242,11 @@ def update_user_follows(user_id):
 
         db.session.commit()
 
+    user.is_media_on_update -= 1
+    db.session.commit()
 
+
+@celery.task()
 def update_user_followed_by(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -260,6 +264,9 @@ def update_user_followed_by(user_id):
 
         db.session.commit()
 
+    user.is_media_on_update -= 1
+    db.session.commit()
+
 
 def clear_extra_locations():
     locations = db.session.query(models.Location).filter(models.Location.medias
@@ -276,13 +283,15 @@ def update_all_user_information(user_id):
     if user.last_check is None:
         user.last_check = datetime.date(year=1814, month=7, day=19)
         db.session.commit()
-    if user.is_media_on_update is False and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
-        user.is_media_on_update = True
+    if user.is_media_on_update is 0 and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
+        user.is_media_on_update += 3
         db.session.commit()
         update_user_media.delay(user_id)
+        update_user_followed_by.delay(user_id)
+        update_user_follows.delay(user_id)
+        user.last_check = datetime.datetime.now()
+        db.session.commit()
         update_user(user_id)
-        update_user_followed_by(user_id)
-        update_user_follows(user_id)
 
 def is_access_token_valid(user_id):
     user =\
