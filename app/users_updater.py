@@ -4,7 +4,7 @@ import models
 import datetime
 
 
-while True:
+def update_media():
     print 'new user'
     user = db.session.query(models.User).filter(models.User.access_token != None,
                                                  models.User.is_media_on_update == False)\
@@ -26,3 +26,6 @@ while True:
         print 'waiting started'
         task.wait()
         print 'waiting end'
+
+while True:
+    update_media()
