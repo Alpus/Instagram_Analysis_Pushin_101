@@ -1,8 +1,7 @@
 #!flask/bin/python2.7
 # -*- coding: utf-8 -*-
-from app import app
 import requests
-from app import db
+from __init__ import db
 import models
 import datetime
 
