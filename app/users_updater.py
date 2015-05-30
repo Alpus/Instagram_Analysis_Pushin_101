@@ -16,4 +16,5 @@ def update_users_media():
         if datetime.datetime.now() - user.last_check > datetime.timedelta(hours=24):
             user.is_media_on_update = True;
             db.session.commit()
-            requests.update_user_media.delay(user.inst_id_user).wait()
+            task = requests.update_user_media.delay(user.inst_id_user)
+            task.wait()
