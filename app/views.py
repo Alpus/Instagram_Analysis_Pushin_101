@@ -5,6 +5,7 @@ from flask import jsonify, make_response, render_template, redirect, request, se
 import logic
 import requests
 import forms
+import datetime
 
 CLIENT_ID = requests.CLIENT_ID
 CLIENT_SECRET = requests.CLIENT_SECRET
@@ -87,7 +88,7 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        if user.is_media_on_update:
+        if user.last_check > datetime.date(year=1814, month=7, day=19):
             return render_template('analysis.html',
                                    user=user,
                                    is_media_on_update=True)
