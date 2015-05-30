@@ -34,7 +34,7 @@ def index():
         elif request.form['button'] == 'Analysis':
             if requests.is_access_token_valid(user_id):
                 requests.update_all_user_information(user_id)
-                return redirect('/analysis/'+str(user_id))
+                return redirect('/analysis/'+ str(user_id))
             else:
                 session['user_id'] = None
                 session['user_login'] = None
