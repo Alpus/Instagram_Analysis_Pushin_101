@@ -292,7 +292,7 @@ def update_all_user_information(user_id):
                                                 user_id).first()
     update_user(user_id)
     if user.last_check is None:
-        user.last_check = datetime.date(year=1814, month=7, day=19)
+        user.last_check = datetime.datetime(year=1814, month=7, day=19)
         db.session.commit()
     if user.is_media_on_update is 0 and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
         user.is_media_on_update += 3
