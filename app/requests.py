@@ -223,6 +223,7 @@ def update_user_media(user_id):
     user.last_check = datetime.datetime.now()
     user.is_media_on_update = False
     db.session.commit()
+    return
 
 
 def update_user_follows(user_id):
