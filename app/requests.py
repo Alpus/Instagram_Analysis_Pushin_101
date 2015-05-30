@@ -222,6 +222,9 @@ def update_user_media(user_id):
 
     user.is_media_on_update -= 1
     db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
 
 
 @celery.task()
@@ -244,6 +247,9 @@ def update_user_follows(user_id):
 
     user.is_media_on_update -= 1
     db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
 
 
 @celery.task()
@@ -265,6 +271,9 @@ def update_user_followed_by(user_id):
         db.session.commit()
 
     user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
     db.session.commit()
 
 
@@ -289,7 +298,6 @@ def update_all_user_information(user_id):
         update_user_media.delay(user_id)
         update_user_followed_by.delay(user_id)
         update_user_follows.delay(user_id)
-        user.last_check = datetime.datetime.now()
         db.session.commit()
         update_user(user_id)
 

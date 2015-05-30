@@ -31,7 +31,6 @@ while True:
         task_followed_by.wait()
         task_follows.wait()
 
-        user.last_check = datetime.datetime.now()
         db.session.commit()
         print user.login + ' updated'
         #print 'waiting end'
