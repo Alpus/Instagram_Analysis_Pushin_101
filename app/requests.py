@@ -1,8 +1,10 @@
+from instagram.bind import InstagramAPIError
 from instagram import client
 from app import db
 import models
 import datetime
 from app import celery
+import sys
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
@@ -20,7 +22,8 @@ def process_login(code):
 
     that_user = init_user_by_id(instagram_user['id'])
 
-    that_user.registration_date = datetime.datetime.now()
+    if that_user.registration_date == None:
+        that_user.registration_date = datetime.datetime.now()
     that_user.last_visit = datetime.datetime.now()
     that_user.access_token = access_token
     db.session.commit()
@@ -51,6 +54,28 @@ def init_user_by_data(user_data):
         user = models.User(user_data=user_data)
         db.session.add(user)
         db.session.commit()
+    else:
+        user.inst_id_user = user_data.id
+        user.login = user_data.username
+        user.full_name = user_data.full_name
+        user.profile_picture = user_data.profile_picture
+
+        if 'bio' in dir(user_data):
+            user.bio = user_data.bio
+        else:
+            user.bio = None
+
+        if 'website' in dir(user_data):
+            user.website = user_data.website
+        else:
+            user.website = None
+
+        if 'counts' in dir(user_data):
+            user.count_media = user_data.counts['media']
+            user.count_follows = user_data.counts['follows']
+            user.count_followed_by = user_data.counts['followed_by']
+            
+        db.session.commit()
 
     return user
 
@@ -74,23 +99,29 @@ def update_user(user_id):
         user.count_media = user_data.counts['media']
         user.count_follows = user_data.counts['follows']
         user.count_followed_by = user_data.counts['followed_by']
-        user.last_check = datetime.datetime.now()
 
     db.session.commit()
     return user
 
 
 def init_tag(tag_name):
-    tag =\
+    try:
+        tag =\
         db.session.query(models.Tag).filter(models.Tag.name ==
                                             tag_name).first()
+    except:
+        tag = None
+
     if tag is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
-        tag_data = api.tag(tag_name)
-        tag = models.Tag(tag_data)
-        db.session.add(tag)
-        db.session.commit()
+        try:
+            tag_data = api.tag(tag_name)
+            tag = models.Tag(tag_data)
+            db.session.add(tag)
+            db.session.commit()
+        except InstagramAPIError as error:
+            tag = None
 
     return tag
 
@@ -122,10 +153,12 @@ def init_location(location_id):
     return location
 
 
+@celery.task()
 def update_user_media(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
+
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
@@ -163,7 +196,9 @@ def update_user_media(user_id):
                     new_tags = []
                     if 'tags' in dir(media_data):
                         for tag in media_data.tags:
-                            new_tags.append(init_tag(tag.name))
+                            tag = init_tag(tag.name)
+                            if tag is not None:
+                                new_tags.append(tag)
                     media.tags = new_tags
                     db.session.commit()
 
@@ -184,6 +219,10 @@ def update_user_media(user_id):
         for media in to_delete:
             db.session.delete(media)
         db.session.commit()
+
+    user.last_check = datetime.datetime.now()
+    user.is_media_on_update = False
+    db.session.commit()
 
 
 def update_user_follows(user_id):
@@ -221,12 +260,44 @@ def update_user_followed_by(user_id):
 
         db.session.commit()
 
-###############################################################################
 
-def clear_locations():
+def clear_extra_locations():
     locations = db.session.query(models.Location).filter(models.Location.medias
                                                          == None)
     for location in locations:
         db.session.delete(location)
-        
+
     db.session.commit()
+
+
+def update_all_user_information(user_id):
+    user = db.session.query(models.User).filter(models.User.inst_id_user ==
+                                                user_id).first()
+    if user.last_check is None:
+        user.last_check = datetime.date(year=1814, month=7, day=19)
+        db.session.commit()
+    if user.is_media_on_update is False and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
+        user.is_media_on_update = True
+        db.session.commit()
+        update_user_media.delay(user_id)
+        update_user(user_id)
+        update_user_followed_by(user_id)
+        update_user_follows(user_id)
+
+def is_access_token_valid(user_id):
+    user =\
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    if user.access_token is None:
+        return False
+    else:
+        try:
+           api = client.InstagramAPI(access_token=user.access_token,
+                                  client_secret=CLIENT_SECRET)
+           user_data = api.user(user_id)
+        except InstagramAPIError:
+               user.access_token = None
+               db.session.commit()
+               return False
+
+    return True

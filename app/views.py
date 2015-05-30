@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app
 from app import db, models
-from flask import make_response, render_template, redirect, request, session
+from flask import jsonify, make_response, render_template, redirect, request, session, send_from_directory
 import logic
 import requests
 import forms
@@ -32,18 +32,20 @@ def index():
         if request.form['button'] == 'Log in':
             return redirect(login_url)
         elif request.form['button'] == 'Analysis':
-            requests.update_user(user_id)
-            requests.update_user_media(user_id)
-            requests.update_user_followed_by(user_id)
-            requests.update_user_follows(user_id)
-            return redirect('/analysis/'+str(user_id))
+            if requests.is_access_token_valid(user_id):
+                requests.update_all_user_information(user_id)
+                return redirect('/analysis/'+str(user_id))
+            else:
+                session['user_id'] = None
+                session['user_login'] = None
+                return redirect('/')
         else:
             user_id = request.form['button']
-            requests.update_user(user_id)
-            requests.update_user_media(user_id)
-            requests.update_user_followed_by(user_id)
-            requests.update_user_follows(user_id)
-            return redirect('/analysis/'+str(user_id))
+            if requests.is_access_token_valid(user_id):
+                requests.update_all_user_information(user_id)
+                return redirect('/analysis/'+str(user_id))
+            else:
+                return redirect('/')
 
     return render_template('login.html',
 
@@ -85,47 +87,63 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        ###################
-        requests.clear_locations()
-        #################
-        most_liked_media = logic.get_most_liked_media(user_id)
-        users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
-        user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
-        tags_likes = logic.get_tags_likes(user_id)
-        follows = logic.get_follows(user_id)
-        followed_by = logic.get_followed_by(user_id)
-        user_filters, filter_count = logic.get_user_filter(user_id)
-        filter_likes = logic.get_filters_likes(user_id)
-        user_locations, location_count_all, location_count_unique = logic.get_user_location(user_id)
-        location_likes = logic.get_locations_likes(user_id)
-        return render_template('analysis.html',
-                               user=user,
+        if user.is_media_on_update:
+            return render_template('analysis.html',
+                                   user=user,
+                                   is_media_on_update=True)
+        else:
+            most_liked_media = logic.get_most_liked_media(user_id)
+            users_who_liked, sum_of_likes, liker_count, median_like_count = logic.get_users_who_liked(user_id)
+            user_tags, tag_count_all, tag_count_unique = logic.get_user_tags(user_id)
+            tags_likes = logic.get_tags_likes(user_id)
+            follows = logic.get_follows(user_id)
+            followed_by = logic.get_followed_by(user_id)
+            user_filters, filter_count = logic.get_user_filter(user_id)
+            filter_likes = logic.get_filters_likes(user_id)
+            user_locations, location_count_all, location_count_unique = logic.get_user_location(user_id)
+            location_likes = logic.get_locations_likes(user_id)
+            return render_template('analysis.html',
+                                   user=user,
 
-                               most_liked_media=enumerate(most_liked_media),
+                                   most_liked_media=enumerate(most_liked_media),
 
-                               users_who_liked=enumerate(users_who_liked),
-                               sum_of_likes=sum_of_likes,
-                               liker_count=liker_count,
-                               median_like_count=median_like_count,
+                                   users_who_liked=enumerate(users_who_liked),
+                                   sum_of_likes=sum_of_likes,
+                                   liker_count=liker_count,
+                                   median_like_count=median_like_count,
 
-                               user_tags=enumerate(user_tags),
-                               tag_count_all=tag_count_all,
-                               tag_count_unique=tag_count_unique,
+                                   user_tags=enumerate(user_tags),
+                                   tag_count_all=tag_count_all,
+                                   tag_count_unique=tag_count_unique,
 
-                               tags_likes=enumerate(tags_likes),
+                                   tags_likes=enumerate(tags_likes),
 
-                               follows=follows,
-                               followed_by=followed_by,
+                                   follows=follows,
+                                   followed_by=followed_by,
 
-                               user_filters=enumerate(user_filters),
-                               filter_count=filter_count,
+                                   user_filters=enumerate(user_filters),
+                                   filter_count=filter_count,
 
-                               filter_likes=enumerate(filter_likes),
+                                   filter_likes=enumerate(filter_likes),
 
-                               user_locations=enumerate(user_locations),
-                               location_count_all=location_count_all,
-                               location_count_unique=location_count_unique,
+                                   user_locations=enumerate(user_locations),
+                                   location_count_all=location_count_all,
+                                   location_count_unique=location_count_unique,
 
-                               location_likes=enumerate(location_likes),
+                                   location_likes=enumerate(location_likes),
 
-                               home_url=HOME_URL)
+                                   home_url=HOME_URL,
+                                   is_media_on_update=False)
+
+
+@app.route('/analysis/<user_id>/is_on_update', methods=['GET'])
+def is_on_update(user_id):
+    user = \
+        db.session.query(models.User).filter(models.User.inst_id_user ==
+                                             user_id).first()
+    return jsonify(is_on_update=user.is_media_on_update)
+
+
+#@app.route('/static/<path:filename>')
+#def serve_static(filename):
+#    return send_from_directory(app.static_folder, filename)

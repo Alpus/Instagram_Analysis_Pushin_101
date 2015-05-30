@@ -13,10 +13,16 @@ def get_users_who_liked(user_id):
     sum_of_likes = 0
 
     possible_user_likes = {x:0 for x in followed_by}
+
+    medias_with_extra_likes = 0
+    #count_of_extra_likes = 0
     for media in medias:
-        for user in followed_by:
-            if media.count_of_likes > 120:
-                possible_user_likes[user] += 1
+        if media.count_of_likes > 120:
+            medias_with_extra_likes += 1
+            #count_of_extra_likes += media.count_of_likes - 120
+
+    for user in followed_by:
+        possible_user_likes[user] += medias_with_extra_likes
 
     for media in medias:
         sum_media_likes = 0
@@ -26,16 +32,20 @@ def get_users_who_liked(user_id):
             else:
                 users_who_liked[user] += 1
             sum_media_likes += 1
-            if user in possible_user_likes:
+            if user in possible_user_likes and \
+                            media.count_of_likes > 120:
                 possible_user_likes[user] -= 1
 
         sum_of_likes += sum_media_likes
 
     possible_user_likes = possible_user_likes.items()
-    possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
+    #possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
     for liker in possible_user_likes:
         if liker[0] in users_who_liked:
-            users_who_liked[liker[0]] += liker[1] * (users_who_liked[liker[0]] / user_temp.count_media)
+            extra_likes = liker[1] * (users_who_liked[liker[0]] / user_temp.count_media)
+            #if medias_with_extra_likes:
+            #    extra_likes = int(extra_likes * (count_of_extra_likes / (medias_with_extra_likes * len(followed_by))))
+            users_who_liked[liker[0]] += extra_likes
 
     users_who_liked = users_who_liked.items()
     users_who_liked.sort(key=lambda x: (-x[1], x[0].login))
