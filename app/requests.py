@@ -295,8 +295,7 @@ def is_access_token_valid(user_id):
            api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
            user_data = api.user(user_id)
-        except InstagramAPIError as error:
-           if (error.status_code == 400):
+        except InstagramAPIError:
                user.access_token = None
                return False
 
