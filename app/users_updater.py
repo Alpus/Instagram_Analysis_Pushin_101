@@ -7,7 +7,7 @@ import datetime
 
 def update_users_media():
     while True:
-        users = db.session.query(models.User).order_by(models.User.last_check)
+        users = db.session.query(models.User).order_by(models.User.last_check).all()
         for user in users:
             if user.last_check is None:
                 user.last_check = datetime.date(year=1814, month=7, day=19)

@@ -288,13 +288,17 @@ def is_access_token_valid(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    try:
-       api = client.InstagramAPI(access_token=user.access_token,
-                              client_secret=CLIENT_SECRET)
-       user_data = api.user(user_id)
-    except InstagramAPIError as error:
-       if (error.status_code == 400):
-           user.access_token = None
-           return False
+    if user.access_token is None:
+        return False
+    else:
+        try:
+           api = client.InstagramAPI(access_token=user.access_token,
+                                  client_secret=CLIENT_SECRET)
+           print api.access_token
+           user_data = api.user(user_id)
+        except InstagramAPIError as error:
+           if (error.status_code == 400):
+               user.access_token = None
+               return False
 
     return True
