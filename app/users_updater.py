@@ -9,7 +9,9 @@ while True:
     user = db.session.query(models.User).filter(models.User.access_token != None,
                                                  models.User.is_media_on_update == False)\
                                                  .order_by(models.User.last_check).first()
-    print 'new user get'
+    print user.last_check
+    print datetime.datetime.now() - user.last_check > datetime.timedelta(hours=24)
+    print requests.is_access_token_valid(user.inst_id_user)
     if user.last_check is None:
         user.last_check = datetime.date(year=1814, month=7, day=19)
         db.session.commit()
