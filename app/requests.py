@@ -297,6 +297,7 @@ def is_access_token_valid(user_id):
            user_data = api.user(user_id)
         except InstagramAPIError:
                user.access_token = None
+               db.session.commit()
                return False
 
     return True
