@@ -3,7 +3,6 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from celery import Celery
-import users_updater
 
 def make_celery(app):
     celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
@@ -22,7 +21,5 @@ app.config.from_object('config')
 Bootstrap(app)
 db = SQLAlchemy(app)
 celery = make_celery(app)
-users_updater.update_users_media.delay()
-
 
 from app import views, models
