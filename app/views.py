@@ -88,7 +88,7 @@ def analysis(user_id):
     if user is None:
         return redirect('/')
     else:
-        if user.last_check > datetime.datetime(year=1814, month=7, day=19):
+        if user.last_check is None or user.last_check <= datetime.datetime(year=1814, month=7, day=19):
             return render_template('analysis.html',
                                    user=user,
                                    is_media_on_update=True)
