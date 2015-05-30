@@ -19,5 +19,3 @@ def update_users_media():
                 user.is_media_on_update = True;
                 db.session.commit()
                 task = requests.update_user_media.delay(user.inst_id_user)
-                task.wait()
-
