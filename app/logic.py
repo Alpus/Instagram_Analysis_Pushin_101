@@ -62,9 +62,9 @@ def get_most_liked_media(user_id):
     user_temp = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
-    most_liked_media = user_temp.medias.all()
-    most_liked_media.sort(key=lambda x: -x.count_of_likes)
-    return most_liked_media[:50]
+    most_liked_media = user_temp.medias.order_by(models.Media.count_of_likes.desc()).limit(50).all()
+    #most_liked_media.sort(key=lambda x: -x.count_of_likes)
+    return most_liked_media
 
 
 def get_user_tags(user_id):
