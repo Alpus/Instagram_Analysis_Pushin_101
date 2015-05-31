@@ -14,11 +14,12 @@ def get_users_who_liked(user_id):
 
     possible_user_likes = {x:0 for x in followed_by}
 
-    medias_with_extra_likes = 0
+    #medias_with_extra_likes = 0
+    medias_with_extra_likes = user_temp.medias.filter(models.Media.count_of_likes > 120).count()
     #count_of_extra_likes = 0
-    for media in medias:
-        if media.count_of_likes > 120:
-            medias_with_extra_likes += 1
+    #for media in medias:
+        #if media.count_of_likes > 120:
+            #medias_with_extra_likes += 1
             #count_of_extra_likes += media.count_of_likes - 120
 
     for user in followed_by:
