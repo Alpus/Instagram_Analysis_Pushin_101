@@ -108,8 +108,8 @@ def update_user(user_id):
 def init_tag(tag_name):
     try:
         tag =\
-        db.session.query(models.Tag).filter(models.Tag.name ==
-                                            tag_name).first()
+            db.session.query(models.Tag).filter(models.Tag.name ==
+                                                tag_name).first()
     except:
         tag = None
 

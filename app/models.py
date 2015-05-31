@@ -142,8 +142,9 @@ class Media(db.Model):
 
         if 'tags' in dir(media_data):
             for tag in media_data.tags:
-                tag_data = requests.init_tag(tag.name)
-                self.tags.append(tag_data)
+                tag = requests.init_tag(tag.name)
+                if tag is not None:
+                    self.tags.append(tag)
 
         for comment_data in media_data.comments:
             comment = requests.init_comment_by_data(comment_data)
