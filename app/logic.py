@@ -54,7 +54,7 @@ def get_users_who_liked(user_id):
     liker_count = len(users_who_liked)
     medias.sort(key=lambda x: (-x.count_of_likes))
     median_like_count = medias[len(medias) / 2].count_of_likes
-    return users_who_liked, sum_of_likes, liker_count, median_like_count
+    return users_who_liked[:50], sum_of_likes, liker_count, median_like_count
 
 
 def get_most_liked_media(user_id):
@@ -63,7 +63,7 @@ def get_most_liked_media(user_id):
                                              user_id).first()
     most_liked_media = user_temp.medias.all()
     most_liked_media.sort(key=lambda x: -x.count_of_likes)
-    return most_liked_media
+    return most_liked_media[:50]
 
 
 def get_user_tags(user_id):
@@ -83,7 +83,7 @@ def get_user_tags(user_id):
     user_tags = user_tags.items()
     user_tags.sort(key=lambda x: (-x[1], x[0].name))
     tag_count_unique = len(user_tags)
-    return user_tags, tag_count_all, tag_count_unique
+    return user_tags[:50], tag_count_all, tag_count_unique
 
 
 def get_tags_likes(user_id):
@@ -103,7 +103,7 @@ def get_tags_likes(user_id):
         tags_likes[tag] = float(tags_likes[tag][1]) / tags_likes[tag][0]
     tags_likes = tags_likes.items()
     tags_likes.sort(key=lambda x: (-x[1], x[0].name))
-    return tags_likes
+    return tags_likes[:50]
 
 
 def get_follows(user_id):
@@ -136,7 +136,7 @@ def get_user_filter(user_id):
      user_filters = user_filters.items()
      user_filters.sort(key=lambda x: (-x[1], x[0]))
      filter_count = len(user_filters)
-     return user_filters, filter_count
+     return user_filters[:50], filter_count
 
 
 def get_filters_likes(user_id):
@@ -157,7 +157,7 @@ def get_filters_likes(user_id):
         filter_likes[filter] = [float(filter_likes[filter][1]) / filter_likes[filter][0], filter_likes[filter][2]]
     filter_likes = filter_likes.items()
     filter_likes.sort(key=lambda x: (-x[1][0], x[0]))
-    return filter_likes
+    return filter_likes[:50]
 
 
 def get_user_location(user_id):
@@ -177,7 +177,7 @@ def get_user_location(user_id):
      user_locations = user_locations.items()
      user_locations.sort(key=lambda x: (-x[1], x[0].name))
      location_count_unique = len(user_locations)
-     return user_locations, location_count_all, location_count_unique
+     return user_locations[:50], location_count_all, location_count_unique
 
 
 def get_locations_likes(user_id):
@@ -200,6 +200,6 @@ def get_locations_likes(user_id):
                                     location_likes[location][2]]
     location_likes = location_likes.items()
     location_likes.sort(key=lambda x: (-x[1][0], x[0].name))
-    return location_likes
+    return location_likes[:50]
 
 
