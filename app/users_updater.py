@@ -2,6 +2,7 @@ import requests
 from app import db
 import models
 import datetime
+from time import sleep
 
 
 while True:
@@ -41,3 +42,5 @@ while True:
         db.session.commit()
         print user.login + ' updated \n \n'
         #print 'waiting end'
+
+    sleep(10)
