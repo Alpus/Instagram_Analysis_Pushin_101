@@ -493,7 +493,7 @@
                     }
                 });
 
-                {% if user_information.ready_to_show %}
+                {% if not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
             });
