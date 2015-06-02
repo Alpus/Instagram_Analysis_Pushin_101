@@ -209,7 +209,7 @@
                                             {{ liker.count_of_likes }}
                                         </th>
                                         <th>
-                                            {{ '%0.2f' %  ((liker.count_of_likes / liker.user.count_media) * 100) | float }}%
+                                            {{ '%0.2f' %  ((liker.count_of_likes / user_information.user.count_media) * 100) | float }}%
                                         </th>
                                     </tr>
                                 {% endfor %}
