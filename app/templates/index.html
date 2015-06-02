@@ -407,7 +407,7 @@
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
         <script>
             function reload_with_analysis () {
-                $.getJSON('/is_on_update/' + cookie.user_id,
+                $.getJSON('{{ '/is_on_update/' + cookie.user_id }}',
                 function (data) {
                     if (!data.is_on_update) {
                         location.reload(true);
@@ -493,7 +493,9 @@
                     }
                 });
 
-                setInterval(reload_with_analysis, 5000);
+                {% if user_information.ready_to_show %}
+                    setInterval(reload_with_analysis, 5000);
+                {% endif %}
             });
         </script>
     </body>
