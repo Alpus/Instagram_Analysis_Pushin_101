@@ -101,7 +101,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for element in top_user | batch(30) | first %}
+                    {% for element in top_users | batch(30) | first %}
                         <tr>
                             <th>{{ element.number }}</th>
                             <th>
@@ -420,7 +420,7 @@
                 $("#tags-div").slideUp();
                 $("#users-div").slideUp();
             }
-            function slide_up_all() {
+            function deactivate_all() {
                 navbarCollapse = $("#navbarCollapse");
                 navbarCollapse.find("#users").removeClass('active');
                 navbarCollapse.navbarCollapsefind("#general").removeClass('active');
@@ -436,6 +436,7 @@
                 navbarCollapse.find("#users").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#users-div").slideDown();
                     }
@@ -443,6 +444,7 @@
                 navbarCollapse.find("#general").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#general-div").slideDown();
                     }
@@ -450,6 +452,7 @@
                 navbarCollapse.find("#likers").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#likers-div").slideDown();
                     }
@@ -457,6 +460,7 @@
                 navbarCollapse.find("#medias").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#medias-div").slideDown();
                     }
@@ -464,6 +468,7 @@
                 navbarCollapse.find("#filters").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#filters-div").slideDown();
                     }
@@ -471,6 +476,7 @@
                 navbarCollapse.find("#locations").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#locations-div").slideDown();
                     }
@@ -478,6 +484,7 @@
                 navbarCollapse.find("#tags").on('click', function () {
                     if (!$(this).disabled) {
                         slide_up_all();
+                        deactivate_all();
                         $(this).addClass('active');
                         $("#tags-div").slideDown();
                     }
