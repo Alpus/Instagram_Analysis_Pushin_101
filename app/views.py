@@ -73,7 +73,7 @@ def user_logged():
     return redirect('/')
 
 
-@app.route('/is_on_update')
+@app.route('/is_on_update/<user_id>')
 def is_on_update(user_id):
     user = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
