@@ -73,7 +73,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             {% if cookie.valid %}
-                                <p class="navbar-text">Signed in as @{{ cookie.login }} <span
+                                <p class="navbar-text">Signed in as {{ cookie.user_login }} <span
                                         class="glyphicon glyphicon-check"></span></p>
                             {% else %}
                                 <a class="navbar-link" href="{{ login_url }}">
@@ -413,7 +413,7 @@
             }
             $(document).ready( function() {
                 navbarCollapse = $("#navbarCollapse");
-                navbarCollapse.find("#users").on('click', function() {
+                navbarCollapse.find("#users").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#general-div").slideUp();
                         $("#likers-div").slideUp();
@@ -424,7 +424,7 @@
                         $("#users-div").slideDown();
                     }
                 });
-                navbarCollapse.find("#general").on('click', function() {
+                navbarCollapse.find("#general").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#users-div").slideUp();
                         $("#likers-div").slideUp();
@@ -435,7 +435,7 @@
                         $("#general-div").slideDown();
                     }
                 });
-                navbarCollapse.find("#likers").on('click', function() {
+                navbarCollapse.find("#likers").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#users-div").slideUp();
                         $("#general-div").slideUp();
@@ -446,7 +446,7 @@
                         $("#likers-div").slideDown();
                     }
                 });
-                navbarCollapse.find("#medias").on('click', function() {
+                navbarCollapse.find("#medias").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#users-div").slideUp();
                         $("#general-div").slideUp();
@@ -457,7 +457,7 @@
                         $("#medias-div").slideDown();
                     }
                 });
-                navbarCollapse.find("#filters").on('click', function() {
+                navbarCollapse.find("#filters").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#users-div").slideUp();
                         $("#general-div").slideUp();
@@ -468,7 +468,7 @@
                         $("#filters-div").slideDown();
                     }
                 });
-                navbarCollapse.find("#locations").on('click', function() {
+                navbarCollapse.find("#locations").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#users-div").slideUp();
                         $("#general-div").slideUp();
@@ -479,7 +479,7 @@
                         $("#locations-div").slideDown();
                     }
                 });
-                navbarCollapse.find("#tags").on('click', function() {
+                navbarCollapse.find("#tags").on('click', function () {
                     if (!$(this).disabled()) {
                         $("#users-div").slideUp();
                         $("#general-div").slideUp();
@@ -492,6 +492,7 @@
                 });
 
                 setInterval(reload_with_analysis, 5000);
+            });
         </script>
     </body>
 </html>
