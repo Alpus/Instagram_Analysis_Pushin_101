@@ -412,7 +412,7 @@
             function reload_with_analysis () {
                 $.getJSON('{{ '/is_on_update/' + cookie.user_id }}',
                 function (data) {
-                    if (!data.is_on_update) {
+                    if (data.is_ready_to_show) {
                         location.reload(true);
                     }
                 });
@@ -491,7 +491,7 @@
                     }
                 });
 
-                {% if not user_information.ready_to_slideDown %}
+                {% if not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
             });

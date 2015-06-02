@@ -75,10 +75,7 @@ def user_logged():
 
 @app.route('/is_on_update/<user_id>')
 def is_on_update(user_id):
-    user = \
-        db.session.query(models.User).filter(models.User.inst_id_user ==
-                                             user_id).first()
-    return jsonify(is_on_update=user.is_media_on_update)
+    return jsonify(is_ready_to_show=logic.is_user_ready_to_show(user_id=user_id))
 
 
 #@app.route('/static/<path:filename>')
