@@ -43,7 +43,7 @@ class Ordered_location:
 
 
 class Ordered_user:
-    def __init__(self, number, user, average_count_of_likes):
+    def __init__(self, number, user):
         number = number + 1
         user = user
 
