@@ -58,19 +58,19 @@
                         <li id="general" {% if not cookie.valid %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-user"></span> General</a>
                         </li>
-                        <li id="likers" {% if not cookie.valid or not user_information.ready_to_slideDown %} class="disabled" {% endif %}>
+                        <li id="likers" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-heart"></span> Likers</a>
                         </li>
-                        <li id="medias" {% if not cookie.valid or not user_information.ready_to_slideDown %} class="disabled" {% endif %}>
+                        <li id="medias" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-picture"></span> Medias</a>
                         </li>
-                        <li id="filters" {% if not cookie.valid or not user_information.ready_to_slideDown %} class="disabled" {% endif %}>
+                        <li id="filters" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-sunglasses"></span> Filters</a>
                         </li>
-                        <li id="locations" {% if not cookie.valid or not user_information.ready_to_slideDown %} class="disabled" {% endif %}>
+                        <li id="locations" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-map-marker"></span> Locations</a>
                         </li>
-                        <li id="tags" {% if not cookie.valid or not user_information.ready_to_slideDown %} class="disabled" {% endif %}>
+                        <li id="tags" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-tag"></span> Tags</a>
                         </li>
                     </ul>
@@ -166,7 +166,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_slideDown %}
+        {% if not cookie.valid or not user_information.ready_to_show %}
             <div id="likers-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                     <h1 class="text-center">Likers</h1>
@@ -220,7 +220,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_slideDown %}
+        {% if not cookie.valid or not user_information.ready_to_show %}
             <div id="medias-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Medias</h1>
@@ -264,7 +264,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_slideDown %}
+        {% if not cookie.valid or not user_information.ready_to_show %}
             <div id="filters-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Filters</h1>
@@ -309,7 +309,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_slideDown %}
+        {% if not cookie.valid or not user_information.ready_to_show %}
             <div id="locations-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Locations</h1>
@@ -356,7 +356,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_slideDown %}
+        {% if not cookie.valid or not user_information.ready_to_show %}
             <div id="tags-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Tags</h1>
