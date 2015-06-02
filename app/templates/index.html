@@ -406,6 +406,9 @@
         <script src="{{ url_for('static', filename='js/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
         <script>
+            current_window = $('#users_div');
+            current_button = $('#users')
+
             function reload_with_analysis () {
                 $.getJSON('{{ '/is_on_update/' + cookie.user_id }}',
                 function (data) {
@@ -414,82 +417,77 @@
                     }
                 });
             }
-            function slide_up_all() {
-                $("#general-div").slideUp();
-                $("#likers-div").slideUp();
-                $("#medias-div").slideUp();
-                $("#filters-div").slideUp();
-                $("#locations-div").slideUp();
-                $("#tags-div").slideUp();
-                $("#users-div").slideUp();
-            }
-            function deactivate_all() {
-                navbarCollapse = $("#navbarCollapse");
-                navbarCollapse.find("#users").removeClass('active');
-                navbarCollapse.navbarCollapsefind("#general").removeClass('active');
-                navbarCollapse.navbarCollapsefind("#likers").removeClass('active');
-                navbarCollapse.navbarCollapsefind("#medias").removeClass('active')
-                navbarCollapse.navbarCollapsefind("#filters").removeClass('active');
-                navbarCollapse.navbarCollapsefind("#locations").removeClass('active');
-                navbarCollapse.navbarCollapsefind("#tags").removeClass('active');
-            }
 
             $(document).ready( function() {
                 navbarCollapse = $("#navbarCollapse");
                 navbarCollapse.find("#users").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#users-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#users-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
                 navbarCollapse.find("#general").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#general-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#general-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
                 navbarCollapse.find("#likers").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#likers-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#likers-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
                 navbarCollapse.find("#medias").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#medias-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#medias-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
                 navbarCollapse.find("#filters").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#filters-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#filters-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
                 navbarCollapse.find("#locations").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#locations-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#locations-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
                 navbarCollapse.find("#tags").on('click', function () {
-                    if (!$(this).disabled) {
-                        slide_up_all();
-                        deactivate_all();
-                        $(this).addClass('active');
-                        $("#tags-div").slideDown();
+                    if (!$(this).disabled && current_button != $(this)) {
+                        current_button.removeClass('active');
+                        current_window.hide('slow');
+                        current_button = $(this)
+                        current_window = $("#tags-div");
+                        current_button.activate()
+                        current_window.show()
                     }
                 });
 
