@@ -8,24 +8,24 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
         {% block styles %}{% endblock %}
         <style>
-{#            #general-div {#}
-{#                display: none;#}
-{#            }#}
-{#            #likers-div {#}
-{#                display: none;#}
-{#            }#}
-{#            #medias-div {#}
-{#                display: none;#}
-{#            }#}
-{#            #filters-div {#}
-{#                display: none;#}
-{#            }#}
-{#            #locations-div {#}
-{#                display: none;#}
-{#            }#}
-{#            #tags-div {#}
-{#                display: none;#}
-{#            }#}
+            #general-div {
+                display: none;
+            }
+            #likers-div {
+                display: none;
+            }
+            #medias-div {
+                display: none;
+            }
+            #filters-div {
+                display: none;
+            }
+            #locations-div {
+                display: none;
+            }
+            #tags-div {
+                display: none;
+            }
             a {
                 cursor: pointer;
                 cursor: hand;
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        {% if not cookie.valid %}
+        {% if cookie.valid %}
             <div id="general-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                     <h1 class="text-center">General</h1>
@@ -166,7 +166,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_show %}
+        {% if cookie.valid and user_information.ready_to_show %}
             <div id="likers-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                     <h1 class="text-center">Likers</h1>
@@ -220,7 +220,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_show %}
+        {% if cookie.valid and user_information.ready_to_show %}
             <div id="medias-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Medias</h1>
@@ -264,7 +264,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_show %}
+        {% if cookie.valid and user_information.ready_to_show %}
             <div id="filters-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Filters</h1>
@@ -309,7 +309,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_show %}
+        {% if cookie.valid and user_information.ready_to_show %}
             <div id="locations-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Locations</h1>
@@ -356,7 +356,7 @@
             </div>
         {% endif %}
 
-        {% if not cookie.valid or not user_information.ready_to_show %}
+        {% if cookie.valid and user_information.ready_to_show %}
             <div id="tags-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                 <h1 class="text-center">Tags</h1>
