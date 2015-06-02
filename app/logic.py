@@ -6,46 +6,46 @@ import datetime
 
 class Ordered_liker:
     def __init__(self, number, user, count_of_likes):
-        number = number + 1
-        user = user
-        count_of_likes = count_of_likes
+        self.number = number + 1
+        self.user = user
+        self.count_of_likes = count_of_likes
 
 class Ordered_media:
     def __init__(self, number, media):
-        number = number + 1
-        media = media
+        self.number = number + 1
+        self.media = media
 
 class Ordered_tag:
     def __init__(self, number, tag, count_of_media, average_count_of_likes, best_media):
-        number = number + 1
-        tag = tag
-        count_of_media = count_of_media
-        average_count_of_likes = average_count_of_likes
-        best_media = best_media
+        self.number = number + 1
+        self.tag = tag
+        self.count_of_media = count_of_media
+        self.average_count_of_likes = average_count_of_likes
+        self.best_media = best_media
 
 
 class Ordered_filter:
     def __init__(self, number, filter_name, count_of_media, average_count_of_likes, best_media):
-        number = number + 1
-        filter_name = filter_name
-        count_of_media = count_of_media
-        average_count_of_likes = average_count_of_likes
-        best_media = best_media
+        self.number = number + 1
+        self.filter_name = filter_name
+        self.count_of_media = count_of_media
+        self.average_count_of_likes = average_count_of_likes
+        self.best_media = best_media
 
 
 class Ordered_location:
     def __init__(self, number, location, count_of_media, average_count_of_likes, best_media):
-        number = number + 1
-        location = location
-        count_of_media = count_of_media
-        average_count_of_likes = average_count_of_likes
-        best_media = best_media
+        self.number = number + 1
+        self.location = location
+        self.count_of_media = count_of_media
+        self.average_count_of_likes = average_count_of_likes
+        self.best_media = best_media
 
 
 class Ordered_user:
     def __init__(self, number, user):
-        number = number + 1
-        user = user
+        self.number = number + 1
+        self.user = user
 
 
 
@@ -224,6 +224,7 @@ def get_user_information(user_id):
 
 def get_top_users():
     users = \
-        db.session.query(models.User).filter(models.User.access_token != None).order_by(models.User.count_media).all()
+        db.session.query(models.User).filter(models.User.access_token != None)\
+            .order_by(models.User.count_media.desc()).all()
     top_users = [Ordered_user(number=number, user=user) for number, user in enumerate(users)]
     return top_users
