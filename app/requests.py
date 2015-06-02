@@ -279,8 +279,7 @@ def update_user_followed_by(user_id):
 
 
 def clear_extra_locations():
-    locations = db.session.query(models.Location).filter(models.Location.medias
-                                                         == None)
+    locations = db.session.query(models.Location).filter(models.Location.medias == None)
     for location in locations:
         db.session.delete(location)
 
@@ -310,7 +309,7 @@ def is_access_token_valid(user_id):
     else:
         try:
            api = client.InstagramAPI(access_token=user.access_token,
-                                  client_secret=CLIENT_SECRET)
+                                     client_secret=CLIENT_SECRET)
            user_data = api.user(user_id)
         except InstagramAPIError:
                user.access_token = None

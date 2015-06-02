@@ -21,6 +21,7 @@ while True:
         db.session.commit()
     if datetime.datetime.now() - user.last_check >= datetime.timedelta(hours=24) and\
         requests.is_access_token_valid(user.inst_id_user):
+        print datetime.datetime.now()
         print user.login + ' started'
         user.is_media_on_update += 3
         db.session.commit()
