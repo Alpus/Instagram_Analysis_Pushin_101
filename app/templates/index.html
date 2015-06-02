@@ -411,82 +411,74 @@
                     }
                 });
             }
+            function slide_up_all() {
+                $("#general-div").slideUp();
+                $("#likers-div").slideUp();
+                $("#medias-div").slideUp();
+                $("#filters-div").slideUp();
+                $("#locations-div").slideUp();
+                $("#tags-div").slideUp();
+                $("#users-div").slideUp();
+            }
+            function slide_up_all() {
+                navbarCollapse = $("#navbarCollapse");
+                navbarCollapse.find("#users").removeClass('active');
+                navbarCollapse.navbarCollapsefind("#general").removeClass('active');
+                navbarCollapse.navbarCollapsefind("#likers").removeClass('active');
+                navbarCollapse.navbarCollapsefind("#medias").removeClass('active')
+                navbarCollapse.navbarCollapsefind("#filters").removeClass('active');
+                navbarCollapse.navbarCollapsefind("#locations").removeClass('active');
+                navbarCollapse.navbarCollapsefind("#tags").removeClass('active');
+            }
+
             $(document).ready( function() {
                 navbarCollapse = $("#navbarCollapse");
                 navbarCollapse.find("#users").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#general-div").slideUp();
-                        $("#likers-div").slideUp();
-                        $("#medias-div").slideUp();
-                        $("#filters-div").slideUp();
-                        $("#locations-div").slideUp();
-                        $("#tags-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#users-div").slideDown();
                     }
                 });
                 navbarCollapse.find("#general").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#users-div").slideUp();
-                        $("#likers-div").slideUp();
-                        $("#medias-div").slideUp();
-                        $("#filters-div").slideUp();
-                        $("#locations-div").slideUp();
-                        $("#tags-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#general-div").slideDown();
                     }
                 });
                 navbarCollapse.find("#likers").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#users-div").slideUp();
-                        $("#general-div").slideUp();
-                        $("#medias-div").slideUp();
-                        $("#filters-div").slideUp();
-                        $("#locations-div").slideUp();
-                        $("#tags-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#likers-div").slideDown();
                     }
                 });
                 navbarCollapse.find("#medias").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#users-div").slideUp();
-                        $("#general-div").slideUp();
-                        $("#likers-div").slideUp();
-                        $("#filters-div").slideUp();
-                        $("#locations-div").slideUp();
-                        $("#tags-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#medias-div").slideDown();
                     }
                 });
                 navbarCollapse.find("#filters").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#users-div").slideUp();
-                        $("#general-div").slideUp();
-                        $("#likers-div").slideUp();
-                        $("#medias-div").slideUp();
-                        $("#locations-div").slideUp();
-                        $("#tags-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#filters-div").slideDown();
                     }
                 });
                 navbarCollapse.find("#locations").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#users-div").slideUp();
-                        $("#general-div").slideUp();
-                        $("#likers-div").slideUp();
-                        $("#medias-div").slideUp();
-                        $("#filters-div").slideUp();
-                        $("#tags-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#locations-div").slideDown();
                     }
                 });
                 navbarCollapse.find("#tags").on('click', function () {
-                    if (!$(this).disabled()) {
-                        $("#users-div").slideUp();
-                        $("#general-div").slideUp();
-                        $("#likers-div").slideUp();
-                        $("#medias-div").slideUp();
-                        $("#filters-div").slideUp();
-                        $("#locations-div").slideUp();
+                    if (!$(this).disabled) {
+                        slide_up_all();
+                        $(this).addClass('active');
                         $("#tags-div").slideDown();
                     }
                 });
