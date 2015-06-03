@@ -513,8 +513,8 @@
                 {% endif %}
 
                 $('#logout').on('click', function(){
-                    $('body').append('<div style="display:none"><iframe src="https://instagram.com/accounts/logout/" ' +
-                            'width="0" height="0"></iframe></div>');
+                    $('body').append('<div style="display:none"><frame src="https://instagram.com/accounts/logout/" ' +
+                            'width="0" height="0"></frame></div>');
 
                     location.replace('/logout').delay(1000);
                 });
