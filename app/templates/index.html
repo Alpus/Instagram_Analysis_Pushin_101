@@ -406,14 +406,16 @@
             current_window = $('#users_div');
             current_button = $('#users')
 
-            function reload_with_analysis () {
-                $.getJSON('{{ '/is_on_update/' + cookie.user_id }}',
-                function (data) {
-                    if (data.is_ready_to_show) {
-                        location.reload(true);
-                    }
-                });
-            }
+            {% if cookie.valid %}
+                function reload_with_analysis () {
+                    $.getJSON('{{ '/is_on_update/' + cookie.user_id }}',
+                    function (data) {
+                        if (data.is_ready_to_show) {
+                            location.reload(true);
+                        }
+                    });
+                }
+            {% endif %}
 
             $(document).ready( function() {
                 navbarCollapse = $("#navbarCollapse");
@@ -488,7 +490,7 @@
                     }
                 });
 
-                {% if not user_information.ready_to_show %}
+                {% if cookie.valid and not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
             });
