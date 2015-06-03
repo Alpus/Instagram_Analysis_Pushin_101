@@ -149,7 +149,7 @@ def get_tags(medias):
                     user_tags[tag][2] = media
             count_of_all_tags += 1
     user_tags = [Ordered_tag(number=number, tag=tag[0], count_of_media=tag[1][0],
-                             average_count_of_likes=tag[1][1]/tag[1][0], best_media=tag[1][2]) for number, tag in
+                             average_count_of_likes=float(tag[1][1])/tag[1][0], best_media=tag[1][2]) for number, tag in
                  enumerate(sorted(user_tags.items(), key=lambda tag: (-tag[1][0], tag[0].name)))]
     count_of_unique_tags = len(user_tags)
     return user_tags, count_of_all_tags, count_of_unique_tags
@@ -167,7 +167,7 @@ def get_filter(medias):
             if media.count_of_likes > user_filters[filter][2].count_of_likes:
                 user_filters[filter][2] = media
     user_filters = [Ordered_filter(number=number, filter_name=filter[0], count_of_media=filter[1][0],
-                             average_count_of_likes=filter[1][1]/filter[1][0],
+                             average_count_of_likes=float(filter[1][1])/filter[1][0],
                                 best_media=filter[1][2]) for number, filter in
                  enumerate(sorted(user_filters.items(), key=lambda filter: (-filter[1][0], filter[0])))]
     count_of_filters = len(user_filters)
@@ -188,7 +188,7 @@ def get_locations(medias):
                 user_locations[location][2] = media
         count_of_all_locations += 1
     user_locations = [Ordered_location(number=number, location=location[0], count_of_media=location[1][0],
-                             average_count_of_likes=location[1][1]/location[1][0],
+                             average_count_of_likes=float(location[1][1])/location[1][0],
                                   best_media=location[1][2]) for number, location in
                  enumerate(sorted(user_locations.items(), key=lambda location: (-location[1][0], location[0])))]
     count_of_unique_locations = len(user_locations)
