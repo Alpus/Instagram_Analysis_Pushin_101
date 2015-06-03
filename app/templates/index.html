@@ -160,10 +160,12 @@
 
                     <p>{{ user_information.user.count_followed_by }} followers,</p>
 
-                    <p align="center"><img src="{{ url_for('static', filename='img/loading.gif') }}" alt="Loading"></p>
-                    <h2>Your account is on updating</h2>
-                    <h3>Page will be automatically updated when analysis is done</h3>
-                    <h3>Or you can just sign in a few later</h3>
+                    {% if not user_information.ready_to_show %}
+                        <p align="center"><img src="{{ url_for('static', filename='img/loading.gif') }}" alt="Loading"></p>
+                        <h2>Your account is on updating</h2>
+                        <h3>Page will be automatically updated when analysis is done</h3>
+                        <h3>Or you can just sign in a few later</h3>
+                    {% endif %}
 
                 </div>
             </div>
