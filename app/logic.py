@@ -193,7 +193,7 @@ def get_locations(medias):
     user_locations = [Ordered_location(number=number, location=location[0], count_of_media=location[1][0],
                              average_count_of_likes=float(location[1][1])/location[1][0],
                                   best_media=location[1][2]) for number, location in
-                 enumerate(sorted(user_locations.items(), key=lambda location: (-location[1][0], location[0].name)))]
+                 enumerate(sorted(user_locations.items(), key=lambda location: (-location[1][0])))]
     count_of_unique_locations = len(user_locations)
     return user_locations, count_of_all_locations, count_of_unique_locations
 
