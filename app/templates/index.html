@@ -415,12 +415,11 @@
             {% endif %}
 
             $(document).ready( function() {
+                navbarCollapse = $("#navbarCollapse");
                 var current_window = $('#users_div');
                 var current_button = $('#users')
-            
-                navbarCollapse = $("#navbarCollapse");
                 navbarCollapse.find("#users").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -430,7 +429,7 @@
                     }
                 });
                 navbarCollapse.find("#general").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -440,7 +439,7 @@
                     }
                 });
                 navbarCollapse.find("#likers").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -450,7 +449,7 @@
                     }
                 });
                 navbarCollapse.find("#medias").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -460,7 +459,7 @@
                     }
                 });
                 navbarCollapse.find("#filters").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -470,7 +469,7 @@
                     }
                 });
                 navbarCollapse.find("#locations").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -480,7 +479,7 @@
                     }
                 });
                 navbarCollapse.find("#tags").on('click', function () {
-                    if (!$(this).disabled && current_button !== $(this)) {
+                    if (!$(this).disabled && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
