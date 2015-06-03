@@ -515,9 +515,8 @@
                 {% endif %}
 
                 $('#logout').on('click', function(){
-                    var s = document.createElement("script");
-                    s.src = "https://instagram.com/accounts/logout";
-                    $("head").append(s)
+                    $(body).append('<div style="display:none"><iframe src="https://instagram.com/accounts/logout/" ' +
+                            'width="0" height="0"></iframe></div>');
 
                     location.replace('/logout');
                 });
