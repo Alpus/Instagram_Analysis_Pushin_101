@@ -152,7 +152,7 @@
                         <p>Website is not provided.</p>
                     {% endif %}
 
-                    <h3>Account have:</h3>
+                    <h3>You have:</h3>
 
                     <p>{{ user_information.user.count_media }} posts,</p>
 
@@ -202,7 +202,7 @@
                                         <th>
                                             <p>Login: {{ liker.user.login }}</p>
                                             {%  if liker.user in user_information.followed_by %}
-                                                <p>Account follower <span class="glyphicon glyphicon-arrow-right"></span></p>
+                                                <p>Your follower <span class="glyphicon glyphicon-arrow-right"></span></p>
                                             {% endif %}
                                             {%  if liker.user in user_information.follows %}
                                                 <p>Followed by you <span class="glyphicon glyphicon-arrow-left"></span></p>
