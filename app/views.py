@@ -78,7 +78,7 @@ def is_on_update(user_id):
     return jsonify(is_ready_to_show=logic.is_user_ready_to_show(user_id=user_id))
 
 @app.route('/logout')
-def is_on_update(user_id):
+def logout():
     session['user_id'] = None
     session['user_login'] = None
     return redirect('/')
