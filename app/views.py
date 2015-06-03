@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app
 from app import db, models
-from flask import jsonify, make_response, render_template, redirect, request, session, send_from_directory
+from flask import jsonify, make_response, render_template, redirect, request, session, send_from_directory, url_for
 import logic
 import requests
 import datetime
@@ -81,7 +81,7 @@ def is_on_update(user_id):
 def logout():
     session['user_id'] = None
     session['user_login'] = None
-    return redirect('/')
+    return redirect(url_for('/', action='logout'))
 
 
 #@app.route('/static/<path:filename>')
