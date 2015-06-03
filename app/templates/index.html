@@ -419,7 +419,7 @@
                 var current_window = $('#users-div');
                 var current_button = $('#users')
                 navbarCollapse.find("#users").on('click', function () {
-                    if (!$(this).hasClass("disabled") && current_button.attributes != $(this).attributes) {
+                    if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
