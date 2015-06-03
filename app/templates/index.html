@@ -84,10 +84,10 @@
                             {% if cookie.valid %}
                                 <p class="text-center navbar-text">{{ cookie.user_login }} <span
                                         class="glyphicon glyphicon-check"></span>
-                                    <a target="_blank" class="navbar-link" href="/logout">
+                                    <a tag="logout" class="navbar-link" href="/logout">
                                     Log out</a></p>
                             {% else %}
-                                <a target="_blank" class="navbar-link" href="{{ login_url }}">
+                                <a class="navbar-link" href="{{ login_url }}">
                                     Log in <span class="glyphicon glyphicon-camera"></span></a>
                             {% endif %}
                         </li>
@@ -95,6 +95,9 @@
                 </div>
             </div>
         </nav>
+
+        <div id="logout-div">
+        </div>
 
         <div id="users-div" class="row">
             <div class="col-md-6 col-md-offset-3" align="center">
@@ -508,6 +511,10 @@
                 {% if cookie.valid and not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
+
+                $('#logout').on('click', function(){
+                    $('#logout-div').html('<iframe src="https://instagram.com/accounts/logout/" width="0" height="0">');
+                })
             });
         </script>
     </body>
