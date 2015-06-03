@@ -33,7 +33,7 @@
         </style>
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-fixed-bottom">
+        <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -171,7 +171,7 @@
                         <span class="glyphicon glyphicon-heart"></span>
                     </div>
                     {% if user_information.count_of_likers == 0 or user_information.median_like_count > 240 %}
-                        <h3>Sorry, account have too much likes to make representational user statistic</h3>
+                        <h3>Sorry, you have too much likes to make representational user statistic</h3>
                     {% else %}
                         <p>Sum of likes: {{ user_information.sum_of_likes }}</p>
                         <p>Average like count: {{ '%0.2f' % ((user_information.average_like_count)) | float }},</p>
@@ -179,7 +179,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>User picture</th>
+                                    <th>Picture</th>
                                     <th>Information</th>
                                     <th>~Count of likes</th>
                                     <th>~% of all posts</th>
@@ -190,7 +190,7 @@
                                     <tr>
                                         <th>{{ liker.number }}</th>
                                         <th>
-                                            <img src={{ liker.user.profile_picture }} width="100" height="100"
+                                            <img src={{ liker.user.profile_picture }} width="70" height="70"
                                                  alt="Profile photo" align="middle" class="img-thumbnail">
                                         </th>
                                         <th>
@@ -199,7 +199,7 @@
                                                 <p>Account follower <span class="glyphicon glyphicon-arrow-right"></span></p>
                                             {% endif %}
                                             {%  if liker.user in user_information.follows %}
-                                                <p>Followed by account <span class="glyphicon glyphicon-arrow-left"></span></p>
+                                                <p>Followed by you <span class="glyphicon glyphicon-arrow-left"></span></p>
                                             {% endif %}
                                         </th>
                                         <th>
@@ -236,7 +236,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for element in user_information.most_liked_media | batch(30) | first %}
+                                {% for element in user_information.most_liked_medias | batch(30) | first %}
                                     <tr>
                                         <th>{{ element.number }}</th>
                                         <th>
