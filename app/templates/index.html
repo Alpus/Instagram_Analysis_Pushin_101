@@ -517,7 +517,7 @@
                 $('#logout').on('click', function(){
                     var logout_frame = $("#logout-frame")
                     logout_frame.attr("src", "https://instagram.com/accounts/logout/");
-                    logout_frame.refresh
+                    logout_frame.reload(true)
 
                     location.replace('/logout');
                 });
