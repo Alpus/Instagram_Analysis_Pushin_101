@@ -129,9 +129,6 @@
             <div id="general-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                     <h1 class="text-center">General</h1>
-                    <div style="font-size: 150px" align="center">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </div>
                     <img src={{ user_information.user.profile_picture }} class="img-thumbnail" alt="Profile photo">
                     <h2>Login: {{ user_information.user.login }}</h2>
 
@@ -421,7 +418,7 @@
             $(document).ready( function() {
                 navbarCollapse = $("#navbarCollapse");
                 navbarCollapse.find("#users").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -431,7 +428,7 @@
                     }
                 });
                 navbarCollapse.find("#general").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -441,7 +438,7 @@
                     }
                 });
                 navbarCollapse.find("#likers").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -451,7 +448,7 @@
                     }
                 });
                 navbarCollapse.find("#medias").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -461,7 +458,7 @@
                     }
                 });
                 navbarCollapse.find("#filters").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -471,7 +468,7 @@
                     }
                 });
                 navbarCollapse.find("#locations").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -481,7 +478,7 @@
                     }
                 });
                 navbarCollapse.find("#tags").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).disabled && current_button !== $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
