@@ -82,9 +82,9 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             {% if cookie.valid %}
-                                <p class="text-center navbar-text" tag="logout">{{ cookie.user_login }} <span
+                                <p class="text-center navbar-text">{{ cookie.user_login }} <span
                                         class="glyphicon glyphicon-check"></span>
-                                    <a class="navbar-link">
+                                    <a class="navbar-link" href="#">
                                     Log out</a></p>
                             {% else %}
                                 <a class="navbar-link" href="{{ login_url }}">
