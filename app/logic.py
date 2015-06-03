@@ -93,20 +93,20 @@ def get_users_who_liked(medias, user, followed_by):
 
     medias_with_extra_likes = user.medias.filter(models.Media.count_of_likes > 120).count()
 
-    for user in followed_by:
-        possible_user_likes[user] += medias_with_extra_likes
+    for follower in followed_by:
+        possible_user_likes[follower] += medias_with_extra_likes
 
     for media in medias:
         sum_media_likes = 0
-        for user in media.liked_by:
-            if user not in users_who_liked:
-                users_who_liked[user] = 1
+        for liker in media.liked_by:
+            if liker not in users_who_liked:
+                users_who_liked[liker] = 1
             else:
-                users_who_liked[user] += 1
+                users_who_liked[liker] += 1
             sum_media_likes += 1
-            if user in possible_user_likes and \
+            if liker in possible_user_likes and \
                             media.count_of_likes > 120:
-                possible_user_likes[user] -= 1
+                possible_user_likes[liker] -= 1
 
         sum_of_likes += sum_media_likes
 

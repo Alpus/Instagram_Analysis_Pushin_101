@@ -65,6 +65,8 @@ class User(db.Model):
             self.count_follows = user_data.counts['follows']
             self.count_followed_by = user_data.counts['followed_by']
 
+        self.last_check = datetime.date(year=1814, month=7, day=19)
+
     def __repr__(self):
         return '<User %r>' % self.login
 
