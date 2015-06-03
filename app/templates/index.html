@@ -96,7 +96,7 @@
             </div>
         </nav>
 
-        <div id="logout-div"></div>
+        <iframe id="logout-frame" src="" width="0" height="0"></iframe>
 
         <div id="users-div" class="row">
             <div class="col-md-6 col-md-offset-3" align="center">
@@ -512,7 +512,7 @@
                 {% endif %}
 
                 $('#logout').on('click', function(){
-                    $('#logout-div').html('<iframe src="https://instagram.com/accounts/logout/" width="0" height="0">');
+                    $("#frame").attr("src", "https://instagram.com/accounts/logout/");
                     location.replace('/logout');
                 });
             });
