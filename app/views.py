@@ -42,7 +42,7 @@ def index():
         if not requests.is_access_token_valid(user_id=user_id):
             session['user_id'] = None
             session['user_login'] = None
-            redirect('/')
+            return redirect('/')
         top_users = logic.get_top_users()
         requests.update_user(user_id=user_id)
         user_information = logic.get_user_information(user_id=user_id)
@@ -76,6 +76,12 @@ def user_logged():
 @app.route('/is_on_update/<user_id>')
 def is_on_update(user_id):
     return jsonify(is_ready_to_show=logic.is_user_ready_to_show(user_id=user_id))
+
+@app.route('/logout')
+def is_on_update(user_id):
+    session['user_id'] = None
+    session['user_login'] = None
+    return redirect('/')
 
 
 #@app.route('/static/<path:filename>')
