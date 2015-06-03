@@ -515,9 +515,10 @@
                 {% endif %}
 
                 $('#logout').on('click', function(){
-                    var logout_frame = $("#logout-frame")
-                    logout_frame.attr("src", "https://instagram.com/accounts/logout/");
-                    logout_frame.reload(true)
+                    var iframe = document.getElementById('logout-frame');
+                    iframe.src = "https://instagram.com/accounts/logout";
+                    document.getElementById('logout-frame').reload(true);
+                    document.body.appendChild(iframe);
 
                     location.replace('/logout');
                 });
