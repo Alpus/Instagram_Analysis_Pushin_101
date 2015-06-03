@@ -352,7 +352,11 @@
                                 <tr>
                                     <th>{{ element.number }}</th>
                                     <th>
-                                        {{ element.location.name }}
+                                        {% if element.location.name %}
+                                            {{ element.location.name }}
+                                        {% else %}
+                                            No location
+                                        {% endif %}
                                     </th>
                                     <th>
                                         {{ element.count_of_media }}
