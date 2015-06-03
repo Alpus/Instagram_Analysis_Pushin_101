@@ -58,19 +58,24 @@
                         <li id="general" {% if not cookie.valid %} class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-user"></span> General</a>
                         </li>
-                        <li id="likers" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
+                        <li id="likers" {% if not cookie.valid or not user_information.ready_to_show %}
+                            class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-heart"></span> Likers</a>
                         </li>
-                        <li id="medias" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
+                        <li id="medias" {% if not cookie.valid or not user_information.ready_to_show %}
+                            class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-picture"></span> Medias</a>
                         </li>
-                        <li id="filters" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
+                        <li id="filters" {% if not cookie.valid or not user_information.ready_to_show %}
+                            class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-sunglasses"></span> Filters</a>
                         </li>
-                        <li id="locations" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
+                        <li id="locations" {% if not cookie.valid or not user_information.ready_to_show %}
+                            class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-map-marker"></span> Locations</a>
                         </li>
-                        <li id="tags" {% if not cookie.valid or not user_information.ready_to_show %} class="disabled" {% endif %}>
+                        <li id="tags" {% if not cookie.valid or not user_information.ready_to_show %}
+                            class="disabled" {% endif %}>
                             <a><span class="glyphicon glyphicon-tag"></span> Tags</a>
                         </li>
                     </ul>
@@ -78,10 +83,11 @@
                         <li>
                             {% if cookie.valid %}
                                 <p class="text-center navbar-text">{{ cookie.user_login }} <span
-                                        class="glyphicon glyphicon-check"></span><a tag="logout" class="navbar-link" href="/logout">
+                                        class="glyphicon glyphicon-check"></span>
+                                    <a target="_blank" class="navbar-link" href="/logout">
                                     Log out</a></p>
                             {% else %}
-                                <a class="navbar-link" href="{{ login_url }}">
+                                <a target="_blank" class="navbar-link" href="{{ login_url }}">
                                     Log in <span class="glyphicon glyphicon-camera"></span></a>
                             {% endif %}
                         </li>
@@ -162,7 +168,8 @@
                     <p>{{ user_information.user.count_followed_by }} followers,</p>
 
                     {% if not user_information.ready_to_show %}
-                        <p align="center"><img src="{{ url_for('static', filename='img/loading.gif') }}" alt="Loading"></p>
+                        <p align="center"><img src="{{ url_for('static', filename='img/loading.gif') }}"
+                                               alt="Loading"></p>
                         <h2>Your account is on updating</h2>
                         <h3>Page will be automatically updated when analysis is done</h3>
                         <h3>Or you can just sign in a few later</h3>
@@ -501,10 +508,6 @@
                 {% if cookie.valid and not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
-
-                $('#logout').on('click', function () {
-                    $(document).html('<iframe src="https://instagram.com/accounts/logout/" width="0" height="0">');
-                });
             });
         </script>
     </body>
