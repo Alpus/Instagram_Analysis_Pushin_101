@@ -204,10 +204,10 @@
                                         <th>
                                             <p>Login: {{ liker.user.login }}</p>
                                             {%  if liker.user in user_information.followed_by %}
-                                                <p>Your follower <span class="glyphicon glyphicon-arrow-right"></span></p>
+                                                <p>Your follower <span class="glyphicon glyphicon-arrow-left"></span></p>
                                             {% endif %}
                                             {%  if liker.user in user_information.follows %}
-                                                <p>Followed by you <span class="glyphicon glyphicon-arrow-left"></span></p>
+                                                <p>Followed by you <span class="glyphicon glyphicon-arrow-right"></span></p>
                                             {% endif %}
                                         </th>
                                         <th>
