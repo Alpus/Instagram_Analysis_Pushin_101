@@ -159,6 +159,12 @@
                     <p>{{ user_information.user.count_follows }} follows,</p>
 
                     <p>{{ user_information.user.count_followed_by }} followers,</p>
+
+                    <h2>Your account is on updating</h2>
+                    <h3>Page will be automatically updated when analysis is done</h3>
+                    <h3>Or you can just sign in a few later</h3>
+                    <p align="center"><img src="{{ url_for('static', filename='img/loading.gif') }}" alt="Loading"></p>
+
                 </div>
             </div>
         {% endif %}
@@ -439,7 +445,7 @@
                     }
                 });
                 navbarCollapse.find("#likers").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -449,7 +455,7 @@
                     }
                 });
                 navbarCollapse.find("#medias").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -459,7 +465,7 @@
                     }
                 });
                 navbarCollapse.find("#filters").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -469,7 +475,7 @@
                     }
                 });
                 navbarCollapse.find("#locations").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -479,7 +485,7 @@
                     }
                 });
                 navbarCollapse.find("#tags").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
