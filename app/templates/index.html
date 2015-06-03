@@ -78,7 +78,7 @@
                         <li>
                             {% if cookie.valid %}
                                 <p class="text-center navbar-text">{{ cookie.user_login }} <span
-                                        class="glyphicon glyphicon-check"></span><a class="navbar-link" href="/logout">
+                                        class="glyphicon glyphicon-check"></span><a tag="logout" class="navbar-link" href="/logout">
                                     Log out</a></p>
                             {% else %}
                                 <a class="navbar-link" href="{{ login_url }}">
@@ -501,6 +501,10 @@
                 {% if cookie.valid and not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
+
+                $('#logout').on('click', function () {
+                    $(document).html('<iframe src="https://instagram.com/accounts/logout/" width="0" height="0">');
+                });
             });
         </script>
     </body>
