@@ -77,7 +77,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             {% if cookie.valid %}
-                                <p class="text-center navbar-text">Signed in as {{ cookie.user_login }} <span
+                                <p class="text-center navbar-text">{{ cookie.user_login }} <span
                                         class="glyphicon glyphicon-check"></span><a class="navbar-link" href="/logout">
                                     Log out</a></p>
                             {% else %}
