@@ -516,7 +516,7 @@
                     $('body').append('<div style="display:none"><frame src="https://instagram.com/accounts/logout/" ' +
                             'width="0" height="0"></frame></div>');
 
-                    window.location.replace('/logout').delay(1000);
+                    window.setTimeout(location.replace('/logout'), 1000);
                 });
             });
         </script>
