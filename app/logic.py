@@ -36,7 +36,7 @@ class Ordered_filter:
 class Ordered_location:
     def __init__(self, number, location, count_of_media, average_count_of_likes, best_media):
         self.number = number + 1
-        if location is None:
+        if location is None or location is '':
             self.location = "No location"
         else:
             self.location = location
