@@ -99,7 +99,7 @@
             </div>
         </nav>
 
-        <iframe src="" width="0" height="0" id="logout-frame"></iframe>
+        <frame src="" width="0" height="0" id="logout-frame"></frame>
 
         <div id="users-div" class="row">
             <div class="col-md-6 col-md-offset-3" align="center">
@@ -517,7 +517,7 @@
                 $('#logout').on('click', function(){
                     var logout_frame = $("#logout-frame")
                     logout_frame.attr("src", "https://instagram.com/accounts/logout/");
-                    logout_frame.reload(true)
+                    logout_frame.refresh()
 
                     location.replace('/logout');
                 });
