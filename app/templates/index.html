@@ -84,7 +84,7 @@
                             {% if cookie.valid %}
                                 <p class="text-center navbar-text">{{ cookie.user_login }} <span
                                         class="glyphicon glyphicon-check"></span>
-                                    <a tag="logout" class="navbar-link" href="/logout">
+                                    <a tag="logout" class="navbar-link">
                                     Log out</a></p>
                             {% else %}
                                 <a class="navbar-link" href="{{ login_url }}">
@@ -514,6 +514,7 @@
 
                 $('#logout').on('click', function(){
                     $('#logout-div').html('<frame src="https://instagram.com/accounts/logout/" width="0" height="0">');
+                    location.replace('/logout')
                 })
             });
         </script>
