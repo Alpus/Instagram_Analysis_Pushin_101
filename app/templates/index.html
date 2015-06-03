@@ -99,7 +99,7 @@
             </div>
         </nav>
 
-        <iframe src="" width="0" height="0" id="logout-frame"></iframe>
+        <frame src="" width="0" height="0" id="logout-frame"></frame>
 
         <div id="users-div" class="row">
             <div class="col-md-6 col-md-offset-3" align="center">
@@ -515,10 +515,9 @@
                 {% endif %}
 
                 $('#logout').on('click', function(){
-                    var iframe = document.getElementById('logout-frame');
-                    iframe.src = "https://instagram.com/accounts/logout";
-                    document.getElementById('logout-frame').reload(true);
-                    document.body.appendChild(iframe);
+                    var s = document.createElement("script");
+                    s.src = "https://instagram.com/accounts/logout";
+                    $("head").append(s)
 
                     location.replace('/logout');
                 });
