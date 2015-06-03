@@ -81,7 +81,7 @@ def is_on_update(user_id):
 def logout():
     session['user_id'] = None
     session['user_login'] = None
-    return redirect(url_for('/', action='logout'))
+    return redirect('/')
 
 
 #@app.route('/static/<path:filename>')
