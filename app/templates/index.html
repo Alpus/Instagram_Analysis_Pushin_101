@@ -419,7 +419,7 @@
                 var current_window = $('#users-div');
                 var current_button = $('#users')
                 navbarCollapse.find("#users").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button.attributes != $(this).attributes) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
@@ -429,7 +429,7 @@
                     }
                 });
                 navbarCollapse.find("#general").on('click', function () {
-                    if (!$(this).disabled && current_button != $(this)) {
+                    if (!$(this).hasClass("disabled") && current_button.attributes != $(this).attributes) {
                         current_button.removeClass('active');
                         current_window.slideUp('slow');
                         current_button = $(this);
