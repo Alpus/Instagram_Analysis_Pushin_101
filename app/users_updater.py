@@ -27,10 +27,22 @@ while True:
         db.session.commit()
 
         task_followed_by = requests.update_user_followed_by.delay(user.inst_id_user)
+        ######
+        db.session.commit()
+        print user.is_media_on_update
+        ######
         print 'Followed by started'
         task_follows = requests.update_user_follows.delay(user.inst_id_user)
+        ######
+        db.session.commit()
+        print user.is_media_on_update
+        ######
         print 'Follows started'
         task_media = requests.update_user_media.delay(user.inst_id_user)
+        ######
+        db.session.commit()
+        print user.is_media_on_update
+        ######
         print 'Medias by started'
 
         task_followed_by.wait()
