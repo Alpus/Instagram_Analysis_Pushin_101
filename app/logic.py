@@ -196,7 +196,6 @@ def get_locations(medias):
 
 
 def get_user_information(user_id):
-    db.session.commit()
     user = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()

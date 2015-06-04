@@ -118,7 +118,7 @@ class Media(db.Model):
         self.type_media = media_data.type
         if media_data.caption:
             self.caption = media_data.caption.text
-        self.count_of_like = media_data.like_count
+        self.count_of_likes = media_data.like_count
         self.filter_media = media_data.filter
         self.link = media_data.link
         self.created_time = media_data.created_time
