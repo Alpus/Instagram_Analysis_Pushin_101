@@ -201,6 +201,7 @@ def get_user_information(user_id):
                                              user_id).first()
     if user.last_check is None:
         user.last_check = datetime.datetime(year=1814, month=7, day=19)
+        db.session.commit()
     if user.last_check <= datetime.datetime(year=1814, month=7, day=19):
         return User_information(user=user)
 
