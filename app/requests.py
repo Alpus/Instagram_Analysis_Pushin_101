@@ -20,7 +20,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_user = init_user_by_id(instagram_user['id'])
+    that_user = init_user_by_id(user_id=instagram_user['id'], access_token=access_token)
 
     if that_user.registration_date == None:
         that_user.registration_date = datetime.datetime.now()
@@ -31,13 +31,15 @@ def process_login(code):
     return that_user.inst_id_user, that_user.login
 
 
-def init_user_by_id(user_id):
+def init_user_by_id(user_id, access_token=None):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
-        api = client.InstagramAPI(access_token=user.access_token,
-                              client_secret=CLIENT_SECRET)
+        if access_token is None:
+            access_token = user.access_token
+        api = client.InstagramAPI(access_token=access_token,
+                                  client_secret=CLIENT_SECRET)
         user_data = api.user(user_id)
         user = models.User(user_data=user_data)
         db.session.add(user)
