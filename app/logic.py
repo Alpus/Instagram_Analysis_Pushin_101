@@ -199,6 +199,8 @@ def get_user_information(user_id):
     user = \
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
+    if user.last_check is None:
+        user.last_check = datetime.datetime(year=1814, month=7, day=19)
     if user.last_check <= datetime.datetime(year=1814, month=7, day=19):
         return User_information(user=user)
 
