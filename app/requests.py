@@ -223,11 +223,11 @@ def update_user_media(user_id):
             db.session.delete(media)
         db.session.commit()
 
-        user.is_media_on_update -= 1
-        db.session.commit()
-        if user.is_media_on_update is 0:
-            user.last_check = datetime.datetime.now()
-        db.session.commit()
+    user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
 
 
 @celery.task()
@@ -248,11 +248,11 @@ def update_user_follows(user_id):
 
         db.session.commit()
 
-        user.is_media_on_update -= 1
-        db.session.commit()
-        if user.is_media_on_update is 0:
-            user.last_check = datetime.datetime.now()
-        db.session.commit()
+    user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
 
 
 @celery.task()
@@ -273,11 +273,11 @@ def update_user_followed_by(user_id):
 
         db.session.commit()
 
-        user.is_media_on_update -= 1
-        db.session.commit()
-        if user.is_media_on_update is 0:
-            user.last_check = datetime.datetime.now()
-        db.session.commit()
+    user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
 
 
 def clear_extra_locations():
