@@ -75,7 +75,7 @@ class User_information:
         self.locations = locations
         self.count_of_all_locations = count_of_all_locations
         self.count_of_unique_locations = count_of_unique_locations
-        if sum_of_likes is not None and user.count_media is not 0:
+        if sum_of_likes is not None and user.count_media != 0:
             self.average_like_count = float(sum_of_likes) / user.count_media
         else:
             self.average_like_count = None
@@ -112,7 +112,7 @@ def get_users_who_liked(medias, user, followed_by):
 
     possible_user_likes = possible_user_likes.items()
     #possible_user_likes.sort(key=lambda x: (x[1], x[0].login))
-    if user.count_media is not 0:
+    if user.count_media != 0:
         for liker in possible_user_likes:
             if liker[0] in users_who_liked:
                 extra_likes = liker[1] * (users_who_liked[liker[0]] / user.count_media)

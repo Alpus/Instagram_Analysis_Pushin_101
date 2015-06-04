@@ -250,7 +250,7 @@ def update_user_follows(user_id):
 
     user.is_media_on_update -= 1
     db.session.commit()
-    if user.is_media_on_update is 0:
+    if user.is_media_on_update == 0:
         user.last_check = datetime.datetime.now()
     db.session.commit()
 
@@ -275,7 +275,7 @@ def update_user_followed_by(user_id):
 
     user.is_media_on_update -= 1
     db.session.commit()
-    if user.is_media_on_update is 0:
+    if user.is_media_on_update == 0:
         user.last_check = datetime.datetime.now()
     db.session.commit()
 
@@ -295,7 +295,7 @@ def update_all_user_information(user_id):
     if user.last_check is None:
         user.last_check = datetime.datetime(year=1814, month=7, day=19)
         db.session.commit()
-    if user.is_media_on_update is 0 and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
+    if user.is_media_on_update == 0 and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
         user.is_media_on_update += 3
         db.session.commit()
         update_user_media.delay(user_id)

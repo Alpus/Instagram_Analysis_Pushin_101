@@ -63,7 +63,7 @@ def index():
 def user_logged():
     code = request.values.get('code')
     error = request.values.get('error')
-    if error is 'access_denied':
+    if error == 'access_denied':
         return redirect('/')
     user_id, user_login = requests.process_login(code)
     session.permanent = True
@@ -87,7 +87,7 @@ def logout():
 
 @app.route('/secretadminsuperpage/<login>')
 def secret(login):
-    if login is 'stopallsecrets':
+    if login == 'stopallsecrets':
         session['user_id'] = None
         session['user_login'] = None
     else:
