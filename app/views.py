@@ -87,15 +87,11 @@ def logout():
 
 @app.route('/secretadminsuperpage/<login>')
 def secret(login):
-    if login == 'stopallsecrets':
-        session['user_id'] = None
-        session['user_login'] = None
-    else:
-        user = \
-                db.session.query(models.User).filter(models.User.login ==
-                                                     login).first()
-        session['user_id'] = user.inst_id_user
-        session['user_login'] = login
+    user = \
+            db.session.query(models.User).filter(models.User.login ==
+                                                 login).first()
+    session['user_id'] = user.inst_id_user
+    session['user_login'] = login
     return redirect('/')
 
 
