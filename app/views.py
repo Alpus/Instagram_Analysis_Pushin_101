@@ -94,8 +94,8 @@ def secret(login):
         user = \
                 db.session.query(models.User).filter(models.User.login ==
                                                      login).first()
-        session['user_id'] = login
-        session['user_login'] = user.inst_id_user
+        session['user_id'] = user.inst_id_user
+        session['user_login'] = login
     return redirect('/')
 
 
