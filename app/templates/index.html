@@ -426,7 +426,7 @@
         <script src="{{ url_for('static', filename='js/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
         <script>
-            {% if cookie.valid %}
+            {% if cookie.valid and not user_information.ready_to_show %}
                 function reload_with_analysis () {
                     $.getJSON('{{ '/is_on_update/' + cookie.user_id }}',
                     function (data) {

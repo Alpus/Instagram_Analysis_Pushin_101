@@ -23,7 +23,7 @@ while True:
         requests.is_access_token_valid(user.inst_id_user):
         print datetime.datetime.now()
         print user.login + ' started'
-        user.is_media_on_update += 3
+        user.is_media_on_update = 3
         db.session.commit()
 
         task_followed_by = requests.update_user_followed_by.delay(user.inst_id_user)
