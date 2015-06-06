@@ -33,7 +33,7 @@ class User(db.Model):
     count_media = db.Column(db.Integer, nullable=False, default=0)
     count_follows = db.Column(db.Integer, nullable=False, default=0)
     count_followed_by = db.Column(db.Integer, nullable=False, default=0)
-    is_media_on_update = db.Column(db.Boolean, default=0)
+    is_media_on_update = db.Column(db.SmallInteger, default=0)
 
     medias = db.relationship(
         'Media', backref='user', lazy='dynamic')
@@ -64,6 +64,8 @@ class User(db.Model):
             self.count_media = user_data.counts['media']
             self.count_follows = user_data.counts['follows']
             self.count_followed_by = user_data.counts['followed_by']
+
+        self.last_check = datetime.date(year=1814, month=7, day=19)
 
     def __repr__(self):
         return '<User %r>' % self.login
@@ -116,7 +118,7 @@ class Media(db.Model):
         self.type_media = media_data.type
         if media_data.caption:
             self.caption = media_data.caption.text
-        self.count_of_like = media_data.like_count
+        self.count_of_likes = media_data.like_count
         self.filter_media = media_data.filter
         self.link = media_data.link
         self.created_time = media_data.created_time
@@ -142,8 +144,9 @@ class Media(db.Model):
 
         if 'tags' in dir(media_data):
             for tag in media_data.tags:
-                tag_data = requests.init_tag(tag.name)
-                self.tags.append(tag_data)
+                tag = requests.init_tag(tag.name)
+                if tag is not None:
+                    self.tags.append(tag)
 
         for comment_data in media_data.comments:
             comment = requests.init_comment_by_data(comment_data)

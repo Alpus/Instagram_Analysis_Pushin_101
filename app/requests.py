@@ -20,7 +20,7 @@ def process_login(code):
     access_token, instagram_user =\
         instagram_client.exchange_code_for_access_token(code)
 
-    that_user = init_user_by_id(instagram_user['id'])
+    that_user = init_user_by_id(user_id=instagram_user['id'], access_token=access_token)
 
     if that_user.registration_date == None:
         that_user.registration_date = datetime.datetime.now()
@@ -31,13 +31,15 @@ def process_login(code):
     return that_user.inst_id_user, that_user.login
 
 
-def init_user_by_id(user_id):
+def init_user_by_id(user_id, access_token=None):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                              user_id).first()
     if user is None:
-        api = client.InstagramAPI(access_token=user.access_token,
-                              client_secret=CLIENT_SECRET)
+        if access_token is None:
+            access_token = user.access_token
+        api = client.InstagramAPI(access_token=access_token,
+                                  client_secret=CLIENT_SECRET)
         user_data = api.user(user_id)
         user = models.User(user_data=user_data)
         db.session.add(user)
@@ -99,6 +101,7 @@ def update_user(user_id):
         user.count_media = user_data.counts['media']
         user.count_follows = user_data.counts['follows']
         user.count_followed_by = user_data.counts['followed_by']
+        db.session.commit()
 
     db.session.commit()
     return user
@@ -107,8 +110,8 @@ def update_user(user_id):
 def init_tag(tag_name):
     try:
         tag =\
-        db.session.query(models.Tag).filter(models.Tag.name ==
-                                            tag_name).first()
+            db.session.query(models.Tag).filter(models.Tag.name ==
+                                                tag_name).first()
     except:
         tag = None
 
@@ -220,11 +223,14 @@ def update_user_media(user_id):
             db.session.delete(media)
         db.session.commit()
 
-    user.last_check = datetime.datetime.now()
-    user.is_media_on_update = False
+    user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update is 0:
+        user.last_check = datetime.datetime.now()
     db.session.commit()
 
 
+@celery.task()
 def update_user_follows(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -242,7 +248,14 @@ def update_user_follows(user_id):
 
         db.session.commit()
 
+    user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update == 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
 
+
+@celery.task()
 def update_user_followed_by(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
@@ -260,10 +273,15 @@ def update_user_followed_by(user_id):
 
         db.session.commit()
 
+    user.is_media_on_update -= 1
+    db.session.commit()
+    if user.is_media_on_update == 0:
+        user.last_check = datetime.datetime.now()
+    db.session.commit()
+
 
 def clear_extra_locations():
-    locations = db.session.query(models.Location).filter(models.Location.medias
-                                                         == None)
+    locations = db.session.query(models.Location).filter(models.Location.medias == None)
     for location in locations:
         db.session.delete(location)
 
@@ -273,16 +291,16 @@ def clear_extra_locations():
 def update_all_user_information(user_id):
     user = db.session.query(models.User).filter(models.User.inst_id_user ==
                                                 user_id).first()
+    update_user(user_id)
     if user.last_check is None:
-        user.last_check = datetime.date(year=1814, month=7, day=19)
+        user.last_check = datetime.datetime(year=1814, month=7, day=19)
         db.session.commit()
-    if user.is_media_on_update is False and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
-        user.is_media_on_update = True
+    if user.is_media_on_update == 0 and datetime.datetime.now() - user.last_check > datetime.timedelta(hours=72):
+        user.is_media_on_update += 3
         db.session.commit()
         update_user_media.delay(user_id)
-        update_user(user_id)
-        update_user_followed_by(user_id)
-        update_user_follows(user_id)
+        update_user_followed_by.delay(user_id)
+        update_user_follows.delay(user_id)
 
 def is_access_token_valid(user_id):
     user =\
@@ -293,7 +311,7 @@ def is_access_token_valid(user_id):
     else:
         try:
            api = client.InstagramAPI(access_token=user.access_token,
-                                  client_secret=CLIENT_SECRET)
+                                     client_secret=CLIENT_SECRET)
            user_data = api.user(user_id)
         except InstagramAPIError:
                user.access_token = None
