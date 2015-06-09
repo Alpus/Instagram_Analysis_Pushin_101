@@ -274,6 +274,8 @@ def update_user_followed_by(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                               user_id).first()
+    print user.login
+    
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
