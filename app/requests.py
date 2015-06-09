@@ -68,7 +68,10 @@ def init_user_by_data(user_data):
         user.inst_id_user = user_data.id
         user.login = user_data.username
         user.full_name = user_data.full_name
-        user.profile_picture = user_data.profile_picture
+        if user_data.profile_picture != None:
+            user.profile_picture = user_data.profile_picture
+        else:
+             user.profile_picture = '//instagram-static.s3.amazonaws.com/bluebar/images/default-avatar.png'
 
         if 'bio' in dir(user_data):
             user.bio = user_data.bio
@@ -104,7 +107,10 @@ def update_user(user_id):
     else:
         user.login = user_data.username
         user.full_name = user_data.full_name
-        user.profile_picture = user_data.profile_picture
+        if user_data.profile_picture != None:
+            user.profile_picture = user_data.profile_picture
+        else:
+             user.profile_picture = '//instagram-static.s3.amazonaws.com/bluebar/images/default-avatar.png'
         user.bio = user_data.bio
         user.website = user_data.website
         user.count_media = user_data.counts['media']
@@ -275,7 +281,7 @@ def update_user_followed_by(user_id):
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                               user_id).first()
     print user.login
-    
+
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
