@@ -126,7 +126,10 @@ def get_users_who_liked(medias, user, followed_by):
                                key=lambda liker: (-liker[1], liker[0].login)))]
 
     count_of_likers = len(likers)
-    median_like_count = sorted(medias, key=lambda x: (-x.count_of_likes))[len(medias) / 2].count_of_likes
+    if len(medias) != 0:
+        median_like_count = sorted(medias, key=lambda x: (-x.count_of_likes))[len(medias) / 2].count_of_likes
+    else:
+        median_like_count = 0
     return likers, sum_of_likes, count_of_likers, median_like_count
 
 
