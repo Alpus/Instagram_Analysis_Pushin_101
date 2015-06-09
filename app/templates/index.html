@@ -120,9 +120,7 @@
                             <th>{{ element.number }}</th>
                             <th>
                                 <img src="{{ element.user.profile_picture }}" width="100" height="100"
-                                         alt="Profile photo" align="middle" class="img-thumbnail"
-                                         data-toggle="modal" data-target="#bigimage"
-                                         data-image="{{ element.user.profile_picture }}">
+                                         alt="Profile photo" align="middle" class="img-thumbnail">
                             </th>
                             <th>
                                 {{ element.user.login }}
@@ -426,22 +424,6 @@
             </div>
         {% endif %}
 
-        <!-- Modal -->
-        <div class="modal fade" id="bigimage" tabindex="-1" role="dialog" aria-labelledby="imagemodal"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="" alt="Image" align="middle" class="img-thumbnail">
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <script src="{{ url_for('static', filename='js/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
         <script>
@@ -459,7 +441,7 @@
             $(document).ready( function() {
                 var navbarCollapse = $("#navbarCollapse");
                 var current_window = $('#users-div');
-                var current_button = $('#users');
+                var current_button = $('#users')
                 navbarCollapse.find("#users").on('click', function () {
                     if (!$(this).hasClass("disabled") && current_button != $(this)) {
                         current_button.removeClass('active');
@@ -536,10 +518,10 @@
                 {% endif %}
 
                 $('#bigimage').on('show.bs.modal', function (event) {
-                  var button = $(event.relatedTarget);
-                  var recipient = button.data('image');
-                  var modal = $(this);
-                  modal.find('.modal-body img').src = recipient;
+                  var button = $(event.relatedTarget)
+                  var recipient = button.data('image')
+                  var modal = $(this)
+                  modal.find('.modal-body').val(recipient)
                 })
             });
         </script>
