@@ -119,7 +119,7 @@
                         <tr>
                             <th>{{ element.number }}</th>
                             <th>
-                                <img src={{ element.user.profile_picture }} width="100" height="100"
+                                <img src="{{ element.user.profile_picture }}" width="100" height="100"
                                          alt="Profile photo" align="middle" class="img-thumbnail">
                             </th>
                             <th>
@@ -139,7 +139,7 @@
             <div id="general-div" class="row">
                 <div class="col-md-6 col-md-offset-3" align="center">
                     <h1 class="text-center">General</h1>
-                    <img src={{ user_information.user.profile_picture }} class="img-thumbnail" alt="Profile photo">
+                    <img src="{{ user_information.user.profile_picture }}" class="img-thumbnail" alt="Profile photo">
 
                     {% if not user_information.ready_to_show %}
                         <p align="center"><img src="{{ url_for('static', filename='img/loading.gif') }}"
@@ -210,7 +210,7 @@
                                     <tr>
                                         <th>{{ liker.number }}</th>
                                         <th>
-                                            <img src={{ liker.user.profile_picture }} width="70" height="70"
+                                            <img src="{{ liker.user.profile_picture }}" width="70" height="70"
                                                  alt="Profile photo" align="middle" class="img-thumbnail">
                                         </th>
                                         <th>
@@ -260,7 +260,7 @@
                                     <tr>
                                         <th>{{ element.number }}</th>
                                         <th>
-                                            <img src={{ element.media.image_thumbnail }} alt="Media" class="img-thumbnail">
+                                            <img src="{{ element.media.image_thumbnail }}" alt="Media" class="img-thumbnail">
                                         </th>
                                         <th>
                                             <p>Likes: {{ element.media.count_of_likes }}</p>
@@ -315,7 +315,7 @@
                                         {{ '%0.2f' % element.average_count_of_likes | float }}
                                     </th>
                                     <th>
-                                        <img src={{ element.best_media.image_thumbnail }} alt="Media" class="img-thumbnail">
+                                        <img src="{{ element.best_media.image_thumbnail }}" alt="Media" class="img-thumbnail">
                                     </th>
                                 </tr>
                                 {% endfor %}
@@ -366,7 +366,7 @@
                                         {{ '%0.2f' % element.average_count_of_likes | float }}
                                     </th>
                                     <th>
-                                        <img src={{ element.best_media.image_thumbnail }} alt="Media" class="img-thumbnail">
+                                        <img src="{{ element.best_media.image_thumbnail }}" alt="Media" class="img-thumbnail">
                                     </th>
                                 </tr>
                                 {% endfor %}
@@ -413,7 +413,7 @@
                                         {{ '%0.2f' % element.average_count_of_likes | float }}
                                     </th>
                                     <th>
-                                        <img src={{ element.best_media.image_thumbnail }} alt="Media" class="img-thumbnail">
+                                        <img src="{{ element.best_media.image_thumbnail }}" alt="Media" class="img-thumbnail">
                                     </th>
                                 </tr>
                                 {% endfor %}
@@ -516,6 +516,13 @@
                 {% if cookie.valid and not user_information.ready_to_show %}
                     setInterval(reload_with_analysis, 5000);
                 {% endif %}
+
+                $('#bigimage').on('show.bs.modal', function (event) {
+                  var button = $(event.relatedTarget)
+                  var recipient = button.data('image')
+                  var modal = $(this)
+                  modal.find('.modal-body').val(recipient)
+                })
             });
         </script>
     </body>

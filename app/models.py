@@ -23,7 +23,8 @@ class User(db.Model):
     access_token = db.Column(db.String(100))
     login = db.Column(db.String(50), nullable=False)
     full_name = db.Column(db.String(100))
-    profile_picture = db.Column(db.String(255))
+    profile_picture = db.Column(db.String(255),
+                                default='//instagram-static.s3.amazonaws.com/bluebar/images/default-avatar.png')
     bio = db.Column(db.String(100))
     website = db.Column(db.String(100))
     registration_date = db.Column(db.DateTime)
@@ -48,7 +49,10 @@ class User(db.Model):
         self.inst_id_user = user_data.id
         self.login = user_data.username
         self.full_name = user_data.full_name
-        self.profile_picture = user_data.profile_picture
+        if 'profile_picture' in dir(user_data):
+            self.profile_picture = user_data.profile_picture
+        else:
+            self.profile_picture = '//instagram-static.s3.amazonaws.com/bluebar/images/default-avatar.png'
 
         if 'bio' in dir(user_data):
             self.bio = user_data.bio

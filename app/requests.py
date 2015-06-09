@@ -4,13 +4,20 @@ from app import db
 import models
 import datetime
 from app import celery
-import sys
+import time
 
 CLIENT_ID = '448cfab22275478a9e475784fe8ed4f1'
 CLIENT_SECRET = '95e26a3bd94f44c78a534bc8c8a6bacc'
 LOGGED_URL = '/logged'
 HOME_URL = 'http://54.149.115.96'
 REDIRECT_URL = HOME_URL + LOGGED_URL
+
+last_api_request = datetime.datetime(year=1814, month=7, day=19)
+
+def api_sleep():
+    delta = datetime.datetime.now() - last_api_request
+    if (delta < datetime.timedelta(seconds=1.0)):
+        time.sleep(datetime.timedelta(seconds=1.0) - delta)
 
 
 def process_login(code):
@@ -40,6 +47,7 @@ def init_user_by_id(user_id, access_token=None):
             access_token = user.access_token
         api = client.InstagramAPI(access_token=access_token,
                                   client_secret=CLIENT_SECRET)
+        api_sleep()
         user_data = api.user(user_id)
         user = models.User(user_data=user_data)
         db.session.add(user)
@@ -60,7 +68,10 @@ def init_user_by_data(user_data):
         user.inst_id_user = user_data.id
         user.login = user_data.username
         user.full_name = user_data.full_name
-        user.profile_picture = user_data.profile_picture
+        if user_data.profile_picture != None:
+            user.profile_picture = user_data.profile_picture
+        else:
+             user.profile_picture = '//instagram-static.s3.amazonaws.com/bluebar/images/default-avatar.png'
 
         if 'bio' in dir(user_data):
             user.bio = user_data.bio
@@ -88,6 +99,7 @@ def update_user(user_id):
                                              user_id).first()
     api = client.InstagramAPI(access_token=user.access_token,
                               client_secret=CLIENT_SECRET)
+    api_sleep()
     user_data = api.user(user_id)
     if user is None:
         user = models.User(user_data)
@@ -95,7 +107,10 @@ def update_user(user_id):
     else:
         user.login = user_data.username
         user.full_name = user_data.full_name
-        user.profile_picture = user_data.profile_picture
+        if user_data.profile_picture != None:
+            user.profile_picture = user_data.profile_picture
+        else:
+             user.profile_picture = '//instagram-static.s3.amazonaws.com/bluebar/images/default-avatar.png'
         user.bio = user_data.bio
         user.website = user_data.website
         user.count_media = user_data.counts['media']
@@ -119,6 +134,7 @@ def init_tag(tag_name):
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
         try:
+            api_sleep()
             tag_data = api.tag(tag_name)
             tag = models.Tag(tag_data)
             db.session.add(tag)
@@ -148,6 +164,7 @@ def init_location(location_id):
     if location is None:
         api = client.InstagramAPI(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET)
+        api_sleep()
         location_data = api.location(location_id)
         location = models.Location(location_data)
         db.session.add(location)
@@ -165,7 +182,8 @@ def update_user_media(user_id):
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        medias = api.user_recent_media(as_generator=True, max_pages=None)
+        api_sleep()
+        medias = api.user_recent_media(user_id=user.inst_id_user, as_generator=True, max_pages=None)
         old_medias = user.medias.all()
         new_medias = []
         for case in medias:
@@ -189,6 +207,7 @@ def update_user_media(user_id):
                         media.location = None
                     db.session.commit()
 
+                    api_sleep()
                     likes = api.media_likes(media_id=media_data.id)
                     new_likes = []
                     for like in likes:
@@ -238,7 +257,8 @@ def update_user_follows(user_id):
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        follows = api.user_follows(as_generator=True, max_pages=None)
+        api_sleep()
+        follows = api.user_follows(user_id=user.inst_id_user, as_generator=True, max_pages=None)
         new_follows = []
         for case in follows:
             for follow in case[0]:
@@ -260,10 +280,13 @@ def update_user_followed_by(user_id):
     user =\
         db.session.query(models.User).filter(models.User.inst_id_user ==
                                               user_id).first()
+    print user.login
+
     if user is not None:
         api = client.InstagramAPI(access_token=user.access_token,
                                   client_secret=CLIENT_SECRET)
-        followed_by_list = api.user_followed_by(as_generator=True, max_pages=None)
+        api_sleep()
+        followed_by_list = api.user_followed_by(user_id=user.inst_id_user, as_generator=True, max_pages=None)
         new_followed_by = []
         for case in followed_by_list:
             for followed_by in case[0]:
@@ -312,6 +335,7 @@ def is_access_token_valid(user_id):
         try:
            api = client.InstagramAPI(access_token=user.access_token,
                                      client_secret=CLIENT_SECRET)
+           api_sleep()
            user_data = api.user(user_id)
         except InstagramAPIError:
                user.access_token = None
